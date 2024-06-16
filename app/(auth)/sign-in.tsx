@@ -19,7 +19,7 @@ type FormData = {
   password: string;
 };
 
-export default function TabOneScreen() {
+export default function SignInScreen() {
   const {
     control,
     handleSubmit,
@@ -162,15 +162,18 @@ export default function TabOneScreen() {
               </Button>
             </YStack>
 
-            <XStack gap="$1" alignItems="center" justifyContent="center">
+            <XStack gap="$2" alignItems="center" justifyContent="center">
               <Text className="text-textmuted text-center">
                 ¿No tienes una cuenta?
               </Text>
-              <Link asChild href={"/(auth)/sign-up"}>
-                <Button pressStyle={{ textEmphasis: "Highlight" }} unstyled>
+              <Button unstyled onPress={() => router.push("/(auth)/sign-up")}>
+                <Text
+                  color="$green8Light"
+                  pressStyle={{ textDecorationLine: "underline" }}
+                >
                   Regístrate
-                </Button>
-              </Link>
+                </Text>
+              </Button>
             </XStack>
           </YStack>
         </SafeAreaView>
