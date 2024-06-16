@@ -10,7 +10,7 @@ import { supabase } from "@/utils/supabase";
 import * as React from "react";
 import { Animated, FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, H3, ScrollView, Text, XStack, YStack } from "tamagui";
+import { Button, H3, H4, ScrollView, Text, XStack, YStack } from "tamagui";
 
 export default function Home() {
   const fadeAnim = React.useRef(new Animated.Value(1)).current;
@@ -101,7 +101,7 @@ export default function Home() {
           </ScrollView>
         </Animated.View>
       ) : (
-        <SafeAreaView>
+        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
           <View>
             <XStack justifyContent="space-between" mx={4}>
               <YStack>
@@ -143,7 +143,7 @@ export default function Home() {
                 className="items-center"
                 justifyContent="space-between"
               >
-                <H3>Historial de Gastos</H3>
+                <H4>Historial de Gastos</H4>
 
                 <Button
                   onPress={() => {

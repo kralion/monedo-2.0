@@ -2,7 +2,7 @@ import { useExpenseContext } from "@/context/ExpenseContext";
 import useAuth from "@/context/AuthContext";
 import { supabase } from "@/utils/supabase";
 import * as React from "react";
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -13,7 +13,7 @@ import Animated, {
 import { BudgetLimitExceededModal } from "../popups";
 import BuyPremiumModal from "../popups/buy-premium";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, H3, H4, XStack, YStack } from "tamagui";
+import { Button, H3, H4, XStack, YStack, Text } from "tamagui";
 
 export default function Card() {
   const flip = useSharedValue(0);
@@ -110,15 +110,15 @@ export default function Card() {
         >
           <XStack justifyContent="space-between">
             <View>
-              <H4>Balance</H4>
-              <H3>S/. {balance}</H3>
+              <H4 color="$white1">Balance</H4>
+              <H3 color="$white1">S/. {balance}</H3>
             </View>
             <BudgetLimitExceededModal
               setShowModal={setShowModal}
               showModal={showModal}
             />
             <Button bg={userData.rol === "premium" ? "$yellow10" : "$orange10"}>
-              <Text>
+              <Text color="$white1">
                 {userData.rol === "premium" ? "Premium" : "Plan Free"}
               </Text>
             </Button>
@@ -126,15 +126,15 @@ export default function Card() {
           <XStack justifyContent="space-between">
             <YStack>
               <XStack>
-                <Text>Gastos</Text>
+                <Text color="$white1">Gastos</Text>
               </XStack>
-              <H4>S/. {totalMonthExpenses}</H4>
+              <H4 color="$white1">S/. {totalMonthExpenses}</H4>
             </YStack>
             <YStack>
               <XStack>
-                <Text>Presupuesto</Text>
+                <Text color="$white1">Presupuesto</Text>
               </XStack>
-              <Text>S/. {presupuesto}</Text>
+              <H4 color="$white1">S/. {presupuesto}</H4>
             </YStack>
           </XStack>
         </LinearGradient>
@@ -145,24 +145,22 @@ export default function Card() {
 
 const styles = StyleSheet.create({
   cardStyle: {
-    width: "90%",
+    width: "100%",
     height: 200,
-    left: 21,
     position: "absolute",
-    zIndex: 1,
-    flex: 1,
+    top: 30,
     flexDirection: "column",
     justifyContent: "space-between",
-    borderRadius: 50,
+    borderRadius: 20,
     padding: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 2,
     },
-    shadowOpacity: 0.53,
-    shadowRadius: 13.97,
-    elevation: 21,
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 10,
   },
   shadowContainer: {
     flex: 1,
@@ -172,8 +170,8 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 30,
+    shadowRadius: 10,
+    elevation: 20,
     backgroundColor: "rgba(255, 255, 255, 0.001)",
   },
 });

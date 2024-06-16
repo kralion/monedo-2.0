@@ -14,7 +14,7 @@ export function BudgetLimitExceededModal({
   showModal,
 }: TNotification) {
   return (
-    <Dialog modal open={showModal}>
+    <Dialog modal open={false}>
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
@@ -59,6 +59,9 @@ export function BudgetLimitExceededModal({
             <Dialog.Close asChild>
               <Button
                 position="absolute"
+                onPress={() => {
+                  setShowModal(false);
+                }}
                 top="$3"
                 right="$3"
                 size="$2"

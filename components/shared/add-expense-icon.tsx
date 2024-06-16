@@ -2,10 +2,10 @@ import useAuth from "@/context/AuthContext";
 import { useExpenseContext } from "@/context/ExpenseContext";
 import { supabase } from "@/utils/supabase";
 import { Entypo } from "@expo/vector-icons";
+import { useToastController } from "@tamagui/toast";
 import { useRouter } from "expo-router";
-import { Alert, HStack, useToast } from "native-base";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function AddExpenseIcon() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function AddExpenseIcon() {
   const [presupuesto, setPresupuesto] = React.useState(0);
   // TODO: get this from the actual month
   const { sumOfAllOfExpensesMonthly } = useExpenseContext();
-  const toast = useToast();
+  const toast = useToastController();
   const [blockRoute, setBlockRoute] = React.useState(false);
   async function fetchExpenses() {
     const totalExpenses = await sumOfAllOfExpensesMonthly();
@@ -56,22 +56,7 @@ export default function AddExpenseIcon() {
           onPress={() => {
             if (blockRoute) {
               router.push("/(tabs)/");
-              toast.show({
-                render: () => (
-                  <Alert variant="solid" rounded={10} px={5} status="error">
-                    <HStack space={2} alignItems="center">
-                      <Alert.Icon mt="1" />
-                      <Text className="text-white">
-                        No puedes añadir gastos tu balance es cero.
-                      </Text>
-                    </HStack>
-                  </Alert>
-                ),
-                description: "",
-                duration: 4000,
-                placement: "top",
-                variant: "solid",
-              });
+              toast.show("No puedes añadir gastos tu balance es cero.");
             } else {
               router.push("/(tabs)/add-expense");
             }
@@ -92,22 +77,7 @@ export default function AddExpenseIcon() {
           onPress={() => {
             if (blockRoute) {
               router.push("/(tabs)/");
-              toast.show({
-                render: () => (
-                  <Alert variant="solid" rounded={10} px={5} status="error">
-                    <HStack space={2} alignItems="center">
-                      <Alert.Icon mt="1" />
-                      <Text className="text-white">
-                        No puedes añadir gastos tu balance es cero.
-                      </Text>
-                    </HStack>
-                  </Alert>
-                ),
-                description: "",
-                duration: 4000,
-                placement: "top",
-                variant: "solid",
-              });
+              toast.show("No puedes añadir gastos tu balance es cero.");
             } else {
               router.push("/(tabs)/add-expense");
             }

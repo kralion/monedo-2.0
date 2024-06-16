@@ -1,38 +1,109 @@
-import { Link, Tabs } from "expo-router";
-import { Button, useTheme } from "tamagui";
-import { Atom, AudioWaveform } from "@tamagui/lucide-icons";
+import AddExpenseIcon from "@/components/shared/add-expense-icon";
+import Colors from "@/constants/Colors";
+import { ExpenseContextProvider } from "@/context/ExpenseContext";
+import { Image } from "expo-image";
+import { Tabs } from "expo-router";
+import { View, useColorScheme } from "react-native";
 
 export default function TabLayout() {
-  const theme = useTheme();
-
+  const colorScheme = useColorScheme();
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: theme.red10.val,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <Atom color={color} />,
-          // headerRight: () => (
-          //   <Link href="/modal" asChild>
-          //     <Button mr="$4" themeInverse bg="$purple8" color="$purple12">
-          //       Modal
-          //     </Button>
-          //   </Link>
-          // ),
+    <ExpenseContextProvider>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+          tabBarStyle: {
+            height: 80,
+            paddingTop: 10,
+          },
+          tabBarHideOnKeyboard: true,
           headerShown: false,
         }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <AudioWaveform color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Inicio",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <Image
+                style={{ width: 28, height: 28, tintColor: color }}
+                source={{
+                  uri: focused
+                    ? "https://api.iconify.design/mingcute:home-4-fill.svg"
+                    : "https://api.iconify.design/mingcute:home-4-line.svg",
+                }}
+                alt="google"
+              />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="statistics"
+          options={{
+            title: "Analíticas",
+            tabBarIcon: ({ color, focused }) => (
+              <Image
+                style={{ width: 28, height: 28, tintColor: color }}
+                source={{
+                  uri: focused
+                    ? "https://api.iconify.design/mingcute:chart-vertical-fill.svg"
+                    : "https://api.iconify.design/mingcute:chart-vertical-line.svg",
+                }}
+                alt="google"
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="add-expense"
+          options={{
+            title: "",
+            headerShown: false,
+            tabBarIcon: () => <AddExpenseIcon />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="wallet"
+          options={{
+            title: "Saldo",
+            tabBarIcon: ({ color, focused }) => (
+              <Image
+                style={{ width: 28, height: 28, tintColor: color }}
+                source={{
+                  uri: focused
+                    ? "https://api.iconify.design/mingcute:wallet-4-fill.svg"
+                    : "https://api.iconify.design/mingcute:wallet-4-line.svg",
+                }}
+                alt="google"
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+
+        <Tabs.Screen
+          name="profile"
+          options={{
+            headerBackground: () => <View style={{ flex: 1 }} />,
+            title: "Perfil",
+            tabBarIcon: ({ color, focused }) => (
+              <Image
+                style={{ width: 28, height: 28, tintColor: color }}
+                source={{
+                  uri: focused
+                    ? "https://api.iconify.design/mingcute:user-3-fill.svg"
+                    : "https://api.iconify.design/mingcute:user-3-line.svg",
+                }}
+                alt="google"
+              />
+            ),
+          }}
+        />
+      </Tabs>
+    </ExpenseContextProvider>
   );
 }

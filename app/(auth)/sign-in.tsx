@@ -14,6 +14,8 @@ import {
   YStack,
 } from "tamagui";
 import { Text as T2 } from "react-native";
+import { useToastController } from "@tamagui/toast";
+import { supabase } from "@/utils/supabase";
 
 type FormData = {
   email: string;
@@ -30,33 +32,23 @@ export default function SignInScreen() {
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  // const toast = useToast();
+  const toast = useToastController();
   async function signInWithEmail(data: FormData) {
     setLoading(true);
-    Alert.alert("Sign In...");
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email: data.email,
-    //   password: data.password,
-    // });
-    // if (error) {
-    //   toast.show({
-    //     render: () => (
-    //       <Alert variant="solid" rounded={10} px={5} status="error">
-    //         <HStack space={2} alignItems="center">
-    //           <Alert.Icon mt="1" />
-    //           <Text className="text-white">Credenciales inválidas</Text>
-    //         </HStack>
-    //       </Alert>
-    //     ),
-    //     description: "",
-    //     duration: 2000,
-    //     placement: "top",
-    //     variant: "solid",
-    //   });
-    // } else {
-    //   router.push("/(tabs)/");
-    // }
-    // setLoading(false);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      toast.show("Credenciales inválidas", {
+        status: "error",
+        duration: 2000,
+        placement: "top",
+      });
+    } else {
+      router.push("/(tabs)/");
+    }
+    setLoading(false);
   }
 
   return (

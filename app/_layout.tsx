@@ -10,7 +10,6 @@ import {
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { Provider } from "./Provider";
-import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { AuthProvider } from "@/context/AuthContext";
 
 export {
@@ -55,8 +54,6 @@ function RootLayoutNav() {
 
   return (
     <Provider>
-      <ToastProvider />
-      <ToastViewport />
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen
