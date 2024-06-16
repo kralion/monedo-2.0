@@ -1,180 +1,188 @@
-import { Link, useRouter } from "expo-router";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Alert, Image, Keyboard, TouchableWithoutFeedback } from "react-native";
+import LockIcon from "@/assets/svgs/avatar.svg";
+import NoDataAsset from "@/assets/svgs/no-data.svg";
+import Card from "@/components/dashboard/card";
+import BuyPremiumModal from "@/components/popups/buy-premium";
+import { Expense } from "@/components/shared";
+import useAuth from "@/context/AuthContext";
+import { useExpenseContext } from "@/context/ExpenseContext";
+import { supabase } from "@/utils/supabase";
+
+import * as React from "react";
+import { Animated, FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Button,
-  H2,
-  Input,
-  ScrollView,
-  Separator,
-  Text,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, H3, ScrollView, Text, XStack, YStack } from "tamagui";
 
-type FormData = {
-  email: string;
-  password: string;
-};
+export default function Home() {
+  const fadeAnim = React.useRef(new Animated.Value(1)).current;
+  const { getExpensesByUser, expenses } = useExpenseContext();
+  const { userData } = useAuth();
+  const [showAll, setShowAll] = React.useState(false);
+  const [showBuyPremiumModal, setShowBuyPremiumModal] = React.useState(false);
 
-export default function TabOneScreen() {
-  const {
-    control,
-    handleSubmit,
+  if (!userData) {
+    return null;
+  }
+  React.useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: showAll ? 1 : 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [showAll]);
 
-    formState: { errors },
-  } = useForm<FormData>();
-  const [show, setShow] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const router = useRouter();
-  // const toast = useToast();
-  async function signInWithEmail(data: FormData) {
-    setLoading(true);
-    Alert.alert("Sign In...");
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email: data.email,
-    //   password: data.password,
-    // });
-    // if (error) {
-    //   toast.show({
-    //     render: () => (
-    //       <Alert variant="solid" rounded={10} px={5} status="error">
-    //         <HStack space={2} alignItems="center">
-    //           <Alert.Icon mt="1" />
-    //           <Text className="text-white">Credenciales inválidas</Text>
-    //         </HStack>
-    //       </Alert>
-    //     ),
-    //     description: "",
-    //     duration: 2000,
-    //     placement: "top",
-    //     variant: "solid",
-    //   });
-    // } else {
-    //   router.push("/(tabs)/");
-    // }
-    // setLoading(false);
+  async function welcomeNotification() {
+    const notification = {
+      titulo: "Bienvenido !!!",
+      descripcion:
+        "Registrado exitosamente en la app, ahora puedes comenzar a usarla con el plan gratuito.",
+      fecha: new Date().toISOString(),
+      usuario_id: userData.id,
+      tipo: "INFO",
+    };
+
+    const { data } = await supabase
+      .from("notificaciones")
+      .select("*")
+      .eq("usuario_id", userData.id);
+
+    if (data?.length === 0) {
+      await supabase.from("notificaciones").insert(notification);
+    }
+  }
+  React.useEffect(() => {
+    if (userData) {
+      welcomeNotification();
+    }
+  }, [userData]);
+
+  React.useEffect(() => {
+    if (userData) {
+      getExpensesByUser(userData.id);
+    }
+  }, [userData, getExpensesByUser]);
+
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView>
-        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <YStack gap="$10">
-            <YStack gap="$1">
-              <H2>Inicio de Sesión</H2>
-              <Text>Disfruta las bondades de Expense Tracker</Text>
-            </YStack>
-            <YStack gap="$4">
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    py={3}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    autoCapitalize="none"
-                    borderRadius={7}
-                    placeholder="Correo electrónico"
-                    size="$5"
-                  />
-                )}
-                name="email"
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Email es requerido",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                    message: "Email no es válido",
-                  },
-                }}
-                defaultValue=""
+    <>
+      {showAll ? (
+        <Animated.View style={{ opacity: fadeAnim }}>
+          <ScrollView className=" rounded-t-3xl ">
+            <SafeAreaView>
+              <YStack gap="$5" className="bg-background rounded-t-3xl ">
+                <XStack
+                  px={4}
+                  mt={4}
+                  className="items-center"
+                  justifyContent="space-between"
+                >
+                  <H3>Historial de Gastos</H3>
+
+                  <Button
+                    onPress={() => {
+                      setShowAll(false);
+                    }}
+                    chromeless
+                  >
+                    Ver Menos
+                  </Button>
+                </XStack>
+                <FlatList
+                  data={expenses}
+                  keyExtractor={(expense) => String(expense.id)}
+                  renderItem={({ item: expense }) => (
+                    <Expense expense={expense} />
+                  )}
+                />
+              </YStack>
+            </SafeAreaView>
+          </ScrollView>
+        </Animated.View>
+      ) : (
+        <SafeAreaView>
+          <View>
+            <XStack justifyContent="space-between" mx={4}>
+              <YStack>
+                <Text>
+                  {capitalizeFirstLetter(
+                    new Date().toLocaleDateString("es-ES", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })
+                  )}
+                </Text>
+                <Text fontWeight="bold">Hola, {userData.nombres} 👋</Text>
+              </YStack>
+              <BuyPremiumModal
+                setOpenModal={setShowBuyPremiumModal}
+                openModal={showBuyPremiumModal}
               />
-
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    py={3}
-                    placeholder="Contraseña"
-                    secureTextEntry
-                    size="$5"
-                    onChangeText={onChange}
-                    passwordRules={
-                      "required: upper; required: lower; required: digit; minlength: 8;"
-                    }
-                  />
-                )}
-                name="password"
-                rules={{ required: true }}
-              />
-
-              <Button
-                onPress={handleSubmit((data) => {
-                  signInWithEmail(data);
-                })}
-                size="$5"
-                bg="$green8Light"
-                color="$white1"
-              >
-                Ingresar
-              </Button>
-
-              <XStack gap="$2" alignItems="center">
-                <Separator flex={1} />
-                <Text>o</Text>
-                <Separator flex={1} />
-              </XStack>
-              <Button size="$5" variant="outlined">
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=96&id=17949&format=png",
+              <View>
+                <LockIcon
+                  onPress={() => {
+                    setShowBuyPremiumModal(true);
                   }}
-                  width={25}
-                  height={25}
+                  width={36}
+                  height={36}
                 />
-                Continuar con Google
-              </Button>
-              <Button variant="outlined" size="$5">
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=96&id=uLWV5A9vXIPu&format=png",
-                  }}
-                  width={25}
-                  height={25}
-                />
-                Continuar con Facebook
-              </Button>
-              <Button variant="outlined" size="$5">
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=50&id=30840&format=png",
-                  }}
-                  width={25}
-                  height={25}
-                />
-                Continuar con Apple
-              </Button>
-            </YStack>
-
-            <XStack gap="$1" alignItems="center" justifyContent="center">
-              <Text className="text-textmuted text-center">
-                ¿No tienes una cuenta?
-              </Text>
-              <Link asChild href={"/(auth)/sign-up"}>
-                <Button pressStyle={{ textEmphasis: "Highlight" }} unstyled>
-                  Regístrate
-                </Button>
-              </Link>
+              </View>
             </XStack>
-          </YStack>
+
+            <View style={{ height: 200, zIndex: 10 }} />
+            <Card />
+          </View>
+          <ScrollView className=" rounded-t-3xl  ">
+            <YStack gap="$2">
+              <XStack
+                px={4}
+                marginTop={110}
+                className="items-center"
+                justifyContent="space-between"
+              >
+                <H3>Historial de Gastos</H3>
+
+                <Button
+                  onPress={() => {
+                    setShowAll(true);
+                  }}
+                  chromeless
+                >
+                  Ver Todo
+                </Button>
+              </XStack>
+              {expenses && expenses.length === 0 && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginVertical: 10,
+                  }}
+                >
+                  <NoDataAsset width={200} height={200} />
+                  <Text className="text-zinc-400 mt-5 text-center text-sm px-10">
+                    Parece que no tienes gastos registrados, haz click en el
+                    icono + para agregar uno.
+                  </Text>
+                </View>
+              )}
+
+              <FlatList
+                data={expenses}
+                keyExtractor={(expense) => String(expense.id)}
+                renderItem={({ item: expense }) => (
+                  <Expense expense={expense} />
+                )}
+              />
+            </YStack>
+          </ScrollView>
         </SafeAreaView>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+      )}
+    </>
   );
 }

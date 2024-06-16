@@ -1,27 +1,27 @@
+import { TermsPolicyModal } from "@/components/popups/terms&policy";
+import { supabase } from "@/utils/supabase";
 import { FontAwesome5 } from "@expo/vector-icons";
-import MaterialIcons from "@expo/vector-icons/build/MaterialIcons";
+import { Check } from "@tamagui/lucide-icons";
+import { useToastController } from "@tamagui/toast";
 import { Image } from "expo-image";
-import { Link, router } from "expo-router";
+import { useRouter } from "expo-router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Toast, useToastState } from "@tamagui/toast";
 import {
-  ScrollView,
-  YStack,
-  XStack,
   Button,
-  Separator,
-  Input,
   Checkbox,
-  Unspaced,
-  Text,
   H2,
+  Input,
   Label,
   Paragraph,
+  ScrollView,
+  Separator,
+  Text,
+  XStack,
+  YStack,
 } from "tamagui";
-import { Check } from "@tamagui/lucide-icons";
 
 type FormData = {
   nombres: string;
@@ -41,8 +41,8 @@ export default function SignUpScreen() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [showTCModal, setShowTCModal] = React.useState(false);
-  // const toast = useToast();
-
+  const router = useRouter();
+  const toast = useToastController();
   async function sendWelcomeNotification(userId: string) {
     const notification = {
       titulo: "Bienvenido !!!",
@@ -53,60 +53,38 @@ export default function SignUpScreen() {
       tipo: "INFO",
     };
 
-    // await supa  base.from("notificaciones").insert(notification);
+    await supabase.from("notificaciones").insert(notification);
   }
 
-  // async function signUpWithEmail(data: FormData) {
-  //   setLoading(true);
-  //   const { data: authData, error } = await supabase.auth.signUp({
-  //     email: data.email,
-  //     password: data.password,
-  //     options: {
-  //       emailRedirectTo: "https://expensetrackerweb.vercel.app",
-  //     },
-  //   });
+  async function signUpWithEmail(data: FormData) {
+    setLoading(true);
+    const { data: authData, error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: "https://expensetrackerweb.vercel.app",
+      },
+    });
 
-  //   if (error) {
-  //     toast.show({
-  //       render: () => (
-  //         <Alert variant="solid" rounded={10} px={5} status="error">
-  //           <XStack space={2} alignItems="center">
-  //             <Alert.Icon mt="1" />
-  //             <Text className="text-white">Error de Registro</Text>
-  //           </XStack>
-  //         </Alert>
-  //       ),
-  //       description: "",
-  //       duration: 2000,
-  //       placement: "top",
-  //       variant: "solid",
-  //     });
-  //   } else {
-  //     toast.show({
-  //       render: () => (
-  //         <Alert variant="solid" rounded={10} px={5} status="success">
-  //           <XStack space={2} alignItems="center">
-  //             <Alert.Icon mt="1" />
-  //             <Text className="text-white">
-  //               Registro exitoso, ahora puedes comenzar a usarla con el plan
-  //               gratuito.
-  //             </Text>
-  //           </XStack>
-  //         </Alert>
-  //       ),
-  //       description: "",
-  //       duration: 2000,
-  //       placement: "top",
-  //       variant: "solid",
-  //     });
-  //     if (authData.user) {
-  //       await sendWelcomeNotification(authData.user.id);
-  //     }
-  //     setLoading(false);
-  //     reset();
-  //     router.push("/(auth)/sign-in");
-  //   }
-  // }
+    if (error) {
+      toast.show("Error de Registro", {
+        message: error.message,
+        duration: 3000,
+        type: "error",
+      });
+    } else {
+      toast.show("Registro exitoso", {
+        duration: 3000,
+        type: "success",
+      });
+      if (authData.user) {
+        await sendWelcomeNotification(authData.user.id);
+      }
+      setLoading(false);
+      reset();
+      router.push("/(auth)/sign-in");
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -117,14 +95,14 @@ export default function SignUpScreen() {
               <H2>Crea una cuenta</H2>
               <XStack gap="$1.5" alignItems="center">
                 <Text>Ya tienes una cuenta?</Text>
-                <Button unstyled onPress={() => router.push("/(auth)/sign-in")}>
-                  <Text
-                    color="$green8Light"
-                    pressStyle={{ textDecorationLine: "underline" }}
-                  >
-                    Inicia Sesión
-                  </Text>
-                </Button>
+
+                <Text
+                  onPress={() => router.push("/(auth)/sign-in")}
+                  color="$green8Light"
+                  pressStyle={{ textDecorationLine: "underline" }}
+                >
+                  Inicia Sesión
+                </Text>
               </XStack>
             </YStack>
             <YStack justifyContent="center" gap="$4">
@@ -150,10 +128,7 @@ export default function SignUpScreen() {
                 <Text>o</Text>
                 <Separator flex={1} />
               </XStack>
-              {/* <TermsPolicyModal
-              openModal={showTCModal}
-              setOpenModal={setShowTCModal}
-            /> */}
+
               <XStack gap="$4">
                 <Controller
                   name="nombres"
@@ -301,14 +276,12 @@ export default function SignUpScreen() {
 
               <Paragraph size="$2">
                 Al continuar aceptas los{" "}
-                <Text
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  Términos y Condiciones
-                </Text>{" "}
-                , estos describen como usamos tus datos y como protegemos tu
-                privacidad.
+                <TermsPolicyModal
+                  openModal={showTCModal}
+                  setOpenModal={setShowTCModal}
+                />
+                , en estos se describen como usamos tus datos y como protegemos
+                tu privacidad.
               </Paragraph>
             </YStack>
             <Text textAlign="center" fontSize="$2" mt="$12">

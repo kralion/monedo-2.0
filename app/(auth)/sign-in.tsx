@@ -13,6 +13,7 @@ import {
   XStack,
   YStack,
 } from "tamagui";
+import { Text as T2 } from "react-native";
 
 type FormData = {
   email: string;
@@ -166,14 +167,13 @@ export default function SignInScreen() {
               <Text className="text-textmuted text-center">
                 ¿No tienes una cuenta?
               </Text>
-              <Button unstyled onPress={() => router.push("/(auth)/sign-up")}>
-                <Text
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  Regístrate
-                </Text>
-              </Button>
+              <Text
+                onPress={() => router.push("/(auth)/sign-up")}
+                color="$green8Light"
+                pressStyle={{ textDecorationLine: "underline" }}
+              >
+                Regístrate
+              </Text>
             </XStack>
           </YStack>
         </SafeAreaView>

@@ -7,7 +7,7 @@ export default function Welcome() {
   const router = useRouter();
   return (
     <SafeAreaView>
-      <Card width={"100%"} height={"100%"}>
+      <Card width={"100%"} alignItems="center" height="100%">
         <Image
           source={require("./../../assets/images/hero.png")}
           width={"100%"}
@@ -35,6 +35,7 @@ export default function Welcome() {
               onPress={() => router.push("/(auth)/sign-up")}
               size="$5"
               bg="$green8Light"
+              color="$white1"
             >
               Empezar
             </Button>
