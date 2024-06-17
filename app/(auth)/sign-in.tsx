@@ -13,7 +13,6 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import { Text as T2 } from "react-native";
 import { useToastController } from "@tamagui/toast";
 import { supabase } from "@/utils/supabase";
 
@@ -29,7 +28,6 @@ export default function SignInScreen() {
 
     formState: { errors },
   } = useForm<FormData>();
-  const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const toast = useToastController();

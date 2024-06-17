@@ -1,4 +1,3 @@
-import LockIcon from "@/assets/svgs/avatar.svg";
 import NoDataAsset from "@/assets/svgs/no-data.svg";
 import Card from "@/components/dashboard/card";
 import BuyPremiumModal from "@/components/popups/buy-premium";
@@ -6,11 +5,20 @@ import { Expense } from "@/components/shared";
 import useAuth from "@/context/AuthContext";
 import { useExpenseContext } from "@/context/ExpenseContext";
 import { supabase } from "@/utils/supabase";
-
+import { Lock, Minimize2 } from "@tamagui/lucide-icons";
 import * as React from "react";
-import { Animated, FlatList, View } from "react-native";
+import { Animated, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, H3, H4, ScrollView, Text, XStack, YStack } from "tamagui";
+import {
+  Button,
+  H3,
+  H4,
+  ScrollView,
+  Text,
+  XStack,
+  YStack,
+  View,
+} from "tamagui";
 
 export default function Home() {
   const fadeAnim = React.useRef(new Animated.Value(1)).current;
@@ -69,25 +77,19 @@ export default function Home() {
     <>
       {showAll ? (
         <Animated.View style={{ opacity: fadeAnim }}>
-          <ScrollView className=" rounded-t-3xl ">
+          <ScrollView style={{ paddingTop: 14, paddingHorizontal: 16 }}>
             <SafeAreaView>
-              <YStack gap="$5" className="bg-background rounded-t-3xl ">
-                <XStack
-                  px={4}
-                  mt={4}
-                  className="items-center"
-                  justifyContent="space-between"
-                >
-                  <H3>Historial de Gastos</H3>
+              <YStack gap="$5">
+                <XStack justifyContent="space-between" alignItems="center">
+                  <H3>Gastos Recientes</H3>
 
                   <Button
                     onPress={() => {
                       setShowAll(false);
                     }}
                     chromeless
-                  >
-                    Ver Menos
-                  </Button>
+                    icon={Minimize2}
+                  />
                 </XStack>
                 <FlatList
                   data={expenses}
@@ -101,9 +103,18 @@ export default function Home() {
           </ScrollView>
         </Animated.View>
       ) : (
-        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <View>
-            <XStack justifyContent="space-between" mx={4}>
+        <>
+          <View
+            paddingTop="$10"
+            bg="$green8Light"
+            borderBottomStartRadius={14}
+            borderBottomEndRadius={14}
+          >
+            <XStack
+              style={{ paddingHorizontal: 16 }}
+              justifyContent="space-between"
+              mx={4}
+            >
               <YStack>
                 <Text>
                   {capitalizeFirstLetter(
@@ -121,27 +132,25 @@ export default function Home() {
                 setOpenModal={setShowBuyPremiumModal}
                 openModal={showBuyPremiumModal}
               />
-              <View>
-                <LockIcon
-                  onPress={() => {
-                    setShowBuyPremiumModal(true);
-                  }}
-                  width={36}
-                  height={36}
-                />
-              </View>
+              <Button
+                onPress={() => {
+                  setShowBuyPremiumModal(true);
+                }}
+                unstyled
+                icon={<Lock size="$2" />}
+              />
             </XStack>
 
-            <View style={{ height: 200, zIndex: 10 }} />
+            <View style={{ height: 150 }} />
+
             <Card />
           </View>
-          <ScrollView className=" rounded-t-3xl  ">
-            <YStack gap="$2">
+          <ScrollView style={{ paddingHorizontal: 16, zIndex: -10 }}>
+            <YStack gap="$4">
               <XStack
-                px={4}
-                marginTop={110}
-                className="items-center"
+                paddingTop="$13"
                 justifyContent="space-between"
+                alignItems="center"
               >
                 <H4>Historial de Gastos</H4>
 
@@ -155,21 +164,13 @@ export default function Home() {
                 </Button>
               </XStack>
               {expenses && expenses.length === 0 && (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginVertical: 10,
-                  }}
-                >
+                <YStack justifyContent="center" alignItems="center" gap="$3">
                   <NoDataAsset width={200} height={200} />
-                  <Text className="text-zinc-400 mt-5 text-center text-sm px-10">
+                  <Text textAlign="center">
                     Parece que no tienes gastos registrados, haz click en el
                     icono + para agregar uno.
                   </Text>
-                </View>
+                </YStack>
               )}
 
               <FlatList
@@ -181,7 +182,7 @@ export default function Home() {
               />
             </YStack>
           </ScrollView>
-        </SafeAreaView>
+        </>
       )}
     </>
   );

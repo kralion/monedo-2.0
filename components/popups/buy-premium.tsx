@@ -19,7 +19,7 @@ export default function BuyPremiumModal({
         <Dialog.Overlay
           key="overlay"
           animation="slow"
-          opacity={0.7}
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -36,18 +36,8 @@ export default function BuyPremiumModal({
               },
             },
           ]}
-          enterStyle={{
-            x: 0,
-            y: -20,
-            opacity: 0,
-            scale: 0.9,
-          }}
-          exitStyle={{
-            x: 0,
-            y: 10,
-            opacity: 0,
-            scale: 0.95,
-          }}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
           <LinearGradient
@@ -70,7 +60,7 @@ export default function BuyPremiumModal({
               <BuyPremiumAsset width={200} height={220} />
               <H3>Desbloquea Ahora</H3>
               <Text textAlign="center">
-                Con el plan <Text className="font-bold">Premium</Text> podrás
+                Con el plan <Text fontWeight="bold">Premium</Text> podrás
                 acceder a funcionalidades exclusivas.
               </Text>
               <Text textAlign="center" fontStyle="italic">
@@ -82,12 +72,14 @@ export default function BuyPremiumModal({
               <Link href="/(modals)/buy-premium" asChild>
                 <Button
                   mt="$5"
-                  height={12}
+                  size="$5"
+                  bg="$green8Light"
+                  color="$white1"
                   onPress={() => {
                     setOpenModal(false), router.push("/(modals)/buy-premium");
                   }}
                 >
-                  <Text className="font-semibold  ">Adquiere Premium</Text>
+                  Adquiere Premium
                 </Button>
               </Link>
             </YStack>

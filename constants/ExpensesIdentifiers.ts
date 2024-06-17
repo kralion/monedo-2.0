@@ -32,6 +32,10 @@ export const expensesIdentifiers: expenseIcon[] = [
     iconHref: "https://img.icons8.com/?size=80&id=S8xAiqv9WRp0&format=png",
   },
   {
+    label: "Ropa",
+    iconHref: "https://img.icons8.com/?size=80&id=S8xAiqv9WRp0&format=png",
+  },
+  {
     label: "Casuales",
     iconHref: "https://img.icons8.com/?size=160&id=MjAYkOMsbYOO&format=png",
   },

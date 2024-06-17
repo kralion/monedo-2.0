@@ -20,6 +20,9 @@ export function Expense({ expense }: { expense: IGasto }) {
       onPress={() => {
         router.push(`/expenses/${id}`);
       }}
+      bordered
+      borderRadius={18}
+      mb={7}
       pressTheme
       title={categoria}
       icon={
@@ -32,7 +35,11 @@ export function Expense({ expense }: { expense: IGasto }) {
         />
       }
       subTitle={formattedDate}
-      iconAfter={<Text color="$red10">- S/. {monto}</Text>}
+      iconAfter={
+        <Text fontSize="$6" fontWeight="bold" color="$red10">
+          - S/. {monto}
+        </Text>
+      }
     />
   );
 }
