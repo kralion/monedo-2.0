@@ -13,6 +13,12 @@ export function Budget({ budget }: { budget: IBudget }) {
         setOpenBudgetDetails(true);
       }}
       pressTheme
+      pressStyle={{
+        opacity: 0.8,
+      }}
+      bordered
+      borderRadius={18}
+      mb={7}
       title={
         <YStack>
           <Text fontWeight="bold">Presupuesto </Text>
@@ -24,6 +30,7 @@ export function Budget({ budget }: { budget: IBudget }) {
           source={{
             uri: "https://img.icons8.com/?size=48&id=ek6vl8DEBehk&format=png",
           }}
+          
           style={{
             width: 40,
             height: 40,

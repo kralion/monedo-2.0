@@ -1,5 +1,4 @@
-import { useExpenseContext } from "@/context/ExpenseContext";
-import useAuth from "@/context/AuthContext";
+import { useExpenseContext, useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
 import * as React from "react";
 import { Alert, Pressable, StyleSheet, View } from "react-native";

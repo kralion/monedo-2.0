@@ -8,11 +8,21 @@ import { useState } from "react";
 import { Animated, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Chart from "@/components/estadisticas/chart";
-import { Button, XStack, YStack, Text } from "tamagui";
+import { Button, XStack, YStack, Text, H2, H4, Adapt } from "tamagui";
 import { Select } from "tamagui";
-import { Check } from "@tamagui/lucide-icons";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  FileLineChart,
+} from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
-
+import { Sheet } from "tamagui";
+const items = [
+  { name: "Top Gastos" },
+  { name: "Periódicos" },
+  { name: "Recientes" },
+];
 export default function Statistics() {
   const [queryType, setQueryType] = useState("recientes");
   const [timelineQuery, setTimelineQuery] = useState("semanal");
@@ -53,10 +63,10 @@ export default function Statistics() {
   return (
     <>
       {showAll ? (
-        <Animated.View style={{ opacity: fadeAnim, backgroundColor: "white" }}>
-          <SafeAreaView>
-            <XStack space={4} justifyContent="space-between" px={4} my={7}>
-              <Text className="text-xl text-muted font-semibold">
+        <Animated.View style={{ opacity: fadeAnim }}>
+          <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+            <XStack justifyContent="space-between">
+              <Text>
                 {queryType === "recientes"
                   ? "Recientes"
                   : queryType === "top-gastos"
@@ -68,11 +78,7 @@ export default function Statistics() {
                   setShowAll(false);
                 }}
               >
-                <MaterialCommunityIcons
-                  name="arrow-collapse"
-                  size={24}
-                  color="black"
-                />
+                <MaterialCommunityIcons name="arrow-collapse" size={24} />
               </TouchableOpacity>
             </XStack>
             <FlashList
@@ -83,14 +89,12 @@ export default function Statistics() {
           </SafeAreaView>
         </Animated.View>
       ) : (
-        <SafeAreaView style={{ backgroundColor: "white" }}>
-          <YStack space={4}>
-            <Text className="font-bold text-center text-2xl">Estadísticas</Text>
-            <XStack space={1.5} mx={1.5}>
+        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+          <YStack gap="$4">
+            <H2>Estadísticas</H2>
+            <XStack gap="$2">
               <Button
                 variant="outlined"
-                className="py-2.5 w-[90px]"
-                borderRadius={10}
                 onPress={() => setTimelineQuery("hoy")}
               >
                 Hoy
@@ -118,61 +122,90 @@ export default function Statistics() {
             <XStack alignItems="center" justifyContent="space-between">
               <Link asChild href="/(modals)/export-data">
                 <Button
-                  icon={
-                    <Image
-                      style={{ width: 16, height: 16, tintColor: "#ffff" }}
-                      source={{
-                        uri: "https://api.iconify.design/mingcute:file-export-line.svg",
-                      }}
-                      alt="exportar"
-                    />
-                  }
-                  borderRadius={10}
+                  bg="$green8Light"
+                  color="$white1"
+                  href="/(modals)/export-data"
+                  icon={FileLineChart}
                 >
                   Exportar
                 </Button>
               </Link>
-              <Select>
-                <Select.Viewport
-                  animation="quick"
-                  animateOnly={["transform", "opacity"]}
-                  enterStyle={{ o: 0, y: -10 }}
-                  exitStyle={{ o: 0, y: 10 }}
-                  minWidth={200}
-                >
-                  <Select.Group>
-                    <Select.Label>Fruits</Select.Label>
+              <YStack>
+                <Select disablePreventBodyScroll>
+                  <Select.Trigger iconAfter={ChevronDown}>
+                    <Select.Value placeholder="Selecciona" />
+                  </Select.Trigger>
 
-                    <Select.Item index={0} value="top-gastos">
-                      <Select.ItemText>Top Gastos</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                    <Select.Item index={1} value="periódicos">
-                      <Select.ItemText>Periódicos</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                    <Select.Item index={2} value="recientes">
-                      <Select.ItemText>Recientes</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  </Select.Group>
-                </Select.Viewport>
-              </Select>
+                  <Adapt when="sm" platform="touch">
+                    <Sheet modal dismissOnSnapToBottom>
+                      <Sheet.Frame>
+                        <Sheet.ScrollView>
+                          <Adapt.Contents />
+                        </Sheet.ScrollView>
+                      </Sheet.Frame>
+                      <Sheet.Overlay />
+                    </Sheet>
+                  </Adapt>
+
+                  <Select.Content zIndex={200000}>
+                    <Select.ScrollUpButton
+                      alignItems="center"
+                      justifyContent="center"
+                      position="relative"
+                      width="100%"
+                      height="$3"
+                    >
+                      <YStack zIndex={10}>
+                        <ChevronUp size={20} />
+                      </YStack>
+                    </Select.ScrollUpButton>
+
+                    <Select.Viewport>
+                      <Select.Group>
+                        {React.useMemo(
+                          () =>
+                            items.map((item, i) => {
+                              return (
+                                <Select.Item
+                                  index={i}
+                                  key={item.name}
+                                  value={item.name.toLowerCase()}
+                                >
+                                  <Select.ItemText>{item.name}</Select.ItemText>
+                                  <Select.ItemIndicator marginLeft="auto">
+                                    <Check size={16} />
+                                  </Select.ItemIndicator>
+                                </Select.Item>
+                              );
+                            }),
+                          [items]
+                        )}
+                      </Select.Group>
+                    </Select.Viewport>
+
+                    <Select.ScrollDownButton
+                      alignItems="center"
+                      justifyContent="center"
+                      position="relative"
+                      width="100%"
+                      height="$3"
+                    >
+                      <YStack zIndex={10}>
+                        <ChevronDown size={20} />
+                      </YStack>
+                    </Select.ScrollDownButton>
+                  </Select.Content>
+                </Select>
+              </YStack>
             </XStack>
-            <XStack space={4} justifyContent="space-between" px={4}>
-              <Text className="text-xl text-muted font-semibold">
+            <XStack justifyContent="space-between">
+              <H4>
                 {queryType === "recientes"
                   ? "Recientes"
                   : queryType === "top-gastos"
                   ? "Top Gastos"
                   : "Periódicos"}
-              </Text>
+              </H4>
               <TouchableOpacity
                 onPress={() => {
                   setShowAll(true);
@@ -187,7 +220,9 @@ export default function Statistics() {
             </XStack>
             <FlashList
               data={expenses}
-              renderItem={({ item: expense }) => <Expense expense={expense} />}
+              renderItem={({ item: expense }) => {
+                return <Expense expense={expense} />;
+              }}
               estimatedItemSize={16}
             />
           </YStack>

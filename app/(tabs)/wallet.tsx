@@ -1,33 +1,41 @@
 import { SavingGoalModal } from "@/components/popups/save-goals";
-import { useAuth, useBudgetContext, useGoalsContext } from "@/context";
-import { useToastController } from "@tamagui/toast";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { Budget } from "@/components/wallet/budget";
+import { useAuth, useBudgetContext, useGoalsContext } from "@/context";
 import { IBudget } from "@/interfaces";
 import { FlashList } from "@shopify/flash-list";
+import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
+import { useToastController } from "@tamagui/toast";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
+  Adapt,
   Button,
-  H3,
+  H2,
+  H4,
   Input,
   Label,
   ScrollView,
+  Select,
+  Sheet,
   Spinner,
   Text,
   YStack,
 } from "tamagui";
+interface Item extends IBudget {
+  duration: string;
+}
 
 export default function Wallet() {
   const [showSavingGoalModal, setShowSavingGoalModal] = useState(false);
-  const { getRecentGoals } = useGoalsContext();
-  const { budgets, addBudget } = useBudgetContext();
+  const { budgets, addBudget, getRecentBudgets } = useBudgetContext();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IBudget>();
+  } = useForm<Item>();
 
   const [isLoading, setIsLoading] = useState(false);
   const { userData } = useAuth();
@@ -46,64 +54,156 @@ export default function Wallet() {
 
   useEffect(() => {
     if (userData) {
-      getRecentGoals();
+      getRecentBudgets(userData.id);
     }
-  }, [userData, getRecentGoals]);
+  }, [userData, getRecentBudgets]);
+
+  const items = [
+    { label: "Mensual", value: "monthly" },
+    { label: "Semanal", value: "weekly" },
+    { label: "Trimestral", value: "quarterly" },
+  ];
 
   return (
     <ScrollView background="white">
-      <SafeAreaView>
-        <YStack gap="$2">
-          <H3>Prespuestos</H3>
-          <Text>Gestiona y visualiza tus presupuestos mensuales</Text>
-        </YStack>
-        <YStack gap="$5" mt={5}>
-          <YStack>
-            <Label>Monto</Label>
+      <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+        <YStack gap="$5">
+          <YStack gap="$2">
+            <H2>Presupuestos</H2>
+            <Text>Gestiona y visualiza tus presupuestos mensuales</Text>
+          </YStack>
+          <YStack gap="$4" mt={5}>
+            <YStack>
+              <Label>Monto</Label>
 
+              <Controller
+                control={control}
+                name="monto"
+                render={({ ...field }) => (
+                  <Input
+                    size="lg"
+                    inputMode="decimal"
+                    placeholder="65.00"
+                    {...field}
+                    borderRadius={7}
+                  />
+                )}
+                rules={{
+                  required: { value: true, message: "Ingrese el monto" },
+                  pattern: {
+                    value: /^\d+(\.\d*)?$/,
+                    message: "Solo se permiten números válidos",
+                  },
+                }}
+              />
+            </YStack>
             <Controller
+              name="duration"
               control={control}
-              name="monto"
-              render={({ ...field }) => (
-                <Input
-                  size="lg"
-                  inputMode="decimal"
-                  placeholder="65.00"
-                  {...field}
-                  borderRadius={7}
-                />
+              render={({ field: { onChange, value } }) => (
+                <YStack>
+                  <Label>Duración</Label>
+                  <Select
+                    value={value}
+                    onValueChange={onChange}
+                    disablePreventBodyScroll
+                  >
+                    <Select.Trigger iconAfter={ChevronDown}>
+                      <Select.Value placeholder="Selecciona" />
+                    </Select.Trigger>
+
+                    <Adapt when="sm" platform="touch">
+                      <Sheet modal dismissOnSnapToBottom>
+                        <Sheet.Frame>
+                          <Sheet.ScrollView>
+                            <Adapt.Contents />
+                          </Sheet.ScrollView>
+                        </Sheet.Frame>
+                        <Sheet.Overlay />
+                      </Sheet>
+                    </Adapt>
+
+                    <Select.Content zIndex={200000}>
+                      <Select.ScrollUpButton
+                        alignItems="center"
+                        justifyContent="center"
+                        position="relative"
+                        width="100%"
+                        height="$3"
+                      >
+                        <YStack zIndex={10}>
+                          <ChevronUp size={20} />
+                        </YStack>
+                      </Select.ScrollUpButton>
+
+                      <Select.Viewport>
+                        <Select.Group>
+                          {useMemo(
+                            () =>
+                              items.map((item, i) => {
+                                return (
+                                  <Select.Item
+                                    index={i}
+                                    key={item.value}
+                                    value={item.value}
+                                  >
+                                    <Select.ItemText>
+                                      {item.label}
+                                    </Select.ItemText>
+                                    <Select.ItemIndicator marginLeft="auto">
+                                      <Check size={16} />
+                                    </Select.ItemIndicator>
+                                  </Select.Item>
+                                );
+                              }),
+                            [items]
+                          )}
+                        </Select.Group>
+                      </Select.Viewport>
+
+                      <Select.ScrollDownButton
+                        alignItems="center"
+                        justifyContent="center"
+                        position="relative"
+                        width="100%"
+                        height="$3"
+                      >
+                        <YStack zIndex={10}>
+                          <ChevronDown size={20} />
+                        </YStack>
+                      </Select.ScrollDownButton>
+                    </Select.Content>
+                  </Select>
+                </YStack>
               )}
-              rules={{
-                required: { value: true, message: "Ingrese el monto" },
-                pattern: {
-                  value: /^\d+(\.\d*)?$/,
-                  message: "Solo se permiten números válidos",
-                },
-              }}
             />
           </YStack>
-        </YStack>
 
-        <Button
-          onPress={handleSubmit(onSubmit)}
-          size="$5"
-          bg="$green8Light"
-          color="$white1"
-        >
-          {isLoading ? <Spinner size="small" color="$white1" /> : "Registrar"}
-        </Button>
-        <SavingGoalModal
-          openModal={showSavingGoalModal}
-          setOpenModal={setShowSavingGoalModal}
-        />
-        <Text className="font-bold text-left mb-5 text-2xl">
-          Historial de Metas
-        </Text>
-        <FlashList
-          data={budgets}
-          estimatedItemSize={16}
-          renderItem={({ item: metas }) => <Budget budget={metas} />}
-        />
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            size="$5"
+            bg="$green8Light"
+            color="$white1"
+          >
+            {isLoading ? <Spinner size="small" color="$white1" /> : "Registrar"}
+          </Button>
+
+          <SavingGoalModal
+            openModal={showSavingGoalModal}
+            setOpenModal={setShowSavingGoalModal}
+          />
+          <H4>Historial de Metas</H4>
+
+          <View>
+            <FlashList
+              data={budgets}
+              estimatedItemSize={20}
+              renderItem={({ item: budget }) => {
+                return <Budget budget={budget} />;
+              }}
+            />
+          </View>
+        </YStack>
       </SafeAreaView>
     </ScrollView>
   );

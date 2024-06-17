@@ -1,5 +1,4 @@
-import useAuth from "@/context/AuthContext";
-import { useExpenseContext } from "@/context/ExpenseContext";
+import { useExpenseContext, useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
 import { Entypo } from "@expo/vector-icons";
 import { useToastController } from "@tamagui/toast";

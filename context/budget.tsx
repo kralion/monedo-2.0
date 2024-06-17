@@ -8,7 +8,7 @@ export const BudgetContext = createContext<IBudgetContextProvider>({
   addBudget: async () => {},
   updateBudget: async () => {},
   deleteBudget: async () => {},
-  getRecentBudgets: async () => [],
+  getRecentBudgets: async (id: string) => [],
   budgets: [],
 });
 
@@ -32,13 +32,13 @@ export const BudgetContextProvider = ({
     await supabase.from("presupuestos").delete().eq("id", id);
   };
 
-  async function getRecentBudgets() {
+  async function getRecentBudgets(id: string) {
     const { data, error } = await supabase
       .from("prespuestos")
       .select("*")
-      .eq("usuario_id", userData.id)
-      .order("fecha_registro", { ascending: false })
-      .limit(3);
+      .eq("usuario_id", id)
+      .order("fecha_registro", { ascending: false });
+    // .limit(3);
     if (!data) return [];
     setBudgets(JSON.parse(JSON.stringify(data)));
     if (error) console.log(error);

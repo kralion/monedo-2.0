@@ -26,7 +26,6 @@ export function Expense({ expense }: { expense: IGasto }) {
       bordered
       borderRadius={18}
       mb={7}
-      pressTheme
       title={categoria}
       icon={
         <Image

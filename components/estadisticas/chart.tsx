@@ -1,5 +1,5 @@
 import NoDataAsset from "@/assets/svgs/no-data.svg";
-import { IGasto } from "@/interfaces";
+import { useAuth, useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
 import { useToastController } from "@tamagui/toast";
 import {
@@ -15,7 +15,7 @@ import {
   startOfYear,
 } from "date-fns";
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { Text, YStack } from "tamagui";
 
@@ -56,19 +56,14 @@ async function getExpensesDataByTimelineQuery(timelineQuery: string) {
 
 export default function Chart({ timelineQuery }: { timelineQuery: string }) {
   const screenWidth = Dimensions.get("window").width;
-  const [expensesData, setExpensesData] = React.useState<IGasto[]>([]);
   const toast = useToastController();
-  const fetchExpensesData = async () => {
-    try {
-      const data = await getExpensesDataByTimelineQuery(timelineQuery);
-      setExpensesData(data);
-    } catch (error) {
-      toast.show("Error al obtener los datos de la base de datos");
-    }
-  };
+  const { userData } = useAuth();
+  const { expenses, getExpensesByUser } = useExpenseContext();
   React.useEffect(() => {
-    fetchExpensesData();
-  }, [getExpensesDataByTimelineQuery, timelineQuery, toast]);
+    if (userData) {
+      getExpensesByUser(userData.id);
+    }
+  }, [userData, getExpensesByUser]);
   let labels;
   switch (timelineQuery) {
     case "hoy":
@@ -85,22 +80,22 @@ export default function Chart({ timelineQuery }: { timelineQuery: string }) {
       break;
 
     default:
-      labels = expensesData.map((expense) => {
+      labels = expenses.map((expense) => {
         const date = parseISO(expense.fecha);
         return format(date, "MMMM"); // e.g., May
       });
       break;
   }
 
-  const data = expensesData.map((expense) => {
+  const data = expenses.map((expense) => {
     const monto = isFinite(expense.monto) ? expense.monto : 0;
     return monto;
   });
   if (data.length === 0) {
     return (
-      <YStack my="$5" className="flex flex-col items-center justify-center">
+      <YStack gap="$4" justifyContent="center" alignItems="center">
         <NoDataAsset width={200} height={200} />
-        <Text>
+        <Text textAlign="center" px="$5">
           Aún no tienes gastos registrados para este nivel de periodicidad
         </Text>
       </YStack>
@@ -108,39 +103,40 @@ export default function Chart({ timelineQuery }: { timelineQuery: string }) {
   }
 
   return (
-    <View>
-      <LineChart
-        data={{
-          labels: labels,
-          datasets: [
-            {
-              data: data,
-            },
-          ],
-        }}
-        width={screenWidth}
-        height={300}
-        yAxisInterval={1}
-        chartConfig={{
-          backgroundGradientFrom: "#FFFFFF",
-          backgroundGradientTo: "#FFFFFF",
-          decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(54, 137, 131, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(109, 104, 104, ${opacity})`,
-          strokeWidth: 4,
-          propsForBackgroundLines: {
-            opacity: 0.1,
+    <LineChart
+      data={{
+        labels: labels,
+        datasets: [
+          {
+            data: data,
           },
+        ],
+      }}
+      width={400}
+      height={300}
+      yAxisInterval={1}
+      chartConfig={{
+        backgroundColor: "#e26a00",
+        backgroundGradientFrom: "#73B78F",
+        backgroundGradientTo: "#73B78F",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientToOpacity: 0,
+        decimalPlaces: 0,
+        color: (opacity = 1) => `rgba(54, 137, 131, ${opacity})`,
+        labelColor: (opacity = 1) => `rgba(109, 104, 104, ${opacity})`,
+        strokeWidth: 4,
+        propsForBackgroundLines: {
+          opacity: 0.1,
+        },
 
-          propsForDots: {
-            r: "4",
-            strokeWidth: 0,
-            stroke: "#FEFED5",
-            fill: "#368983",
-          },
-        }}
-        bezier
-      />
-    </View>
+        propsForDots: {
+          r: "4",
+          strokeWidth: 0,
+          stroke: "#FEFED5",
+          fill: "#368983",
+        },
+      }}
+      bezier
+    />
   );
 }
