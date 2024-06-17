@@ -46,16 +46,15 @@ export default function BuyPremiumModal({
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
+            <Button
+              position="absolute"
+              top="$3"
+              right="$3"
+              size="$2"
+              circular
+              onPress={() => setOpenModal(false)}
+              icon={X}
+            />
             <YStack gap="$4" alignItems="center">
               <BuyPremiumAsset width={200} height={220} />
               <H3>Desbloquea Ahora</H3>

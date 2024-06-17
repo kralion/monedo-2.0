@@ -4,7 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Check } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -88,120 +88,67 @@ export default function SignUpScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView>
-        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <YStack gap="$4" className="flex items-start">
-            <YStack gap="$1">
-              <H2>Crea una cuenta</H2>
-              <XStack gap="$1.5" alignItems="center">
-                <Text>Ya tienes una cuenta?</Text>
+      <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+        <YStack gap="$4" className="flex items-start">
+          <YStack gap="$1">
+            <H2>Crea una cuenta</H2>
+            <XStack gap="$1.5" alignItems="center">
+              <Text>Ya tienes una cuenta?</Text>
 
-                <Text
-                  onPress={() => router.push("/(auth)/sign-in")}
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  Inicia Sesión
-                </Text>
-              </XStack>
-            </YStack>
-            <YStack justifyContent="center" gap="$4">
-              <XStack gap="$4">
-                <Button flex={1}>
-                  <FontAwesome5 size={24} color="white" name="apple" />
-                </Button>
-                <Button flex={1}>
-                  <FontAwesome5 size={24} color="white" name="facebook" />
-                </Button>
-                <Button flex={1} borderWidth={0.2}>
-                  <Image
-                    style={{ width: 24, height: 24 }}
-                    source={{
-                      uri: "https://img.icons8.com/?size=96&id=17949&format=png",
-                    }}
-                    alt="google"
-                  />
-                </Button>
-              </XStack>
-              <XStack gap="$2" alignItems="center">
-                <Separator flex={1} />
-                <Text>o</Text>
-                <Separator flex={1} />
-              </XStack>
-
-              <XStack gap="$4">
-                <Controller
-                  name="nombres"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "Requerido",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z\s]*$/,
-                      message: "Solo puede contener letras",
-                    },
+              <Text
+                onPress={() => router.push("/(auth)/sign-in")}
+                color="$green8Light"
+                pressStyle={{ textDecorationLine: "underline" }}
+              >
+                Inicia Sesión
+              </Text>
+            </XStack>
+          </YStack>
+          <YStack justifyContent="center" gap="$4">
+            <XStack gap="$4">
+              <Button bg="$black5" flex={1}>
+                <FontAwesome5 size={24} color="white" name="apple" />
+              </Button>
+              <Button bg="$blue10" flex={1}>
+                <FontAwesome5 size={24} color="white" name="facebook" />
+              </Button>
+              <Button bg="$white1" flex={1} borderWidth={0.2}>
+                <Image
+                  style={{ width: 24, height: 24 }}
+                  source={{
+                    uri: "https://img.icons8.com/?size=96&id=17949&format=png",
                   }}
-                  render={({ field: { onChange, value } }) => (
-                    <Input
-                      size="$5"
-                      width={"48%"}
-                      borderRadius={7}
-                      py={3}
-                      placeholder="Nombres"
-                      value={value}
-                      onChangeText={(value) => onChange(value)}
-                    />
-                  )}
+                  alt="google"
                 />
+              </Button>
+            </XStack>
+            <XStack gap="$2" alignItems="center">
+              <Separator flex={1} borderColor="$gray5" />
+              <Text>o</Text>
+              <Separator flex={1} borderColor="$gray5" />
+            </XStack>
 
-                <Controller
-                  name="apellidos"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "Requerido",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z\s]*$/,
-                      message: "Solo puede contener letras",
-                    },
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <Input
-                      size="$5"
-                      borderRadius={7}
-                      width={"47%"}
-                      py={3}
-                      placeholder="Apellidos"
-                      value={value}
-                      onChangeText={(value) => onChange(value)}
-                    />
-                  )}
-                />
-              </XStack>
+            <XStack gap="$4">
               <Controller
-                name="email"
+                name="nombres"
                 control={control}
                 rules={{
                   required: {
                     value: true,
-                    message: "Email es requerido",
+                    message: "Requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                    message: "Email no es válido",
+                    value: /^[a-zA-Z\s]*$/,
+                    message: "Solo puede contener letras",
                   },
                 }}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     size="$5"
-                    autoCapitalize="none"
+                    width={"48%"}
                     borderRadius={7}
                     py={3}
-                    placeholder="Email"
+                    placeholder="Nombres"
                     value={value}
                     onChangeText={(value) => onChange(value)}
                   />
@@ -209,87 +156,163 @@ export default function SignUpScreen() {
               />
 
               <Controller
-                name="password"
+                name="apellidos"
                 control={control}
                 rules={{
                   required: {
                     value: true,
-                    message: "Contraseña es requerida",
+                    message: "Requerido",
                   },
-                  minLength: {
-                    value: 8,
-                    message: "Contraseña debe tener al menos 8 caracteres",
+                  pattern: {
+                    value: /^[a-zA-Z\s]*$/,
+                    message: "Solo puede contener letras",
                   },
                 }}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     size="$5"
                     borderRadius={7}
+                    width={"47%"}
                     py={3}
-                    placeholder="Contraseña"
+                    placeholder="Apellidos"
                     value={value}
                     onChangeText={(value) => onChange(value)}
-                    secureTextEntry
-                    passwordRules={
-                      "minlength: 8; required: lower; required: upper; required: digit; required: [-];"
-                    }
                   />
                 )}
               />
-            </YStack>
-            <YStack gap="$4">
-              <XStack mt={4}>
-                <Controller
-                  control={control}
-                  name="termsAndConditions"
-                  defaultValue={false}
-                  rules={{
-                    required: {
-                      value: true,
-                      message:
-                        "Debe aceptar los Términos y Condiciones para continuar",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <XStack gap="$2" alignItems="center">
-                      <Checkbox
-                        className="border"
-                        value={field.value.toString()}
-                      >
-                        <Checkbox.Indicator>
-                          <Check />
-                        </Checkbox.Indicator>
-                      </Checkbox>
-                      <Label>Acepto los Términos y Condiciones</Label>
-                    </XStack>
-                  )}
+            </XStack>
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Email es requerido",
+                },
+                pattern: {
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  message: "Email no es válido",
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  size="$5"
+                  autoCapitalize="none"
+                  borderRadius={7}
+                  py={3}
+                  placeholder="Email"
+                  value={value}
+                  onChangeText={(value) => onChange(value)}
                 />
-              </XStack>
-              <Button
-                // onPress={handleSubmit(signUpWithEmail)}
-                size="$5"
-                bg="$green8Light"
-                color="$white1"
-              >
-                Regístrate
-              </Button>
+              )}
+            />
 
-              <Paragraph size="$2">
-                Al continuar aceptas los{" "}
-                <TermsPolicyModal
-                  openModal={showTCModal}
-                  setOpenModal={setShowTCModal}
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Contraseña es requerida",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Contraseña debe tener al menos 8 caracteres",
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  size="$5"
+                  borderRadius={7}
+                  py={3}
+                  placeholder="Contraseña"
+                  value={value}
+                  onChangeText={(value) => onChange(value)}
+                  secureTextEntry
+                  passwordRules={
+                    "minlength: 8; required: lower; required: upper; required: digit; required: [-];"
+                  }
                 />
-                , en estos se describen como usamos tus datos y como protegemos
-                tu privacidad.
-              </Paragraph>
-            </YStack>
-            <Text textAlign="center" fontSize="$2" mt="$12">
-              Copyright © Brayan & Miguel - 2024
-            </Text>
+              )}
+            />
           </YStack>
-        </SafeAreaView>
-      </ScrollView>
+          <YStack gap="$4">
+            <XStack mt={4}>
+              <Controller
+                control={control}
+                name="termsAndConditions"
+                defaultValue={false}
+                rules={{
+                  required: {
+                    value: true,
+                    message:
+                      "Debe aceptar los Términos y Condiciones para continuar",
+                  },
+                }}
+                render={({ field }) => (
+                  <XStack gap="$2" alignItems="center">
+                    <Checkbox className="border" value={field.value.toString()}>
+                      <Checkbox.Indicator>
+                        <Check />
+                      </Checkbox.Indicator>
+                    </Checkbox>
+                    <Label>Acepto los Términos y Condiciones</Label>
+                  </XStack>
+                )}
+              />
+            </XStack>
+            <Button
+              // onPress={handleSubmit(signUpWithEmail)}
+              size="$5"
+              bg="$green8Light"
+              color="$white1"
+            >
+              Regístrate
+            </Button>
+
+            <Paragraph size="$2">
+              Al continuar aceptas los{" "}
+              <Text
+                color="$green8Light"
+                style={{
+                  textDecorationLine: "underline",
+                }}
+                pressStyle={{
+                  opacity: 0.5,
+                }}
+                onPress={() => setShowTCModal(true)}
+              >
+                Términos y Condiciones{" "}
+              </Text>
+              , en estos se describen como usamos tus datos y como protegemos tu
+              privacidad.
+            </Paragraph>
+          </YStack>
+          <XStack mt="$12" alignItems="center" justifyContent="center">
+            <Text fontSize="$2">Copyright © 2024 </Text>
+            <Text
+              fontSize="$2"
+              color="$green8Light"
+              pressStyle={{ textDecorationLine: "underline" }}
+            >
+              <Link href="https://x.com/brayanpaucar_">Brayan</Link>
+            </Text>
+
+            <Text fontSize="$2"> & </Text>
+            <Text
+              fontSize="$2"
+              color="$green8Light"
+              pressStyle={{ textDecorationLine: "underline" }}
+            >
+              <Link href="https://x.com/MiguelParis11">Miguel</Link>
+            </Text>
+          </XStack>
+        </YStack>
+        <TermsPolicyModal
+          openModal={showTCModal}
+          setOpenModal={setShowTCModal}
+        />
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }

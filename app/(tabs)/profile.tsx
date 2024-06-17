@@ -85,26 +85,6 @@ export default function App() {
           Salir
         </Button>
       </YStack>
-
-      <XStack mt="$16" gap="$1.5" alignItems="center" justifyContent="center">
-        <Text>Desarrollado por</Text>
-
-        <Text
-          color="$green8Light"
-          pressStyle={{ textDecorationLine: "underline" }}
-          href="https://www.facebook.com/miguelangel.requenaramos.94"
-        >
-          Brayan
-        </Text>
-        <Text>&</Text>
-        <Text
-          color="$green8Light"
-          pressStyle={{ textDecorationLine: "underline" }}
-          href="https://www.facebook.com/miguelangel.requenaramos.94"
-        >
-          Miguel
-        </Text>
-      </XStack>
     </SafeAreaView>
   );
 }
