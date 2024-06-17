@@ -117,7 +117,11 @@ export default function Card() {
               setShowModal={setShowModal}
               showModal={showModal}
             />
-            <Button bg={userData.rol === "premium" ? "$yellow10" : "$orange10"}>
+            <Button
+              size="$2.5"
+              borderRadius="$7"
+              bg={userData.rol === "premium" ? "$yellow10" : "$orange10"}
+            >
               <Text color="$white1">
                 {userData.rol === "premium" ? "Premium" : "Plan Free"}
               </Text>

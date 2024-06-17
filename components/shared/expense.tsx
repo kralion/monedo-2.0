@@ -20,6 +20,9 @@ export function Expense({ expense }: { expense: IGasto }) {
       onPress={() => {
         router.push(`/expenses/${id}`);
       }}
+      pressStyle={{
+        opacity: 0.8,
+      }}
       bordered
       borderRadius={18}
       mb={7}

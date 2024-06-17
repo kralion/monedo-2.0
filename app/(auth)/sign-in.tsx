@@ -9,6 +9,7 @@ import {
   Input,
   ScrollView,
   Separator,
+  Spinner,
   Text,
   XStack,
   YStack,
@@ -112,7 +113,7 @@ export default function SignInScreen() {
               bg="$green8Light"
               color="$white1"
             >
-              Ingresar
+              {loading ? <Spinner size="small" /> : "Ingresar"}
             </Button>
 
             <XStack gap="$2" alignItems="center">

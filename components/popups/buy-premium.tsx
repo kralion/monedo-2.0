@@ -18,13 +18,15 @@ export default function BuyPremiumModal({
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="slow"
-          opacity={0.5}
+          animation="quick"
+          opacity={1}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <Dialog.Content
-          bordered
+          width={"90%"}
+          p={0}
+          borderRadius={20}
           elevate
           key="content"
           animateOnly={["transform", "opacity"]}
@@ -41,20 +43,16 @@ export default function BuyPremiumModal({
           gap="$4"
         >
           <LinearGradient
-            style={{ borderRadius: 20, padding: 10, shadowRadius: 10 }}
+            style={{
+              borderRadius: 20,
+              padding: 10,
+              shadowRadius: 10,
+              paddingHorizontal: 12,
+            }}
             colors={["#10828d", "#a3e062"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Button
-              position="absolute"
-              top="$3"
-              right="$3"
-              size="$2"
-              circular
-              onPress={() => setOpenModal(false)}
-              icon={X}
-            />
             <YStack gap="$4" alignItems="center">
               <BuyPremiumAsset width={200} height={220} />
               <H3>Desbloquea Ahora</H3>
@@ -63,7 +61,8 @@ export default function BuyPremiumModal({
                 acceder a funcionalidades exclusivas.
               </Text>
               <Text textAlign="center" fontStyle="italic">
-                ¡Mejora tu experiencia hoy! y sácale el máximo provecho a la app
+                ¡Mejora tu experiencia hoy! y sácale el máximo provecho a{" "}
+                <Text fontWeight="bold">Monedo</Text>
                 🚀
               </Text>
             </YStack>
@@ -72,8 +71,6 @@ export default function BuyPremiumModal({
                 <Button
                   mt="$5"
                   size="$5"
-                  bg="$green8Light"
-                  color="$white1"
                   onPress={() => {
                     setOpenModal(false), router.push("/(modals)/buy-premium");
                   }}
@@ -83,6 +80,15 @@ export default function BuyPremiumModal({
               </Link>
             </YStack>
           </LinearGradient>
+          <Button
+            position="absolute"
+            top="$3"
+            right="$3"
+            size="$2"
+            circular
+            onPress={() => setOpenModal(false)}
+            icon={X}
+          />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>

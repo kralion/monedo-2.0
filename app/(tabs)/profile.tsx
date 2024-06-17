@@ -1,10 +1,11 @@
 import useAuth from "@/context/AuthContext";
 import { supabase } from "@/utils/supabase";
 import { Bell, LogOut, User, Wallet } from "@tamagui/lucide-icons";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Button, H3, Text, XStack, YStack } from "tamagui";
+import { Avatar, Button, H3, YStack } from "tamagui";
 
 export default function App() {
   const { userData } = useAuth();
@@ -15,7 +16,9 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+    <SafeAreaView
+      style={{ paddingHorizontal: 16, paddingTop: 16, height: "100%" }}
+    >
       <View>
         <YStack alignItems="center">
           <Avatar bg="teal.600" alignSelf="center" size="$10">
@@ -85,6 +88,18 @@ export default function App() {
           Salir
         </Button>
       </YStack>
+      <Image
+        source={{
+          uri: require("../../assets/images/asset-profile.png"),
+        }}
+        style={{
+          width: 350,
+          height: 350,
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+        }}
+      />
     </SafeAreaView>
   );
 }

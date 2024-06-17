@@ -5,9 +5,10 @@ import { Expense } from "@/components/shared";
 import useAuth from "@/context/AuthContext";
 import { useExpenseContext } from "@/context/ExpenseContext";
 import { supabase } from "@/utils/supabase";
+import { FlashList } from "@shopify/flash-list";
 import { Lock, Minimize2 } from "@tamagui/lucide-icons";
 import * as React from "react";
-import { Animated, FlatList } from "react-native";
+import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -91,12 +92,12 @@ export default function Home() {
                     icon={Minimize2}
                   />
                 </XStack>
-                <FlatList
+                <FlashList
                   data={expenses}
-                  keyExtractor={(expense) => String(expense.id)}
-                  renderItem={({ item: expense }) => (
-                    <Expense expense={expense} />
-                  )}
+                  estimatedItemSize={16}
+                  renderItem={({ item: expense }) => {
+                    return <Expense expense={expense} />;
+                  }}
                 />
               </YStack>
             </SafeAreaView>
@@ -136,8 +137,13 @@ export default function Home() {
                 onPress={() => {
                   setShowBuyPremiumModal(true);
                 }}
-                unstyled
-                icon={<Lock size="$2" />}
+                size="$3.5"
+                bg="$green5Light"
+                pressStyle={{
+                  opacity: 0.5,
+                }}
+                circular
+                icon={<Lock size="$1" />}
               />
             </XStack>
 
@@ -173,12 +179,12 @@ export default function Home() {
                 </YStack>
               )}
 
-              <FlatList
+              <FlashList
                 data={expenses}
-                keyExtractor={(expense) => String(expense.id)}
-                renderItem={({ item: expense }) => (
-                  <Expense expense={expense} />
-                )}
+                estimatedItemSize={16}
+                renderItem={({ item: expense }) => {
+                  return <Expense expense={expense} />;
+                }}
               />
             </YStack>
           </ScrollView>
