@@ -79,7 +79,7 @@ export default function Wallet() {
             gestión de gastos.
           </Text>
         </YStack>
-        <YStack space={5} mt={5}>
+        <YStack gap="$5" mt={5}>
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -106,35 +106,37 @@ export default function Wallet() {
             name="presupuesto_id"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Select.Viewport
-                animation="quick"
-                animateOnly={["transform", "opacity"]}
-                enterStyle={{ o: 0, y: -10 }}
-                exitStyle={{ o: 0, y: 10 }}
-                minWidth={200}
-              >
-                <Select.Group>
-                  <Select.Label>Fruits</Select.Label>
-                  {useMemo(
-                    () =>
-                      presupuestos.map((item, i) => {
-                        return (
-                          <Select.Item
-                            index={i}
-                            key={item.name}
-                            value={item.name.toLowerCase()}
-                          >
-                            <Select.ItemText>{item.name}</Select.ItemText>
-                            <Select.ItemIndicator marginLeft="auto">
-                              <Check size={16} />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                        );
-                      }),
-                    [presupuestos]
-                  )}
-                </Select.Group>
-              </Select.Viewport>
+              <Select>
+                <Select.Viewport
+                  animation="quick"
+                  animateOnly={["transform", "opacity"]}
+                  enterStyle={{ o: 0, y: -10 }}
+                  exitStyle={{ o: 0, y: 10 }}
+                  minWidth={200}
+                >
+                  <Select.Group>
+                    <Select.Label>Fruits</Select.Label>
+                    {useMemo(
+                      () =>
+                        presupuestos.map((item, i) => {
+                          return (
+                            <Select.Item
+                              index={i}
+                              key={item.name}
+                              value={item.name}
+                            >
+                              {/* <Select.ItemText>{item.name}</Select.ItemText>
+                              <Select.ItemIndicator marginLeft="auto">
+                                <Check size={16} />
+                              </Select.ItemIndicator> */}
+                            </Select.Item>
+                          );
+                        }),
+                      [presupuestos]
+                    )}
+                  </Select.Group>
+                </Select.Viewport>
+              </Select>
             )}
             rules={{ required: true }}
           />

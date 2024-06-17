@@ -19,6 +19,7 @@ export default function AddExpenseIcon() {
     const totalExpenses = await sumOfAllOfExpensesMonthly();
     setTotalMonthExpenses(totalExpenses);
   }
+  const userRol = "premium";
   const [totalMonthExpenses, setTotalMonthExpenses] = React.useState(0);
   const balance = presupuesto - totalMonthExpenses;
   const getLastBudget = async () => {
@@ -33,18 +34,18 @@ export default function AddExpenseIcon() {
       setPresupuesto(data[0].monto);
     }
   };
-  React.useEffect(() => {
-    getLastBudget();
-    fetchExpenses();
-  }, [blockRoute]);
-  React.useEffect(() => {
-    if (balance <= 0) {
-      setBlockRoute(true);
-    }
-  }, [balance]);
+  // React.useEffect(() => {
+  //   getLastBudget();
+  //   fetchExpenses();
+  // }, [blockRoute]);
+  // React.useEffect(() => {
+  //   if (balance <= 0) {
+  //     setBlockRoute(true);
+  //   }
+  // }, [balance]);
   return (
     <View>
-      {userData.rol === "premium" ? (
+      {userRol === "premium" ? (
         <TouchableOpacity
           style={[
             styles.customTabStyle,

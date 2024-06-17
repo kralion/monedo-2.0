@@ -33,6 +33,6 @@ export function Expense({ expense }: { expense: IGasto }) {
       }
       subTitle={formattedDate}
       iconAfter={<Text color="$red10">- S/. {monto}</Text>}
-    ></ListItem>
+    />
   );
 }

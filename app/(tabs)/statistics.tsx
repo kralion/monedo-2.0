@@ -132,36 +132,38 @@ export default function Statistics() {
                   Exportar
                 </Button>
               </Link>
-              <Select.Viewport
-                animation="quick"
-                animateOnly={["transform", "opacity"]}
-                enterStyle={{ o: 0, y: -10 }}
-                exitStyle={{ o: 0, y: 10 }}
-                minWidth={200}
-              >
-                <Select.Group>
-                  <Select.Label>Fruits</Select.Label>
+              <Select>
+                <Select.Viewport
+                  animation="quick"
+                  animateOnly={["transform", "opacity"]}
+                  enterStyle={{ o: 0, y: -10 }}
+                  exitStyle={{ o: 0, y: 10 }}
+                  minWidth={200}
+                >
+                  <Select.Group>
+                    <Select.Label>Fruits</Select.Label>
 
-                  <Select.Item index={0} value="top-gastos">
-                    <Select.ItemText>Top Gastos</Select.ItemText>
-                    <Select.ItemIndicator marginLeft="auto">
-                      <Check size={16} />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                  <Select.Item index={1} value="periódicos">
-                    <Select.ItemText>Periódicos</Select.ItemText>
-                    <Select.ItemIndicator marginLeft="auto">
-                      <Check size={16} />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                  <Select.Item index={2} value="recientes">
-                    <Select.ItemText>Recientes</Select.ItemText>
-                    <Select.ItemIndicator marginLeft="auto">
-                      <Check size={16} />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                </Select.Group>
-              </Select.Viewport>
+                    <Select.Item index={0} value="top-gastos">
+                      <Select.ItemText>Top Gastos</Select.ItemText>
+                      <Select.ItemIndicator marginLeft="auto">
+                        <Check size={16} />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                    <Select.Item index={1} value="periódicos">
+                      <Select.ItemText>Periódicos</Select.ItemText>
+                      <Select.ItemIndicator marginLeft="auto">
+                        <Check size={16} />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                    <Select.Item index={2} value="recientes">
+                      <Select.ItemText>Recientes</Select.ItemText>
+                      <Select.ItemIndicator marginLeft="auto">
+                        <Check size={16} />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  </Select.Group>
+                </Select.Viewport>
+              </Select>
             </XStack>
             <XStack space={4} justifyContent="space-between" px={4}>
               <Text className="text-xl text-muted font-semibold">
