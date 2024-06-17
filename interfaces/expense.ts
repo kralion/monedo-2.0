@@ -1,4 +1,4 @@
-export interface IGasto {
+export interface IExpense {
   id?: string;
   fecha: string;
   descripcion?: string;
@@ -8,16 +8,44 @@ export interface IGasto {
   monto: number;
   assetIdentificador?: string;
   divisa?: string;
-  numeroGasto?: number;
+  numeroExpense?: number;
+}
+export interface IGoal {
+  id?: string;
+  presupuesto_id: string;
+  ahorro_actual: number;
+  meta_ahorro: number;
+}
+export interface IBudget {
+  id?: string;
+  usuario_id?: string;
+  fecha_registro: string;
+  fecha_final?: string;
+  descripcion?: string;
+  monto: number;
+}
+
+export interface IBudgetContextProvider {
+  addBudget: (budget: IBudget) => void;
+  budgets: IBudget[];
+  updateBudget: (budget: IBudget) => void;
+  deleteBudget: (id: string) => void;
+  getRecentBudgets: () => Promise<IBudget[]>;
 }
 
 export interface IExpenseContextProvider {
-  addExpense: (expense: IGasto) => void;
-  expenses: IGasto[];
-  updateExpense: (expense: IGasto) => void;
-  getExpensesByUser: (id: string) => Promise<IGasto[]>;
+  addExpense: (expense: IExpense) => void;
+  expenses: IExpense[];
+  updateExpense: (expense: IExpense) => void;
+  getExpensesByUser: (id: string) => Promise<IExpense[]>;
   sumOfAllOfExpensesMonthly: () => Promise<number>;
-  getTopExpenses: () => Promise<IGasto[]>;
-  getRecentExpenses: () => Promise<IGasto[]>;
-  getExpensesByPeriodicity: () => Promise<IGasto[]>;
+  getTopExpenses: () => Promise<IExpense[]>;
+  getRecentExpenses: () => Promise<IExpense[]>;
+  getExpensesByPeriodicity: () => Promise<IExpense[]>;
+}
+export interface IGoalContextProvider {
+  addGoal: (meta: IGoal) => void;
+  goals: IGoal[];
+  updateGoal: (meta: IGoal) => void;
+  getRecentGoals: () => Promise<IGoal[]>;
 }

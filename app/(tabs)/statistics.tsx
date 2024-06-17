@@ -1,37 +1,37 @@
 import { Expense } from "@/components/shared";
-import { useExpenseContext } from "@/context/ExpenseContext";
-import { IGasto } from "@/interfaces";
+import { useExpenseContext } from "@/context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import * as React from "react";
 import { useState } from "react";
-import { Animated, FlatList, TouchableOpacity } from "react-native";
+import { Animated, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Chart from "@/components/estadisticas/chart";
 import { Button, XStack, YStack, Text } from "tamagui";
 import { Select } from "tamagui";
 import { Check } from "@tamagui/lucide-icons";
+import { FlashList } from "@shopify/flash-list";
 
 export default function Statistics() {
   const [queryType, setQueryType] = useState("recientes");
   const [timelineQuery, setTimelineQuery] = useState("semanal");
-  const [expenses, setExpenses] = useState<IGasto[]>([]);
-  const { getTopExpenses, getRecentExpenses, getExpensesByPeriodicity } =
-    useExpenseContext();
+  const {
+    getTopExpenses,
+    getRecentExpenses,
+    getExpensesByPeriodicity,
+    expenses,
+  } = useExpenseContext();
   const [showAll, setShowAll] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(1)).current;
   const fetchRecentExpenses = async () => {
-    const expenses = await getRecentExpenses();
-    setExpenses(expenses);
+    await getRecentExpenses();
   };
   const fetchTopExpenses = async () => {
-    const expenses = await getTopExpenses();
-    setExpenses(expenses);
+    await getTopExpenses();
   };
   const fetchExpensesByPeriodicity = async () => {
-    const expenses = await getExpensesByPeriodicity();
-    setExpenses(expenses);
+    await getExpensesByPeriodicity();
   };
   React.useEffect(() => {
     if (queryType === "recientes") {
@@ -75,10 +75,10 @@ export default function Statistics() {
                 />
               </TouchableOpacity>
             </XStack>
-            <FlatList
+            <FlashList
               data={expenses}
               renderItem={({ item }) => <Expense expense={item} />}
-              keyExtractor={(item) => String(item.id)}
+              estimatedItemSize={16}
             />
           </SafeAreaView>
         </Animated.View>
@@ -185,10 +185,10 @@ export default function Statistics() {
                 />
               </TouchableOpacity>
             </XStack>
-            <FlatList
+            <FlashList
               data={expenses}
-              keyExtractor={(expense) => String(expense.id)}
               renderItem={({ item: expense }) => <Expense expense={expense} />}
+              estimatedItemSize={16}
             />
           </YStack>
         </SafeAreaView>

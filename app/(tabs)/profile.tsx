@@ -1,4 +1,4 @@
-import useAuth from "@/context/AuthContext";
+import { useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
 import { Bell, LogOut, User, Wallet } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Button, H3, YStack } from "tamagui";
 
-export default function App() {
+export default function ProfileScreen() {
   const { userData } = useAuth();
   const router = useRouter();
   async function signOut() {
@@ -89,9 +89,7 @@ export default function App() {
         </Button>
       </YStack>
       <Image
-        source={{
-          uri: require("../../assets/images/asset-profile.png"),
-        }}
+        source={require("../../assets/images/asset-profile.png")}
         style={{
           width: 350,
           height: 350,

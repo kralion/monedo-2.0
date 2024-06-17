@@ -1,21 +1,20 @@
-import { Link, useRouter } from "expo-router";
+import { supabase } from "@/utils/supabase";
+import { useToastController } from "@tamagui/toast";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Image, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Image, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
   H2,
   Input,
-  ScrollView,
   Separator,
   Spinner,
   Text,
   XStack,
   YStack,
 } from "tamagui";
-import { useToastController } from "@tamagui/toast";
-import { supabase } from "@/utils/supabase";
 
 type FormData = {
   email: string;
@@ -113,7 +112,7 @@ export default function SignInScreen() {
               bg="$green8Light"
               color="$white1"
             >
-              {loading ? <Spinner size="small" /> : "Ingresar"}
+              {loading ? <Spinner size="small" color="$white1" /> : "Ingresar"}
             </Button>
 
             <XStack gap="$2" alignItems="center">

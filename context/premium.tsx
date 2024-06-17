@@ -1,8 +1,7 @@
 import { supabase } from "@/utils/supabase";
+import { useToastController } from "@tamagui/toast";
 import { router } from "expo-router";
 import React, { createContext, useState } from "react";
-import { Alert, HStack, useToast } from "native-base";
-import { Text } from "react-native";
 
 interface PremiumContextProps {
   isPremium: boolean;
@@ -18,7 +17,7 @@ export const PremiumContext = createContext<PremiumContextProps>({
 
 export function PremiumProvider({ children }: { children: React.ReactNode }) {
   const [isPremium, setIsPremium] = useState(false);
-  const toast = useToast();
+  const toast = useToastController();
 
   async function getPremiumUserStatusById(id: string) {
     try {
@@ -28,39 +27,9 @@ export function PremiumProvider({ children }: { children: React.ReactNode }) {
         .update({ rol: newRol })
         .eq("id", id);
       if (error) {
-        toast.show({
-          render: () => (
-            <Alert variant="solid" rounded={10} px={5} status="error">
-              <HStack space={2} alignItems="center">
-                <Alert.Icon mt="1" />
-                <Text className="text-white">
-                  Error al actualizar el rol del usuario
-                </Text>
-              </HStack>
-            </Alert>
-          ),
-          description: "",
-          duration: 2000,
-          placement: "top",
-          variant: "solid",
-        });
+        toast.show("Error al actualizar el rol del usuario");
       } else {
-        toast.show({
-          render: () => (
-            <Alert variant="solid" rounded={10} px={5} status="success">
-              <HStack space={2} alignItems="center">
-                <Alert.Icon mt="1" />
-                <Text className="text-white">
-                  Ahora eres un usuario premium
-                </Text>
-              </HStack>
-            </Alert>
-          ),
-          description: "",
-          duration: 2000,
-          placement: "top",
-          variant: "solid",
-        });
+        toast.show("Ahora eres un usuario premium");
       }
     } catch (error) {
       console.log(error);

@@ -2,8 +2,8 @@ import { supabase } from "@/utils/supabase";
 import { endOfMonth, formatISO, startOfMonth } from "date-fns";
 import * as React from "react";
 import { createContext, useContext } from "react";
-import { IExpenseContextProvider, IGasto } from "@/interfaces";
-import useAuth from "./AuthContext";
+import { IExpenseContextProvider, IExpense } from "@/interfaces";
+import {useAuth} from "./auth";
 
 export const ExpenseContext = createContext<IExpenseContextProvider>({
   addExpense: () => {},
@@ -11,9 +11,9 @@ export const ExpenseContext = createContext<IExpenseContextProvider>({
   sumOfAllOfExpensesMonthly: async () => 0,
   getExpensesByUser: async (id: string) => [],
   expenses: [],
-  getTopExpenses: async (): Promise<IGasto[]> => [],
-  getRecentExpenses: async (): Promise<IGasto[]> => [],
-  getExpensesByPeriodicity: async (): Promise<IGasto[]> => [],
+  getTopExpenses: async (): Promise<IExpense[]> => [],
+  getRecentExpenses: async (): Promise<IExpense[]> => [],
+  getExpensesByPeriodicity: async (): Promise<IExpense[]> => [],
 });
 
 export const ExpenseContextProvider = ({
@@ -21,10 +21,10 @@ export const ExpenseContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [expenses, setExpenses] = React.useState<IGasto[]>([]);
+  const [expenses, setExpenses] = React.useState<IExpense[]>([]);
   const { userData } = useAuth();
 
-  const addExpense = async (expense: IGasto) => {
+  const addExpense = async (expense: IExpense) => {
     await supabase.from("expenses").insert(expense);
   };
 
@@ -64,7 +64,7 @@ export const ExpenseContextProvider = ({
     return 0;
   }
 
-  const updateExpense = async (expense: IGasto) => {
+  const updateExpense = async (expense: IExpense) => {
     await supabase.from("expenses").update(expense).eq("id", expense.id);
   };
 

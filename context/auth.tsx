@@ -62,12 +62,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-const useAuth = () => {
+export const useAuth = () => {
   const context = React.useContext(AuthContext);
   if (context === null || context === undefined) {
     throw new Error("useAuth debe contenerse dentro de AuthProvider");
   }
   return context;
 };
-
-export default useAuth;

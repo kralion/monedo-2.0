@@ -1,24 +1,22 @@
 import AddExpenseSuccesModal from "@/components/popups/add-expense-sucess";
-import useAuth from "@/context/AuthContext";
-import { useExpenseContext } from "@/context/ExpenseContext";
-import { IGasto } from "@/interfaces";
+import { useExpenseContext, useAuth } from "@/context";
+import { IExpense } from "@/interfaces";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Adapt, H2, Sheet } from "tamagui";
 import {
+  Adapt,
   Button,
-  H3,
+  H2,
   Input,
   Label,
-  Paragraph,
   RadioGroup,
   ScrollView,
   Select,
-  Separator,
-  Switch,
+  Sheet,
+  Spinner,
   Text,
   TextArea,
   XStack,
@@ -45,9 +43,9 @@ export default function AddExpense() {
     formState: { errors },
     reset,
     setValue,
-  } = useForm<IGasto>();
+  } = useForm<IExpense>();
 
-  async function onSubmit(data: IGasto) {
+  async function onSubmit(data: IExpense) {
     setIsLoading(true);
     addExpense({
       ...data,
@@ -278,7 +276,11 @@ export default function AddExpense() {
                 color="$white1"
                 mt="$6"
               >
-                Registrar
+                {isLoading ? (
+                  <Spinner size="small" color="$white1" />
+                ) : (
+                  "Registrar"
+                )}
               </Button>
             </YStack>
           </YStack>

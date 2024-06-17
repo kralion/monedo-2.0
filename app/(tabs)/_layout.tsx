@@ -1,6 +1,6 @@
 import AddExpenseIcon from "@/components/shared/add-expense-icon";
 import Colors from "@/constants/Colors";
-import { ExpenseContextProvider } from "@/context/ExpenseContext";
+import AppProvider from "@/context/provider";
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { View, useColorScheme } from "react-native";
@@ -8,7 +8,7 @@ import { View, useColorScheme } from "react-native";
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   return (
-    <ExpenseContextProvider>
+    <AppProvider>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
@@ -104,6 +104,6 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-    </ExpenseContextProvider>
+    </AppProvider>
   );
 }

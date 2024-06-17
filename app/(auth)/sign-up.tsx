@@ -16,8 +16,8 @@ import {
   Input,
   Label,
   Paragraph,
-  ScrollView,
   Separator,
+  Spinner,
   Text,
   XStack,
   YStack,
@@ -267,7 +267,11 @@ export default function SignUpScreen() {
               bg="$green8Light"
               color="$white1"
             >
-              Regístrate
+              {loading ? (
+                <Spinner size="small" color="$white1" />
+              ) : (
+                "Registrarse"
+              )}
             </Button>
 
             <Paragraph size="$2">
