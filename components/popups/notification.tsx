@@ -47,8 +47,11 @@ export default function SingleNotification({
         opacity: 0.8,
       }}
       bordered
-      borderRadius={18}
-      mb={7}
+      borderRadius={14}
+      alignSelf="center"
+      mx={2}
+      my={4}
+      width="97%"
       title={notification.titulo}
       icon={
         <Image
@@ -67,11 +70,7 @@ export default function SingleNotification({
         />
       }
       subTitle={descripcion}
-      iconAfter={
-        <Text fontSize="$6" fontWeight="bold" color="$red10">
-          {formatDate(fecha)}
-        </Text>
-      }
+      iconAfter={<Text fontSize="$2">{formatDate(fecha)}</Text>}
     />
   );
 }

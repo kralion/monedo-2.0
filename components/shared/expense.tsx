@@ -1,10 +1,10 @@
 import { expensesIdentifiers } from "@/constants/ExpensesIdentifiers";
 import { formatDate } from "@/helpers/dateFormatter";
-import { IGasto } from "@/interfaces";
+import { IExpense } from "@/interfaces";
 import { router } from "expo-router";
 import { Image } from "react-native";
 import { ListItem, Text } from "tamagui";
-export function Expense({ expense }: { expense: IGasto }) {
+export function Expense({ expense }: { expense: IExpense }) {
   const { categoria, monto, fecha } = expense;
   const formattedDate = fecha
     ? formatDate(new Date(fecha))

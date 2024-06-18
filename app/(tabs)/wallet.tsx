@@ -192,17 +192,16 @@ export default function Wallet() {
             openModal={showSavingGoalModal}
             setOpenModal={setShowSavingGoalModal}
           />
-          <H4>Historial de Metas</H4>
-
-          <View>
-            <FlashList
+          <YStack mt={5}>
+            <H4>Historial de Metas</H4>
+            <FlashListw
               data={budgets}
-              estimatedItemSize={20}
+              estimatedItemSize={100}
               renderItem={({ item: budget }) => {
                 return <Budget budget={budget} />;
               }}
             />
-          </View>
+          </YStack>
         </YStack>
       </SafeAreaView>
     </ScrollView>

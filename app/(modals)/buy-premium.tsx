@@ -1,17 +1,11 @@
 import Stripe from "@/components/payment/stripe";
 import Yape from "@/components/payment/yape";
 import { useAuth } from "@/context";
-import { AntDesign } from "@expo/vector-icons";
+import { X } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import {
-  Animated as AnimatedRN,
-  Dimensions,
-  Platform,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { Animated as AnimatedRN, Dimensions, Platform } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -19,7 +13,17 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, ScrollView, Separator, Text, XStack, YStack } from "tamagui";
+import {
+  Avatar,
+  Button,
+  H3,
+  H4,
+  ScrollView,
+  Separator,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
 
 export default function BuyPremiumModal() {
   const [yapePaymentMethod, setYapePaymentMethod] = React.useState(false);
@@ -63,16 +67,22 @@ export default function BuyPremiumModal() {
 
   return (
     <ScrollView>
-      <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-        <YStack gap="$4" className="px-5">
+      <SafeAreaView style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
+        <YStack gap="$4">
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontWeight="bold">Información de Compra</Text>
-            <TouchableOpacity onPress={() => router.back()}>
-              <AntDesign name="close" size={20} />
-            </TouchableOpacity>
+            <H3>Información de Compra</H3>
+            <Button
+              pt="$1"
+              unstyled
+              pressStyle={{
+                opacity: 0.7,
+              }}
+              onPress={() => router.back()}
+              icon={<X size="$1" />}
+            />
           </XStack>
 
-          <XStack space={3}>
+          <XStack gap="$2" alignItems="center">
             <Avatar bg="teal.600" alignSelf="center" size="$10">
               <Avatar.Image
                 accessibilityLabel="avatar"
@@ -85,24 +95,32 @@ export default function BuyPremiumModal() {
               />
               <Avatar.Fallback backgroundColor={"#F5F5F5"} />
             </Avatar>
-            <YStack>
-              <Text className="font-bold  text-lg ">
+            <YStack gap="$2">
+              <Text fontWeight="bold">
                 {userData?.nombres} {userData?.apellidos}
               </Text>
-              <Text
-                br="$5"
-                p="$2"
-                bg={userData.rol === "premium" ? "red10Light" : "$green10Light"}
+              <Button
+                borderRadius="$7"
+                disabled
+                size="$2"
+                bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+                color="$white1"
               >
                 {`Usuario ${userData.rol}`}
-              </Text>
+              </Button>
             </YStack>
           </XStack>
           <Separator borderColor="$gray5" />
 
-          <Text className=" font-semibold text-xl  ">Método de Pago</Text>
+          <H4>Método de Pago</H4>
           <YStack gap="$2">
-            <XStack bg="#F2F3EE" justifyContent="center" p={1} br="$4">
+            <XStack
+              borderWidth="$1"
+              borderColor="$gray4"
+              justifyContent="center"
+              p="$1"
+              br="$5"
+            >
               <Animated.View
                 style={[
                   {
@@ -112,7 +130,6 @@ export default function BuyPremiumModal() {
                     width: "50%",
                     borderRadius: 7,
                     height: "100%",
-                    backgroundColor: "white", //TODO change to user avatar
                   },
                   useAnimatedStyle(() => {
                     return {
@@ -121,26 +138,12 @@ export default function BuyPremiumModal() {
                   }),
                 ]}
               />
-              <Pressable
-                style={{
-                  padding: 2,
-                  width: "50%",
-                }}
-                onPress={handleCardPayment}
-              >
-                <Text className="font-semibold text-center">
-                  Tarjeta Bancaria
-                </Text>
-              </Pressable>
-              <Pressable
-                style={{
-                  padding: 2,
-                  width: "50%",
-                }}
-                onPress={handleYapePayment}
-              >
-                <Text className="font-semibold text-center">Yape</Text>
-              </Pressable>
+              <Button width="50%" p="$2" chromeless onPress={handleCardPayment}>
+                Tarjeta Bancaria
+              </Button>
+              <Button width="50%" p="$2" chromeless onPress={handleYapePayment}>
+                Yape
+              </Button>
             </XStack>
 
             {cardPaymentMethod ? (

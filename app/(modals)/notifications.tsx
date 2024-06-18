@@ -31,8 +31,8 @@ export default function Notifications() {
   return (
     <FlashList
       data={notifications}
-      renderItem={({ item }) => <SingleNotification notification={item} />}
-      estimatedItemSize={100}
+      renderItem={({ item }) => <SingleNwotification notification={item} />}
+      estimatedItemSize={20}
     />
   );
 }

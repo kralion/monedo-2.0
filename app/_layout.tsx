@@ -69,16 +69,13 @@ function RootLayoutNav() {
               headerShown: false,
             }}
           />
-
           <Stack.Screen
-            name="modal"
-            options={{
-              title: "Tamagui + Expo",
-              presentation: "modal",
-              animation: "slide_from_right",
-              gestureEnabled: true,
-              gestureDirection: "horizontal",
-            }}
+            name="(expenses)"
+            options={{ headerShown: false, title: "" }}
+          />
+          <Stack.Screen
+            name="(modals)"
+            options={{ headerShown: false, title: "" }}
           />
         </Stack>
       </ThemeProvider>

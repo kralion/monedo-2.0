@@ -1,9 +1,9 @@
-import { router } from "expo-router";
-import { Badge, Button, Modal, VStack } from "native-base";
-import * as React from "react";
-import { Text, TouchableOpacity } from "react-native";
 import UpgradeAsset from "@/assets/svgs/unlock.svg";
+import { X } from "@tamagui/lucide-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import * as React from "react";
+import { Button, Dialog, H3, Text, YStack } from "tamagui";
 type NotAllowedProps = {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,53 +14,91 @@ export default function NotAllowedModal({
   setOpenModal,
 }: NotAllowedProps) {
   return (
-    <Modal
-      _backdropFade={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      }}
-      animationPreset="slide"
-      backdropVisible={true}
-      size="xl"
-      isOpen={openModal}
-      onClose={() => setOpenModal(false)}
-    >
-      <Modal.Content rounded={30}>
-        <LinearGradient
-          className={` rounded-3xl  p-5 shadow-2xl space-y-10 `}
-          colors={["#10828d", "#a3e062"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+    <Dialog modal open={openModal}>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="slow"
+          opacity={0.7}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animateOnly={["transform", "opacity"]}
+          animation={[
+            "quicker",
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{
+            x: 0,
+            y: -20,
+            opacity: 0,
+            scale: 0.9,
+          }}
+          exitStyle={{
+            x: 0,
+            y: 10,
+            opacity: 0,
+            scale: 0.95,
+          }}
+          gap="$4"
         >
-          <Modal.CloseButton rounded={15} />
-          <Modal.Body className="space-y-10">
-            <VStack space={7} alignItems="center">
-              <UpgradeAsset width={200} height={220} />
-              <Text className=" font-bold text-2xl ">Desbloquea Ahora</Text>
-              <Text className="text-[16px] text-center">
-                Esta funcionalidad está{" "}
-                <Text className="font-bold">disponible</Text> en el plan{" "}
-                <Text className="font-bold">Premium</Text>.
-              </Text>
-              <Text className="italic text-center">
-                ¡Mejora tu experiencia hoy! y sacale el máximo provecho a la
-                applicación.
-              </Text>
-            </VStack>
-            <VStack space={3}>
+          <LinearGradient
+            style={{ borderRadius: 20, padding: 10, shadowRadius: 10 }}
+            colors={["#10828d", "#a3e062"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <Dialog.Close asChild>
               <Button
-                className="w-full bg-white active:bg-zinc-200 mt-10 rounded-full"
-                height={12}
-                variant="solid"
+                position="absolute"
                 onPress={() => {
-                  setOpenModal(false), router.push("/(modals)/buy-premium");
+                  setOpenModal(false);
                 }}
-              >
-                <Text className="font-semibold  ">Adquiere Premium</Text>
-              </Button>
-            </VStack>
-          </Modal.Body>
-        </LinearGradient>
-      </Modal.Content>
-    </Modal>
+                top="$3"
+                right="$3"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+            <YStack gap="$4" alignItems="center">
+              <YStack space={7} alignItems="center">
+                <UpgradeAsset width={200} height={220} />
+                <H3 fontWeight="bold">Desbloquea Ahora</H3>
+                <Text>
+                  Esta funcionalidad está{" "}
+                  <Text fontWeight="bold">disponible</Text> en el plan{" "}
+                  <Text fontWeight="bold">Premium</Text>.
+                </Text>
+                <Text className="italic text-center">
+                  ¡Mejora tu experiencia hoy! y sacale el máximo provecho a la
+                  applicación.
+                </Text>
+              </YStack>
+              <YStack space={3}>
+                <Button
+                  size="$5"
+                  bg="$green8Light"
+                  color="$white1"
+                  onPress={() => {
+                    setOpenModal(false), router.push("/(modals)/buy-premium");
+                  }}
+                >
+                  <Text className="font-semibold  ">Adquiere Premium</Text>
+                </Button>
+              </YStack>
+            </YStack>
+          </LinearGradient>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
   );
 }

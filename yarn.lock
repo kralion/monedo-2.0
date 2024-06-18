@@ -7205,6 +7205,7 @@ __metadata:
     react-hook-form: "npm:^7.51.5"
     react-native: "npm:0.74.1"
     react-native-chart-kit: "npm:^6.12.0"
+    react-native-confetti-cannon: "npm:^1.5.2"
     react-native-reanimated: "npm:~3.10.1"
     react-native-safe-area-context: "npm:4.10.1"
     react-native-screens: "npm:~3.31.1"
@@ -10926,6 +10927,13 @@ __metadata:
     react-native: ">= 0.50.0"
     react-native-svg: "> 6.4.1"
   checksum: a3ed6c3d6e131dae26f7ab3639233c54d1b37fba99a6c07df7a4503b0661887c56ba0a55263728f4948b4725c0b496c6f622f3c198a0d4308c017e2f52fc1f71
+  languageName: node
+  linkType: hard
+
+"react-native-confetti-cannon@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "react-native-confetti-cannon@npm:1.5.2"
+  checksum: 0ca5d56eef9763e891d228017708c340b54cc87d46d1c38d7aff5b46d511d78b52d884b9492aa1022cdd4772ef974c0e2175831516b1aafda93208e97e5098a1
   languageName: node
   linkType: hard
 

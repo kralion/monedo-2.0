@@ -37,7 +37,9 @@ export default function ProfileScreen() {
           <YStack gap="$1">
             <H3>{`${userData.nombres} ${userData.apellidos}`}</H3>
             <Button
-              borderRadius={10}
+              disabled
+              size="$3"
+              borderRadius="$7"
               bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
               color="$white1"
             >
