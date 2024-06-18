@@ -1,7 +1,6 @@
 import { INotification } from "@/interfaces/notification";
-import { Box, HStack, VStack } from "native-base";
-import React from "react";
-import { Image, Text } from "react-native";
+import { Image } from "expo-image";
+import { ListItem, Text } from "tamagui";
 
 const iconos = {
   INFO: "https://img.icons8.com/?size=48&id=63308&format=png",
@@ -43,17 +42,20 @@ export default function SingleNotification({
   };
 
   return (
-    <Box
-      className="m-3"
-      borderColor="coolGray.300"
-      rounded={7}
-      p={1}
-      bg={"white"}
-    >
-      <HStack alignItems="center" space={2} className="p-2 rounded-xl">
+    <ListItem
+      pressStyle={{
+        opacity: 0.8,
+      }}
+      bordered
+      borderRadius={18}
+      mb={7}
+      title={notification.titulo}
+      icon={
         <Image
-          width={40}
-          height={40}
+          style={{
+            width: 40,
+            height: 40,
+          }}
           source={{
             uri:
               notification.tipo === "INFO"
@@ -63,14 +65,13 @@ export default function SingleNotification({
                 : iconos.ERROR,
           }}
         />
-        <VStack space={2} flex={1}>
-          <HStack justifyContent="space-between">
-            <Text className="font-semibold ">{notification.titulo}</Text>
-            <Text className="text-mute   text-xs">{formatDate(fecha)}</Text>
-          </HStack>
-          <Text className="text-textmuted text-xs ">{descripcion}</Text>
-        </VStack>
-      </HStack>
-    </Box>
+      }
+      subTitle={descripcion}
+      iconAfter={
+        <Text fontSize="$6" fontWeight="bold" color="$red10">
+          {formatDate(fecha)}
+        </Text>
+      }
+    />
   );
 }

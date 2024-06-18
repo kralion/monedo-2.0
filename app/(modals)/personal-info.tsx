@@ -1,23 +1,21 @@
-import useAuth from "@/context/AuthContext";
-import { supabase } from "@/utils/supabase";
-import { FontAwesome5 } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import CameraIcon from "@/assets/svgs/camera.svg";
-import {
-  Alert,
-  Avatar,
-  Button,
-  FormControl,
-  HStack,
-  Input,
-  ScrollView,
-  VStack,
-  WarningOutlineIcon,
-  useToast,
-} from "native-base";
+import { useAuth } from "@/context";
+import { supabase } from "@/utils/supabase";
+import { useToastController } from "@tamagui/toast";
+import * as ImagePicker from "expo-image-picker";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import {
+  Avatar,
+  Button,
+  Input,
+  Label,
+  ScrollView,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
 interface FormData {
   nombres: string;
   apellidos: string;
@@ -27,7 +25,7 @@ interface FormData {
 
 export default function PersonalInfo() {
   const { userData, session } = useAuth();
-  const toast = useToast();
+  const toast = useToastController();
 
   const {
     control,
@@ -53,37 +51,11 @@ export default function PersonalInfo() {
       .eq("id", userData.id);
 
     if (error) {
-      toast.show({
-        render: () => (
-          <Alert variant="solid" rounded={10} px={5} status="error">
-            <HStack space={2} alignItems="center">
-              <Alert.Icon mt="1" />
-              <Text className="text-white">Error al actualizar los datos</Text>
-            </HStack>
-          </Alert>
-        ),
-        description: "",
-        duration: 2000,
-        placement: "top",
-        variant: "solid",
-      });
+      toast.show("Error al Actualizar Datos");
       return;
     }
 
-    toast.show({
-      render: () => (
-        <Alert variant="solid" rounded={10} px={5} status="success">
-          <HStack space={2} alignItems="center">
-            <Alert.Icon mt="1" />
-            <Text className="text-white">Datos actualizados</Text>
-          </HStack>
-        </Alert>
-      ),
-      description: "",
-      duration: 2000,
-      placement: "top",
-      variant: "solid",
-    });
+    toast.show("Datos actualizados");
   }
 
   const pickImageAsync = async () => {
@@ -108,127 +80,113 @@ export default function PersonalInfo() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView background="white">
-        <VStack margin={5} space={3}>
-          <VStack alignItems="center" space={3}>
-            <HStack space={2} alignItems="center">
-              <Avatar
-                bg="teal.600"
-                alignSelf="center"
-                size="2xl"
-                source={{
-                  uri: userData.foto,
+        <YStack margin={5} space={3}>
+          <YStack alignItems="center" space={3}>
+            <Avatar bg="teal.600" alignSelf="center" size="$10">
+              <Avatar.Image
+                accessibilityLabel="avatar"
+                src={userData.foto}
+                style={{
+                  borderRadius: 100,
+                  width: 100,
+                  height: 100,
                 }}
               />
-            </HStack>
+              <Avatar.Fallback backgroundColor={"#F5F5F5"} />
+            </Avatar>
 
             <Button
+              bg="$green8Light"
               onPress={pickImageAsync}
-              rounded={7}
-              variant="subtle"
-              colorScheme="gray"
-              height={10}
+              icon={<CameraIcon width={30} height={30} />}
+            />
+          </YStack>
+          <XStack>
+            {/* <View className="bg-accent w-1 h-8 rounded-full my-3 " /> */}
+            <Text
+              fontWeight="bold"
+              className="text-[#464444] p-3 font-bold text-lg"
             >
-              <CameraIcon width={30} height={30} />
-            </Button>
-          </VStack>
-          <HStack>
-            <View className="bg-accent w-1 h-8 rounded-full my-3 " />
-            <Text className="text-[#464444] p-3 font-bold text-lg">
               Informacion Básica
             </Text>
-          </HStack>
-          <VStack space={5}>
-            <FormControl isInvalid={!!errors.nombres}>
-              <FormControl.Label>Nombres</FormControl.Label>
+          </XStack>
+          <YStack gap="$2">
+            <YStack>
+              <Label>Nombres</Label>
               <Controller
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    size="lg"
-                    rounded={7}
-                    onBlur={onBlur}
-                    py={3}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
                 name="nombres"
-                rules={{ required: true }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage
-                leftIcon={<WarningOutlineIcon size="xs" />}
-              >
-                {errors.nombres && "Este campo es requerido"}
-              </FormControl.ErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={!!errors.apellidos}>
-              <FormControl.Label>Apellidos</FormControl.Label>
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ ...field }) => (
                   <Input
                     size="lg"
-                    rounded={7}
-                    py={3}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    //TODO : El valor debe ser el apellido del usuario y no un placeholder
-                    value={value}
-                    placeholder="Apellido"
+                    value={userData.nombres}
+                    {...field}
+                    borderRadius={7}
                   />
                 )}
+                rules={{
+                  required: { value: true, message: "Ingrese el nombre" },
+                  pattern: {
+                    value: /^\d+(\.\d*)?$/,
+                    message: "Solo se permiten números válidos",
+                  },
+                }}
+              />
+            </YStack>
+            <YStack>
+              <Label>Apellidos</Label>
+              <Controller
+                control={control}
                 name="apellidos"
-                rules={{ required: true }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage
-                leftIcon={<WarningOutlineIcon size="xs" />}
-              >
-                {errors.apellidos && "Este campo es requerido"}
-              </FormControl.ErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={!!errors.email}>
-              <FormControl.Label>Correo electrónico</FormControl.Label>
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ ...field }) => (
                   <Input
-                    onBlur={onBlur}
                     size="lg"
-                    rounded={7}
-                    py={3}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Correo electrónico"
+                    value={userData.apellidos}
+                    {...field}
+                    borderRadius={7}
                   />
                 )}
-                name="email"
-                rules={{ required: true }}
-                defaultValue=""
+                rules={{
+                  required: { value: true, message: "Ingrese los apellidos" },
+                  pattern: {
+                    value: /^\d+(\.\d*)?$/,
+                    message: "Solo se permiten números válidos",
+                  },
+                }}
               />
-              <FormControl.ErrorMessage
-                leftIcon={<WarningOutlineIcon size="xs" />}
-              >
-                {errors.email && "Este campo es requerido"}
-              </FormControl.ErrorMessage>
-            </FormControl>
+            </YStack>
+
+            <YStack>
+              <Label>Email</Label>
+
+              {/* //TODO: Add regex for the email */}
+              <Controller
+                control={control}
+                name="email"
+                render={({ ...field }) => (
+                  <Input
+                    size="lg"
+                    value={userData.apellidos}
+                    {...field}
+                    borderRadius={7}
+                  />
+                )}
+                rules={{
+                  required: { value: true, message: "Ingrese el email" },
+                }}
+              />
+            </YStack>
 
             <Button
+              size="$5"
+              bg="$green8Light"
+              color="$white1"
               onPress={handleSubmit(onSubmit)}
-              colorScheme="primary"
-              borderRadius={10}
-              mt={4}
-              height={12}
             >
-              <Text className="font-semibold text-white ">
-                Actualizar Datos
-              </Text>
+              Actualizar Datos
             </Button>
-          </VStack>
-        </VStack>
+          </YStack>
+        </YStack>
       </ScrollView>
     </TouchableWithoutFeedback>
   );

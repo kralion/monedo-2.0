@@ -1,60 +1,47 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { Button, HStack, VStack } from "native-base";
-import * as React from "react";
-import { Alert, Image, Text, View } from "react-native";
+import { Alert, Image } from "react-native";
+import { Button, Text, XStack, YStack } from "tamagui";
 
 export default function Export() {
   return (
-    <View className="flex flex-col space-y-6 justify-between">
-      <VStack space={1} className="bg-background rounded-b-lg py-4 px-7">
-        <HStack>
-          <View className="bg-accent w-2 h-8 rounded-full my-3 " />
-          <Text className="text-[#464444] p-3 font-bold text-lg">
-            Formatos de Exportación
-          </Text>
-        </HStack>
+    <YStack className="flex flex-col space-y-6 justify-between">
+      <YStack space={1} className="bg-background rounded-b-lg py-4 px-7">
+        <XStack>
+          {/* <View className="bg-accent w-2 h-8 rounded-full my-3 " /> */}
+          <Text fontWeight="bold">Formatos de Exportación</Text>
+        </XStack>
 
-        <Text className=" text-[#464444]">
+        <Text>
           Selecciona el tipo de documento en el que desea exportar su historial
           de gastos
         </Text>
 
-        <VStack mt={10} space={4}>
-          <HStack space={4}>
+        <YStack mt={10} space={4}>
+          <XStack space={4}>
             <Button
-              colorScheme="blue"
-              variant="subtle"
-              py={4}
-              borderWidth={1}
-              borderColor="blue.400"
               onPress={() =>
                 Alert.alert("Exportación", "Se exportó correctamente")
               }
             >
-              <HStack alignItems="center">
+              <XStack alignItems="center">
                 <Image
-                  className="w-5 h-5 mr-2"
                   source={{
                     uri: "https://img.icons8.com/?size=48&id=13674&format=png",
                   }}
+                  style={{ width: 30, height: 30, marginRight: 10 }}
                 />
                 <Text className="font-semibold text-black">Documento</Text>
-              </HStack>
+              </XStack>
             </Button>
 
             <Button
-              colorScheme="green"
-              variant="subtle"
-              py={4}
-              borderWidth={1}
-              borderColor="green.400"
               onPress={() =>
                 Alert.alert("Exportación", "Se exportó correctamente")
               }
             >
-              <HStack alignItems="center">
+              <XStack alignItems="center">
                 <Image
-                  className="w-5 h-5 mr-2"
+                  style={{ width: 30, height: 30, marginRight: 10 }}
                   source={{
                     uri: "https://img.icons8.com/?size=48&id=13654&format=png",
                   }}
@@ -62,35 +49,30 @@ export default function Export() {
                 <Text className="font-semibold text-black">
                   Hoja de Cálculo
                 </Text>
-              </HStack>
+              </XStack>
             </Button>
-          </HStack>
+          </XStack>
 
           <Button
-            colorScheme="red"
-            variant="subtle"
-            p={4}
-            borderWidth={1}
-            borderColor="red.400"
             onPress={() =>
               Alert.alert("Exportación", "Se exportó correctamente")
             }
           >
-            <HStack alignItems="center">
+            <XStack alignItems="center">
               <Image
-                className="w-5 h-5 mr-2"
+                style={{ width: 30, height: 30, marginRight: 10 }}
                 source={{
                   uri: "https://img.icons8.com/?size=48&id=13417&format=png",
                 }}
               />
               <Text className="font-semibold text-black">Archivo PDF</Text>
-            </HStack>
+            </XStack>
           </Button>
-        </VStack>
+        </YStack>
         <Button
           className="rounded-lg  mt-14"
           height={10}
-          endIcon={
+          icon={
             <FontAwesome
               name="download"
               color="white"
@@ -100,7 +82,6 @@ export default function Export() {
           }
         >
           <Text
-            className="font-semibold text-white"
             onPress={() =>
               Alert.alert("Exportación", "Se exportó correctamente")
             }
@@ -108,7 +89,7 @@ export default function Export() {
             Exportar en los 3 formatos
           </Text>
         </Button>
-      </VStack>
-    </View>
+      </YStack>
+    </YStack>
   );
 }

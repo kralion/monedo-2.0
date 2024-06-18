@@ -1,9 +1,8 @@
-import useAuth from "@/context/AuthContext";
+import { useAuth } from "@/context";
 import { AntDesign } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { Badge, HStack, ScrollView, VStack } from "native-base";
-import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { ScrollView, Text, XStack, YStack } from "tamagui";
 
 export default function Membership() {
   const { userData, session } = useAuth();
@@ -23,8 +22,15 @@ export default function Membership() {
     : "";
   return (
     <ScrollView background="white" className="p-5 space-y-5 ">
-      <HStack space={2} alignItems="start">
-        <View className="bg-teal-500/20 rounded-lg p-3">
+      <XStack gap="$2">
+        <View
+          style={{
+            width: 50,
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            padding: 6,
+          }}
+        >
           <Image
             style={{
               width: 50,
@@ -34,7 +40,7 @@ export default function Membership() {
             source={require("../../assets/icon.png")}
           />
         </View>
-        <VStack space={0.5} alignItems="start">
+        <YStack gap="$1">
           <Text className="text-xl font-bold">
             {userData?.rol === "premium" ? "Plan Pro" : "Plan Básico"}
           </Text>
@@ -48,21 +54,22 @@ export default function Membership() {
               {userData?.rol === "premium" ? "20/12" : "15/12"}
             </Text>
           </Text>
-        </VStack>
-      </HStack>
-      <VStack className="border border-teal-500" borderRadius={10}>
-        <HStack
+        </YStack>
+      </XStack>
+      <YStack className="border border-teal-500" borderRadius={10}>
+        <XStack
           className="bg-teal-300/50 p-4"
-          borderTopRadius={10}
-          space={2}
+          borderTopStartRadius="$2"
+          borderTopEndRadius="$2"
+          gap="$2"
           alignItems="center"
         >
           <AntDesign name="infocirlceo" size={24} color="teal" />
           <Text className="text-sm font-semibold  text-teal-700">
             Informacion del Plan
           </Text>
-        </HStack>
-        <VStack className="p-4" space={3}>
+        </XStack>
+        <YStack className="p-4" space={3}>
           <Text className="text-sm mb-3 text-mute">
             Esta información es de caracter informativo y no puede ser editada o
             modificada. Se cauteloso con la información que compartas.
@@ -71,28 +78,28 @@ export default function Membership() {
           <Text className="text-sm font-semibold  ">
             Fecha Adquirida : {dateFormatted} - {timeformatted}
           </Text>
-          <HStack space={2}>
+          <XStack space={2}>
             <Text className="text-sm text-slate-500">Código :</Text>
             <Text className="text-sm  ">
               {userData?.rol === "premium" ? "pR3M1uM" : "bA1sIcO"}
             </Text>
-          </HStack>
-          <HStack space={2}>
+          </XStack>
+          <XStack space={2}>
             <Text className="text-sm text-slate-500">Propietario :</Text>
             <Text className="text-sm  ">
               {userData.nombres} {userData.apellidos}
             </Text>
-          </HStack>
-          <HStack space={2} alignItems="center">
+          </XStack>
+          <XStack space={2} alignItems="center">
             <Text className="text-sm text-slate-500">Facturación Actual :</Text>
-            <Badge className="text-sm" borderRadius={5} colorScheme="teal">
+            <Text bg="$green10Light" br="$5" p="$2">
               {userData?.rol === "premium"
                 ? "20.00 SOLES / mes"
                 : "00.00 SOLES / mes"}
-            </Badge>
-          </HStack>
-        </VStack>
-      </VStack>
+            </Text>
+          </XStack>
+        </YStack>
+      </YStack>
     </ScrollView>
   );
 }
