@@ -1,13 +1,12 @@
 import { SavingGoalModal } from "@/components/popups/save-goals";
 import { Budget } from "@/components/wallet/budget";
-import { useAuth, useBudgetContext, useGoalsContext } from "@/context";
+import { useAuth, useBudgetContext } from "@/context";
 import { IBudget } from "@/interfaces";
 import { FlashList } from "@shopify/flash-list";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Adapt,
@@ -194,7 +193,7 @@ export default function Wallet() {
           />
           <YStack mt={5}>
             <H4>Historial de Metas</H4>
-            <FlashListw
+            <FlashList
               data={budgets}
               estimatedItemSize={100}
               renderItem={({ item: budget }) => {
