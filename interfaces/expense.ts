@@ -4,11 +4,11 @@ export interface IExpense {
   descripcion?: string;
   usuario_id?: string;
   periodicidad?: boolean;
+  numeroGasto: number;
   categoria: string;
   monto: number;
   assetIdentificador?: string;
   divisa?: string;
-  numeroExpense?: number;
 }
 export interface IGoal {
   id?: string;
@@ -35,7 +35,9 @@ export interface IBudgetContextProvider {
 
 export interface IExpenseContextProvider {
   addExpense: (expense: IExpense) => void;
+  expense: IExpense;
   expenses: IExpense[];
+  getExpenseById: (id: string) => Promise<IExpense>;
   updateExpense: (expense: IExpense) => void;
   getExpensesByUser: (id: string) => Promise<IExpense[]>;
   sumOfAllOfExpensesMonthly: () => Promise<number>;

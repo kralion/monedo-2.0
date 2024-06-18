@@ -1,127 +1,134 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Modal,
-  Pressable,
-  Text,
-  VStack,
-} from "native-base";
+import { IBudget } from "@/interfaces";
+import { X } from "@tamagui/lucide-icons";
+import { Image } from "expo-image";
 import * as React from "react";
-import { Image } from "react-native";
-import { IPresupuesto } from "../../interfaces/presupuesto";
-export function Presupuesto({ presupuesto }: { presupuesto: IPresupuesto }) {
+import { Button, Dialog, ListItem, Text, YStack } from "tamagui";
+
+export function Budget({ presupuesto }: { presupuesto: IBudget }) {
   const { monto, descripcion, fecha_registro, fecha_final } = presupuesto;
   const [openBudgetDetails, setOpenBudgetDetails] = React.useState(false);
-  const formattedFechaRegistro = fecha_registro
-    ? new Date(fecha_registro).toLocaleDateString("es-ES", {
-        year: "2-digit",
-        month: "numeric",
-        day: "numeric",
-      })
-    : "";
-  const formattedFechaFinal = fecha_final
-    ? new Date(fecha_final).toLocaleDateString("es-ES", {
-        year: "2-digit",
-        month: "numeric",
-        day: "numeric",
-      })
-    : "";
-
-  function openModal() {
-    setOpenBudgetDetails(true);
-  }
 
   return (
-    <Pressable onPress={() => openModal()}>
-      {({ isPressed }) => {
-        return (
-          <>
-            <Box
-              bg={isPressed ? "white" : "coolGray.100"}
-              rounded={10}
-              p={4}
-              my={2}
-            >
-              <HStack justifyContent="space-between" alignItems="center">
-                <HStack space={3} alignItems="center">
-                  <Box className="rounded-full ">
-                    <Image
-                      width={40}
-                      height={40}
-                      source={{
-                        uri: "https://img.icons8.com/?size=48&id=WXSGKqvop1Fo&format=gif",
-                      }}
-                    />
-                  </Box>
-                  <VStack space={1}>
-                    <Text className="text-textmuted">Periodo</Text>
-                    <HStack space={1}>
-                      <Text className="text-xs">
-                        {formattedFechaRegistro} -
-                      </Text>
-                      <Text className="text-xs">{formattedFechaFinal}</Text>
-                    </HStack>
-                  </VStack>
-                </HStack>
-
-                <Text className=" text-black font-bold">S/. {monto}</Text>
-              </HStack>
-            </Box>
-            <Modal
-              isOpen={openBudgetDetails}
-              onClose={() => setOpenBudgetDetails(false)}
-              safeAreaTop={true}
-              size="xl"
-            >
-              <Modal.Content rounded={10}>
-                <Modal.Header>Detalles del Presupuesto</Modal.Header>
-                <Modal.Body>
-                  <VStack space={3}>
-                    <VStack>
-                      <Text className="font-bold">Monto</Text>
-                      <Text>S/. {monto}</Text>
-                    </VStack>
-                    <VStack>
-                      <Text className="font-bold">Fecha de Registro</Text>
-                      <Text>{fecha_registro}</Text>
-                    </VStack>
-                    <VStack>
-                      <Text className="font-bold">Fecha Final Propuesta</Text>
-                      <Text>{fecha_final}</Text>
-                    </VStack>
-                    <VStack>
-                      <Text className="font-bold">Descripción</Text>
-                      <Text>{descripcion}</Text>
-                    </VStack>
-                  </VStack>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button.Group space={2}>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => {
-                        setOpenBudgetDetails(false);
-                      }}
-                    >
-                      Cerrar
-                    </Button>
-                    <Button
-                      rounded={10}
-                      onPress={() => {
-                        alert("La funcionalidad aun no esta disponible");
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  </Button.Group>
-                </Modal.Footer>
-              </Modal.Content>
-            </Modal>
-          </>
-        );
+    <ListItem
+      onPress={() => {
+        setOpenBudgetDetails(true);
       }}
-    </Pressable>
+      pressTheme
+      pressStyle={{
+        opacity: 0.8,
+      }}
+      bordered
+      borderRadius={18}
+      mb={7}
+      title={
+        <YStack>
+          <Text fontWeight="bold">Presupuesto </Text>
+          <Text>Identificador </Text>
+        </YStack>
+      }
+      icon={
+        <Image
+          source={{
+            uri: "https://img.icons8.com/?size=48&id=ek6vl8DEBehk&format=png",
+          }}
+          style={{
+            width: 40,
+            height: 40,
+          }}
+        />
+      }
+      subTitle={fecha_final}
+      iconAfter={<Text color="$red10"> S/. {monto}</Text>}
+    >
+      <Dialog modal open={openBudgetDetails}>
+        <Dialog.Portal>
+          <Dialog.Overlay
+            key="overlay"
+            animation="slow"
+            opacity={0.7}
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+          <Dialog.Content
+            bordered
+            elevate
+            key="content"
+            animateOnly={["transform", "opacity"]}
+            animation={[
+              "quicker",
+              {
+                opacity: {
+                  overshootClamping: true,
+                },
+              },
+            ]}
+            enterStyle={{
+              x: 0,
+              y: -20,
+              opacity: 0,
+              scale: 0.9,
+            }}
+            exitStyle={{
+              x: 0,
+              y: 10,
+              opacity: 0,
+              scale: 0.95,
+            }}
+            gap="$4"
+          >
+            <Dialog.Title>Detalles de la Meta de Ahorro</Dialog.Title>
+            <Dialog.Description>
+              Aqui podrás ver los detalles de la meta de ahorro que has
+              seleccionado.
+            </Dialog.Description>
+
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$3"
+                right="$3"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+            <YStack gap="$3">
+              <YStack>
+                <Text fontWeight="bold">Monto</Text>
+                <Text>S/. {monto}</Text>
+              </YStack>
+              <YStack>
+                <Text>Descripcion</Text>
+                <Text>{descripcion}</Text>
+              </YStack>
+              <YStack>
+                <Text>Fecha Registro</Text>
+                <Text>{fecha_registro}</Text>
+              </YStack>
+              <YStack>
+                <Text className="font-bold">Fecha Expiración</Text>
+                <Text>{fecha_final}</Text>
+              </YStack>
+            </YStack>
+            <YStack gap="$4">
+              <Button
+                onPress={() => {
+                  setOpenBudgetDetails(false);
+                }}
+              >
+                Cerrar
+              </Button>
+              <Button
+                onPress={() => {
+                  alert("La funcionalidad aun no esta disponible");
+                }}
+              >
+                Editar
+              </Button>
+            </YStack>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+    </ListItem>
   );
 }

@@ -2471,6 +2471,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:8.0.1":
+  version: 8.0.1
+  resolution: "@react-native-community/datetimepicker@npm:8.0.1"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: d6ec07197ad12ca49188c17b5dc5c62626f55381b20f474a36314ce4b8a3705e366244f8a565f38525730834c48dfe59c5b3b5ae17dafc82618ec2a8c05d1b32
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.74.83, @react-native/assets-registry@npm:~0.74.83":
   version: 0.74.83
   resolution: "@react-native/assets-registry@npm:0.74.83"
@@ -7137,6 +7153,7 @@ __metadata:
     "@expo/metro-config": "npm:~0.18.4"
     "@expo/metro-runtime": "npm:~3.2.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
+    "@react-native-community/datetimepicker": "npm:8.0.1"
     "@react-navigation/native": "npm:^6.1.17"
     "@shopify/flash-list": "npm:1.6.4"
     "@supabase/supabase-js": "npm:^2.43.5"

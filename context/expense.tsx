@@ -3,14 +3,16 @@ import { endOfMonth, formatISO, startOfMonth } from "date-fns";
 import * as React from "react";
 import { createContext, useContext } from "react";
 import { IExpenseContextProvider, IExpense } from "@/interfaces";
-import {useAuth} from "./auth";
+import { useAuth } from "./auth";
 
 export const ExpenseContext = createContext<IExpenseContextProvider>({
   addExpense: () => {},
   updateExpense: () => {},
   sumOfAllOfExpensesMonthly: async () => 0,
+  getExpenseById: async (id: string): Promise<IExpense> => ({} as IExpense),
   getExpensesByUser: async (id: string) => [],
   expenses: [],
+  expense: {} as IExpense,
   getTopExpenses: async (): Promise<IExpense[]> => [],
   getRecentExpenses: async (): Promise<IExpense[]> => [],
   getExpensesByPeriodicity: async (): Promise<IExpense[]> => [],
@@ -22,6 +24,7 @@ export const ExpenseContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [expenses, setExpenses] = React.useState<IExpense[]>([]);
+  const [expense, setExpense] = React.useState<IExpense>({} as IExpense);
   const { userData } = useAuth();
 
   const addExpense = async (expense: IExpense) => {
@@ -98,16 +101,28 @@ export const ExpenseContextProvider = ({
     if (!expenses) return [];
     return expenses;
   }
+
+  async function getExpenseById(id: string) {
+    const { data, error } = await supabase
+      .from("expenses")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) throw error;
+    setExpense(JSON.parse(JSON.stringify(data)));
+    return data;
+  }
   return (
     <ExpenseContext.Provider
       value={{
         getExpensesByUser,
         expenses,
-
+        getExpenseById,
         addExpense,
         sumOfAllOfExpensesMonthly,
         updateExpense,
         getTopExpenses,
+        expense,
         getRecentExpenses,
         getExpensesByPeriodicity,
       }}
