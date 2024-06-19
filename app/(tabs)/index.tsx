@@ -180,10 +180,10 @@ export default function Home() {
 
               <FlashList
                 data={expenses}
-                estimatedItemSize={16}
-                renderItem={({ item: expense }) => {
-                  return <Expense expense={expense} />;
-                }}
+                estimatedItemSize={50}
+                renderItem={({ item: expense }) => (
+                  <Expense expense={expense} />
+                )}
               />
             </YStack>
           </ScrollView>

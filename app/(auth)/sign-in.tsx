@@ -1,4 +1,5 @@
 import { supabase } from "@/utils/supabase";
+import { Info } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -25,7 +26,6 @@ export default function SignInScreen() {
   const {
     control,
     handleSubmit,
-
     formState: { errors },
   } = useForm<FormData>();
   const [loading, setLoading] = React.useState(false);
@@ -60,18 +60,6 @@ export default function SignInScreen() {
           <YStack gap="$4">
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  py={3}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  autoCapitalize="none"
-                  borderRadius={7}
-                  placeholder="Correo electrónico"
-                  size="$5"
-                />
-              )}
               name="email"
               rules={{
                 required: {
@@ -83,25 +71,58 @@ export default function SignInScreen() {
                   message: "Email no es válido",
                 },
               }}
-              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) => (
+                <YStack>
+                  <Input
+                    py={3}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    autoCapitalize="none"
+                    borderRadius={7}
+                    placeholder="Correo electrónico"
+                    size="$5"
+                  />
+                  {errors.email && (
+                    <XStack gap="$1" alignItems="center">
+                      <Text fontSize="$3" color="$red9Light">
+                        <Info />
+                        {errors.email.message}
+                      </Text>
+                    </XStack>
+                  )}
+                </YStack>
+              )}
             />
 
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  py={3}
-                  placeholder="Contraseña"
-                  secureTextEntry
-                  size="$5"
-                  onChangeText={onChange}
-                  passwordRules={
-                    "required: upper; required: lower; required: digit; minlength: 8;"
-                  }
-                />
-              )}
               name="password"
-              rules={{ required: true }}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Campo requerido",
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <YStack>
+                  <Input
+                    py={3}
+                    placeholder="Contraseña"
+                    secureTextEntry
+                    size="$5"
+                    onChangeText={onChange}
+                  />
+                  {errors.password && (
+                    <XStack gap="$1" alignItems="center">
+                      <Text fontSize="$3" color="$red9Light">
+                        <Info />
+                        {errors.password.message}
+                      </Text>
+                    </XStack>
+                  )}
+                </YStack>
+              )}
             />
 
             <Button

@@ -1,10 +1,14 @@
 import { useAuth, usePremiumStatusContext } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { CreditCard } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { SizableText, XStack } from "tamagui";
+import { useTheme } from "tamagui";
+import { styled } from "tamagui";
 import { Button, Input, Spinner, Text, YStack } from "tamagui";
 
 interface ICard {
@@ -22,6 +26,8 @@ export default function Stripe() {
   const [showConfetti, setShowConfetti] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const { userData } = useAuth();
+  const { theme } = useTheme();
+  const isDarkMode = theme?.name === "dark";
   const {
     control,
     handleSubmit,
@@ -32,6 +38,14 @@ export default function Stripe() {
       divisa: "pen",
     },
   });
+  const StyledXStack = styled(XStack, {
+    backgroundColor: isDarkMode ? "$gray8" : "$gray4",
+    borderRadius: "$4",
+    alignItems: "center",
+    px: "$2",
+  });
+  const inputIconColor = isDarkMode ? "$gray5" : "$gray9";
+  const placeholderTextColor = isDarkMode ? "$gray5" : "$gray9";
   async function updateUserRole(userId: string | undefined) {
     const { error } = await supabase
       .from("usuarios")
@@ -78,26 +92,6 @@ export default function Stripe() {
             <Text>Número de Tarjeta</Text>
 
             <Controller
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  size="lg"
-                  keyboardType="number-pad"
-                  my={3}
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                  // rightElement={
-                  //   <FontAwesome5
-                  //     name="credit-card"
-                  //     color="#6D6868"
-                  //     marginRight={10}
-                  //     size={15}
-                  //   />
-                  // }
-                  placeholder="1234 1234 1234 1234"
-                  borderRadius={7}
-                />
-              )}
               name="cardNumber"
               rules={{
                 required: {
@@ -109,6 +103,28 @@ export default function Stripe() {
                   message: "Solo caracteres válidos",
                 },
               }}
+              control={control}
+              render={({ field }) => (
+                <StyledXStack>
+                  <Input
+                    size="$5"
+                    autoCapitalize="none"
+                    borderRadius={0}
+                    placeholder="1234 1234 1234 1234"
+                    py={3}
+                    placeholderTextColor={placeholderTextColor}
+                    flex={1}
+                    {...field}
+                    backgroundColor="transparent"
+                    keyboardType="number-pad"
+                  />
+                  <XStack opacity={0.5}>
+                    <SizableText color={inputIconColor}>
+                      <CreditCard />
+                    </SizableText>
+                  </XStack>
+                </StyledXStack>
+              )}
             />
           </YStack>
 

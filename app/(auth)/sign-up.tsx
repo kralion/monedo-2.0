@@ -1,7 +1,7 @@
 import { TermsPolicyModal } from "@/components/popups/terms&policy";
 import { supabase } from "@/utils/supabase";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Check } from "@tamagui/lucide-icons";
+import { Check, Info, Mail } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
@@ -9,6 +9,8 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { styled } from "tamagui";
+import { useTheme } from "tamagui";
 import {
   Button,
   Checkbox,
@@ -38,11 +40,23 @@ export default function SignUpScreen() {
     reset,
     formState: { errors },
   } = useForm<FormData>();
-  const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [termsAndConditions, setTermsAndConditions] = React.useState(false);
   const [showTCModal, setShowTCModal] = React.useState(false);
   const router = useRouter();
   const toast = useToastController();
+  const { theme } = useTheme();
+  const isDarkMode = theme?.name === "dark";
+
+  const StyledXStack = styled(XStack, {
+    backgroundColor: isDarkMode ? "$gray8" : "$gray4",
+    borderRadius: "$4",
+    alignItems: "center",
+    px: "$2",
+  });
+
+  const inputIconColor = isDarkMode ? "$gray5" : "$gray9";
+  const placeholderTextColor = isDarkMode ? "$gray5" : "$gray9";
   async function sendWelcomeNotification(userId: string) {
     const notification = {
       titulo: "Bienvenido !!!",
@@ -62,7 +76,7 @@ export default function SignUpScreen() {
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo: "https://expensetrackerweb.vercel.app",
+        emailRedirectTo: "https://monedo.vercel.app",
       },
     });
 
@@ -96,7 +110,7 @@ export default function SignUpScreen() {
               <Text>Ya tienes una cuenta?</Text>
 
               <Text
-                onPress={() => router.push("/(auth)/sign-in")}
+                onPress={() => router.back()}
                 color="$green8Light"
                 pressStyle={{ textDecorationLine: "underline" }}
               >
@@ -139,19 +153,29 @@ export default function SignUpScreen() {
                   },
                   pattern: {
                     value: /^[a-zA-Z\s]*$/,
-                    message: "Solo puede contener letras",
+                    message: "Sólo letras",
                   },
                 }}
                 render={({ field: { onChange, value } }) => (
-                  <Input
-                    size="$5"
-                    width={"48%"}
-                    borderRadius={7}
-                    py={3}
-                    placeholder="Nombres"
-                    value={value}
-                    onChangeText={(value) => onChange(value)}
-                  />
+                  <YStack>
+                    <Input
+                      size="$5"
+                      width={"48%"}
+                      borderRadius={7}
+                      py={3}
+                      placeholder="Nombres"
+                      value={value}
+                      onChangeText={(value) => onChange(value)}
+                    />
+                    {errors.nombres && (
+                      <XStack gap="$1" alignItems="center">
+                        <Text fontSize="$3" color="$red9Light">
+                          <Info />
+                          {errors.nombres.message}
+                        </Text>
+                      </XStack>
+                    )}
+                  </YStack>
                 )}
               />
 
@@ -165,19 +189,29 @@ export default function SignUpScreen() {
                   },
                   pattern: {
                     value: /^[a-zA-Z\s]*$/,
-                    message: "Solo puede contener letras",
+                    message: "Solo letras",
                   },
                 }}
                 render={({ field: { onChange, value } }) => (
-                  <Input
-                    size="$5"
-                    borderRadius={7}
-                    width={"47%"}
-                    py={3}
-                    placeholder="Apellidos"
-                    value={value}
-                    onChangeText={(value) => onChange(value)}
-                  />
+                  <YStack>
+                    <Input
+                      size="$5"
+                      borderRadius={7}
+                      width={"47%"}
+                      py={3}
+                      placeholder="Apellidos"
+                      value={value}
+                      onChangeText={(value) => onChange(value)}
+                    />
+                    {errors.apellidos && (
+                      <XStack gap="$1" alignItems="center">
+                        <Text fontSize="$3" color="$red9Light">
+                          <Info />
+                          {errors.apellidos.message}
+                        </Text>
+                      </XStack>
+                    )}
+                  </YStack>
                 )}
               />
             </XStack>
@@ -194,75 +228,89 @@ export default function SignUpScreen() {
                   message: "Email no es válido",
                 },
               }}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  size="$5"
-                  autoCapitalize="none"
-                  borderRadius={7}
-                  py={3}
-                  placeholder="Email"
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                />
+              render={({ field }) => (
+                <YStack>
+                  <StyledXStack>
+                    <Mail color={inputIconColor} />
+                    <Input
+                      size="$5"
+                      autoCapitalize="none"
+                      borderRadius={0}
+                      py={3}
+                      placeholder="Email"
+                      placeholderTextColor={placeholderTextColor}
+                      flex={1}
+                      {...field}
+                      backgroundColor="transparent"
+                    />
+                  </StyledXStack>
+                  {errors.email && (
+                    <XStack gap="$1" alignItems="center">
+                      <Text fontSize="$3" color="$red9Light">
+                        <Info />
+                        {errors.email.message}
+                      </Text>
+                    </XStack>
+                  )}
+                </YStack>
               )}
             />
-
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: "Contraseña es requerida",
-                },
-                minLength: {
-                  value: 8,
-                  message: "Contraseña debe tener al menos 8 caracteres",
-                },
-              }}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  size="$5"
-                  borderRadius={7}
-                  py={3}
-                  placeholder="Contraseña"
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                  secureTextEntry
-                  passwordRules={
-                    "minlength: 8; required: lower; required: upper; required: digit; required: [-];"
-                  }
-                />
-              )}
-            />
-          </YStack>
-          <YStack gap="$4">
-            <XStack mt={4}>
+            <YStack>
               <Controller
+                name="password"
                 control={control}
-                name="termsAndConditions"
-                defaultValue={false}
                 rules={{
                   required: {
                     value: true,
-                    message:
-                      "Debe aceptar los Términos y Condiciones para continuar",
+                    message: "Contraseña es requerida",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Mínimo 8 caracteres",
                   },
                 }}
-                render={({ field }) => (
-                  <XStack gap="$2" alignItems="center">
-                    <Checkbox className="border" value={field.value.toString()}>
-                      <Checkbox.Indicator>
-                        <Check />
-                      </Checkbox.Indicator>
-                    </Checkbox>
-                    <Label>Acepto los Términos y Condiciones</Label>
-                  </XStack>
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    size="$5"
+                    borderRadius={7}
+                    py={3}
+                    placeholder="Contraseña"
+                    value={value}
+                    onChangeText={(value) => onChange(value)}
+                    secureTextEntry
+                  />
                 )}
               />
+              {errors.password && (
+                <XStack gap="$1" alignItems="center">
+                  <Text fontSize="$3" color="$red9Light">
+                    <Info />
+                    {errors.password.message}
+                  </Text>
+                </XStack>
+              )}
+            </YStack>
+          </YStack>
+          <YStack gap="$4">
+            <XStack gap="$2" mt="$2" alignItems="center">
+              <Checkbox
+                borderColor={termsAndConditions ? "$" : "$red9Light"}
+                className="border"
+                onCheckedChange={() =>
+                  setTermsAndConditions(!termsAndConditions)
+                }
+                checked={termsAndConditions}
+              >
+                <Checkbox.Indicator>
+                  <Check />
+                </Checkbox.Indicator>
+              </Checkbox>
+              <Label color={termsAndConditions ? "" : "$red9Light"}>
+                Acepto los Términos y Condiciones
+              </Label>
             </XStack>
             <Button
-              // onPress={handleSubmit(signUpWithEmail)}
+              onPress={handleSubmit(signUpWithEmail)}
               size="$5"
               bg="$green8Light"
               color="$white1"

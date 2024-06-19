@@ -1,4 +1,5 @@
 import { useExpenseContext } from "@/context";
+import { IExpense } from "@/interfaces";
 import { supabase } from "@/utils/supabase";
 import { Ionicons } from "@expo/vector-icons";
 import { useToastController } from "@tamagui/toast";
@@ -19,29 +20,48 @@ import {
 
 export default function ExpenseDetailsModal() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { getExpenseById, expense } = useExpenseContext();
+  const [isFetching, setIsFetching] = React.useState(false);
+  const { getExpenseById, deleteExpense } = useExpenseContext();
   const params = useLocalSearchParams<{ id: string }>();
   const toast = useToastController();
+  const [expense, setExpense] = React.useState<IExpense>({} as IExpense);
   const handleDeleteExpense = async (id: string) => {
-    await supabase.from("expenses").delete().eq("id", id);
+    deleteExpense(id);
     toast.show("Gasto eliminado");
     router.push("/(tabs)/");
   };
+  async function getExpense() {
+    setIsFetching(true);
+    const { data, error } = await supabase
+      .from("expenses")
+      .select("*")
+      .eq("id", params.id)
+      .single();
+    setExpense(data);
+    setIsFetching(false);
 
+    if (error) {
+      console.log(error);
+    }
+  }
+
+  if (isFetching) {
+    return <Spinner mt="$5" size="large" />;
+  }
   React.useEffect(() => {
-    getExpenseById(params.id ?? "");
+    if (!params.id) {
+      <Spinner size="large" />;
+    } else {
+      getExpense();
+    }
   }, [params.id]);
 
   const monto_gastado = expense?.monto;
-  // const monto_presupuestado = expense.cantidad;
   //TODO: Cambiar este valor por el monto presupuestado del mes actual
   const monto_presupuestado = 1000;
-  const totalPercentageExpensed = (monto_gastado / monto_presupuestado) * 100;
+  const totalPercentageExpensed =
+    (monto_gastado ?? 100 / monto_presupuestado) * 100;
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const onClose = () => setIsOpen(false);
-
-  const cancelRef = React.useRef(null);
   return (
     <YStack borderBottomEndRadius={10} borderBottomStartRadius={10} p={3}>
       {totalPercentageExpensed >= 80 && (
@@ -104,9 +124,9 @@ export default function ExpenseDetailsModal() {
 
       <XStack p="$2" justifyContent="space-between">
         <XStack gap="$1">
-          <Text fontWeight="bold">#{expense.numeroGasto}</Text>
+          <Text fontWeight="bold">#{expense?.numeroGasto}</Text>
           <Text bg="$green10Light" br="$5" p="$2">
-            {expense.categoria}
+            {expense?.categoria}
           </Text>
         </XStack>
         {/* //! FEATURE : Cambiar este icono dependiendo al tipo de gasto */}
@@ -183,7 +203,7 @@ export default function ExpenseDetailsModal() {
 
       <XStack justifyContent="center" p="$2" gap="$2">
         <Button
-          onPress={() => setIsOpen(!isOpen)}
+          onPress={() => setIsOpen(true)}
           size="$5"
           bg="$red8Light"
           color="$white1"

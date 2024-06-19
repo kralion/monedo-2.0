@@ -60,7 +60,6 @@ export default function AddExpense() {
       setIsLoading(false);
       toast.show("Gasto actualizado correctamente");
       setOpenModal(true);
-      setExpensePrice(data.monto.toString());
       reset();
       setValue("categoria", "");
     } catch (error) {

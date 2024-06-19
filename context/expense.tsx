@@ -16,6 +16,7 @@ export const ExpenseContext = createContext<IExpenseContextProvider>({
   getTopExpenses: async (): Promise<IExpense[]> => [],
   getRecentExpenses: async (): Promise<IExpense[]> => [],
   getExpensesByPeriodicity: async (): Promise<IExpense[]> => [],
+  deleteExpense: () => {},
 });
 
 export const ExpenseContextProvider = ({
@@ -71,6 +72,10 @@ export const ExpenseContextProvider = ({
     await supabase.from("expenses").update(expense).eq("id", expense.id);
   };
 
+  const deleteExpense = async (id: string) => {
+    await supabase.from("expenses").delete().eq("id", id);
+  };
+
   async function getTopExpenses() {
     const { data: expenses, error } = await supabase
       .from("expenses")
@@ -117,6 +122,7 @@ export const ExpenseContextProvider = ({
       value={{
         getExpensesByUser,
         expenses,
+        deleteExpense,
         getExpenseById,
         addExpense,
         sumOfAllOfExpensesMonthly,

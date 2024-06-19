@@ -14,11 +14,11 @@ export function Expense({ expense }: { expense: IExpense }) {
       (icon) => icon.label.toLowerCase() === expense.categoria
     )?.iconHref ||
     "https://img.icons8.com/?size=160&id=MjAYkOMsbYOO&format=png";
-  const id = expense.id;
   return (
     <ListItem
       onPress={() => {
-        router.push(`/expenses/${id}`);
+        console.log("Expense clicked", expense.id);
+        router.push(`/(expenses)/details/${expense.id}`);
       }}
       pressStyle={{
         opacity: 0.8,

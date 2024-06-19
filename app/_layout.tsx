@@ -70,11 +70,11 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="(expenses)"
+            name="(modals)"
             options={{ headerShown: false, title: "" }}
           />
           <Stack.Screen
-            name="(modals)"
+            name="(expenses)"
             options={{ headerShown: false, title: "" }}
           />
         </Stack>

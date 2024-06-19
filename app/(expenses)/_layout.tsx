@@ -29,7 +29,7 @@ export default function ModalsLayout() {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.push(`/edit/${params.id}`);
+                router.push(`/(expenses)/${params.id}`);
               }}
             >
               <Text className="text-blue-500 text-[17px] pr-2">Editar</Text>
