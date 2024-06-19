@@ -34,7 +34,7 @@ export const BudgetContextProvider = ({
 
   async function getRecentBudgets(id: string) {
     const { data, error } = await supabase
-      .from("prespuestos")
+      .from("presupuestos")
       .select("*")
       .eq("usuario_id", id)
       .order("fecha_registro", { ascending: false });

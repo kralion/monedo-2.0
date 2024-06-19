@@ -18,6 +18,7 @@ import {
 } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
 import { Sheet } from "tamagui";
+import { ScrollView } from "tamagui";
 const items = [
   { name: "Top Gastos" },
   { name: "Periódicos" },
@@ -81,11 +82,13 @@ export default function Statistics() {
                 <MaterialCommunityIcons name="arrow-collapse" size={24} />
               </TouchableOpacity>
             </XStack>
-            <FlashList
-              data={expenses}
-              renderItem={({ item }) => <Expense expense={item} />}
-              estimatedItemSize={16}
-            />
+            <ScrollView>
+              <FlashList
+                data={expenses}
+                renderItem={({ item }) => <Expense expense={item} />}
+                estimatedItemSize={16}
+              />
+            </ScrollView>
           </SafeAreaView>
         </Animated.View>
       ) : (
@@ -218,6 +221,8 @@ export default function Statistics() {
                 />
               </TouchableOpacity>
             </XStack>
+          </YStack>
+          <ScrollView>
             <FlashList
               data={expenses}
               renderItem={({ item: expense }) => {
@@ -225,7 +230,7 @@ export default function Statistics() {
               }}
               estimatedItemSize={16}
             />
-          </YStack>
+          </ScrollView>
         </SafeAreaView>
       )}
     </>

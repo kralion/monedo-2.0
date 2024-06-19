@@ -1,6 +1,6 @@
 import { useAuth, usePremiumStatusContext } from "@/context";
 import { supabase } from "@/utils/supabase";
-import { CreditCard } from "@tamagui/lucide-icons";
+import { CalendarSearch, CreditCard } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -43,6 +43,8 @@ export default function Stripe() {
     borderRadius: "$4",
     alignItems: "center",
     px: "$2",
+    mt: "$2",
+    pr: "$4",
   });
   const inputIconColor = isDarkMode ? "$gray5" : "$gray9";
   const placeholderTextColor = isDarkMode ? "$gray5" : "$gray9";
@@ -83,7 +85,7 @@ export default function Stripe() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <YStack p="$3" gap="$4">
+      <YStack py="$3" gap="$4">
         {showConfetti && (
           <ConfettiCannon autoStart count={200} origin={{ x: 50, y: 50 }} />
         )}
@@ -134,23 +136,27 @@ export default function Stripe() {
             <Controller
               control={control}
               render={({ field: { onChange, value } }) => (
-                <Input
-                  size="lg"
-                  keyboardType="number-pad"
-                  my={3}
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                  // rightElement={
-                  //   <MaterialCommunityIcons
-                  //     name="identifier"
-                  //     color="#6D6868"
-                  //     marginRight={10}
-                  //     size={20}
-                  //   />
-                  // }
-                  placeholder="123"
-                  borderRadius={7}
-                />
+                <StyledXStack>
+                  <Input
+                    onChangeText={(value) => {
+                      if (value.length === 2 && !value.includes("/")) {
+                        onChange(value + "/");
+                      } else {
+                        onChange(value);
+                      }
+                    }}
+                    value={value}
+                    placeholder="123"
+                    size="$5"
+                    autoCapitalize="none"
+                    borderRadius={0}
+                    py={3}
+                    placeholderTextColor={placeholderTextColor}
+                    flex={1}
+                    backgroundColor="transparent"
+                    keyboardType="number-pad"
+                  />
+                </StyledXStack>
               )}
               name="cvc"
               rules={{
@@ -168,32 +174,6 @@ export default function Stripe() {
           <YStack gap="$1">
             <Text>Fecha Expiración</Text>
             <Controller
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  size="lg"
-                  keyboardType="number-pad"
-                  my={3}
-                  value={value}
-                  onChangeText={(value) => {
-                    if (value.length === 2 && !value.includes("/")) {
-                      onChange(value + "/");
-                    } else {
-                      onChange(value);
-                    }
-                  }}
-                  // rightElement={
-                  //   <MaterialCommunityIcons
-                  //     name="calendar-month"
-                  //     color="#6D6868"
-                  //     marginRight={10}
-                  //     size={20}
-                  //   />
-                  // }
-                  placeholder="MM/YY"
-                  borderRadius={7}
-                />
-              )}
               name="expiracion"
               rules={{
                 required: {
@@ -205,6 +185,30 @@ export default function Stripe() {
                   message: "Solo caracteres válidos",
                 },
               }}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <StyledXStack>
+                  <Input
+                    onChangeText={(value) => {
+                      if (value.length === 2 && !value.includes("/")) {
+                        onChange(value + "/");
+                      } else {
+                        onChange(value);
+                      }
+                    }}
+                    value={value}
+                    placeholder="MM/YY"
+                    size="$5"
+                    autoCapitalize="none"
+                    borderRadius={0}
+                    py={3}
+                    placeholderTextColor={placeholderTextColor}
+                    flex={1}
+                    backgroundColor="transparent"
+                    keyboardType="number-pad"
+                  />
+                </StyledXStack>
+              )}
             />
           </YStack>
           <Button disabled size="$5" fontSize="$5" bg="$gray8">

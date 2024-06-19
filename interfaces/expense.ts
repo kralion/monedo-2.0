@@ -18,9 +18,9 @@ export interface IGoal {
 }
 export interface IBudget {
   id?: string;
-  usuario_id?: string;
-  fecha_registro: string;
-  fecha_final?: string;
+  usuario_id: string;
+  fecha_registro: Date;
+  fecha_final: Date;
   descripcion?: string;
   monto: number;
 }

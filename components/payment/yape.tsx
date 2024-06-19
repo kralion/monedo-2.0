@@ -3,7 +3,7 @@ import { Button, Text, YStack } from "tamagui";
 
 export default function Yape() {
   return (
-    <YStack p="$3" gap="$6">
+    <YStack py="$3" gap="$6">
       <YStack gap="$2">
         <Text>Número de Teléfono</Text>
 

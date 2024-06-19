@@ -6,6 +6,8 @@ import { Button, Dialog, ListItem, Text, YStack } from "tamagui";
 export function Budget({ budget }: { budget: IBudget }) {
   const { monto, fecha_final, descripcion, fecha_registro } = budget;
   const [openBudgetDetails, setOpenBudgetDetails] = React.useState(false);
+  const date = new Date(fecha_final);
+  const endDate = new Date(fecha_final);
 
   return (
     <ListItem
@@ -16,29 +18,34 @@ export function Budget({ budget }: { budget: IBudget }) {
       pressStyle={{
         opacity: 0.8,
       }}
+      size="$5"
       bordered
-      borderRadius={18}
-      mb={7}
-      title={
-        <YStack>
-          <Text fontWeight="bold">Presupuesto </Text>
-          <Text>Identificador </Text>
-        </YStack>
-      }
+      borderRadius="$6"
+      mb="$3"
+      title={date.toLocaleDateString("es-ES", {
+        month: "long",
+      })}
       icon={
         <Image
           source={{
-            uri: "https://img.icons8.com/?size=48&id=ek6vl8DEBehk&format=png",
+            uri: "https://img.icons8.com/?size=96&id=ci9FsQ29gcwi&format=png",
           }}
-          
           style={{
             width: 40,
             height: 40,
           }}
         />
       }
-      subTitle={fecha_final}
-      iconAfter={<Text color="$red10"> S/. {monto}</Text>}
+      subTitle={
+        <Text>
+          Hasta el{" "}
+          {endDate.toLocaleDateString("es-ES", {
+            day: "numeric",
+            month: "short",
+          })}
+        </Text>
+      }
+      iconAfter={<Text fontWeight="bold"> S/. {monto.toFixed(2)}</Text>}
     >
       <Dialog modal open={openBudgetDetails}>
         <Dialog.Portal>
@@ -52,6 +59,7 @@ export function Budget({ budget }: { budget: IBudget }) {
           <Dialog.Content
             bordered
             elevate
+            borderRadius={16}
             key="content"
             animateOnly={["transform", "opacity"]}
             animation={[
@@ -76,10 +84,9 @@ export function Budget({ budget }: { budget: IBudget }) {
             }}
             gap="$4"
           >
-            <Dialog.Title>Detalles de la Meta de Ahorro</Dialog.Title>
+            <Dialog.Title>Detalles</Dialog.Title>
             <Dialog.Description>
-              Aqui podrás ver los detalles de la meta de ahorro que has
-              seleccionado.
+              Mostrando información relevante sobre el presupuesto seleccionado.
             </Dialog.Description>
 
             <Dialog.Close asChild>
@@ -88,44 +95,53 @@ export function Budget({ budget }: { budget: IBudget }) {
                 top="$3"
                 right="$3"
                 size="$2"
+                onPress={() => {
+                  setOpenBudgetDetails(false);
+                }}
                 circular
                 icon={X}
               />
             </Dialog.Close>
-            <YStack space={3}>
-              <YStack>
-                <Text fontWeight="bold">Monto</Text>
-                <Text>S/. {monto}</Text>
+            <YStack gap="$4">
+              <YStack gap="$1">
+                <Text>Monto</Text>
+                <Text fontWeight="bold">S/. {monto.toFixed(2)}</Text>
               </YStack>
-              <YStack>
+              <YStack gap="$1">
                 <Text>Descripcion</Text>
                 <Text>{descripcion}</Text>
               </YStack>
-              <YStack>
+              <YStack gap="$1">
                 <Text>Fecha Registro</Text>
-                <Text>{fecha_registro}</Text>
+                <Text fontWeight="bold">
+                  {date.toLocaleDateString("es-ES", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </Text>
               </YStack>
-              <YStack>
+              <YStack gap="$1">
                 <Text className="font-bold">Fecha Expiración</Text>
-                <Text>{fecha_final}</Text>
+                <Text fontWeight="bold">
+                  {endDate.toLocaleDateString("es-ES", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </Text>
               </YStack>
             </YStack>
-            <YStack gap="$4">
-              <Button
-                onPress={() => {
-                  setOpenBudgetDetails(false);
-                }}
-              >
-                Cerrar
-              </Button>
-              <Button
-                onPress={() => {
-                  alert("La funcionalidad aun no esta disponible");
-                }}
-              >
-                Editar
-              </Button>
-            </YStack>
+            <Button
+              mt="$5"
+              bg="$green8Light"
+              color="$white1"
+              onPress={() => {
+                alert("La funcionalidad aun no esta disponible");
+              }}
+            >
+              Editar
+            </Button>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
