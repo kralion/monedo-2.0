@@ -3,7 +3,7 @@ import { formatDate } from "@/helpers/dateFormatter";
 import { IExpense } from "@/interfaces";
 import { router } from "expo-router";
 import { Image } from "react-native";
-import { ListItem, Text } from "tamagui";
+import { H4, ListItem, Text } from "tamagui";
 export function Expense({ expense }: { expense: IExpense }) {
   const { categoria, monto, fecha } = expense;
   const formattedDate = fecha
@@ -21,12 +21,16 @@ export function Expense({ expense }: { expense: IExpense }) {
         router.push(`/(expenses)/details/${expense.id}`);
       }}
       pressStyle={{
-        opacity: 0.8,
+        bg: "$white6",
       }}
-      bordered
-      borderRadius={18}
-      mb={7}
-      title={categoria}
+      bg="$colorTransparent"
+      borderRadius={10}
+      mb={12}
+      title={
+        <Text fontSize="$6" fontWeight="700">
+          {categoria}
+        </Text>
+      }
       icon={
         <Image
           width={40}

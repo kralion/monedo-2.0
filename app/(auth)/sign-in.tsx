@@ -72,7 +72,7 @@ export default function SignInScreen() {
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
-                <YStack>
+                <YStack gap="$2">
                   <Input
                     py={3}
                     onBlur={onBlur}
@@ -84,9 +84,9 @@ export default function SignInScreen() {
                     size="$5"
                   />
                   {errors.email && (
-                    <XStack gap="$1" alignItems="center">
+                    <XStack gap="$1.5" ml="$2" alignItems="center">
+                      <Info color="$red9Light" size={15} />
                       <Text fontSize="$3" color="$red9Light">
-                        <Info />
                         {errors.email.message}
                       </Text>
                     </XStack>
@@ -105,18 +105,20 @@ export default function SignInScreen() {
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
-                <YStack>
+                <YStack gap="$2">
                   <Input
                     py={3}
                     placeholder="Contraseña"
                     secureTextEntry
                     size="$5"
                     onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
                   />
                   {errors.password && (
-                    <XStack gap="$1" alignItems="center">
+                    <XStack gap="$1.5" ml="$2" alignItems="center">
+                      <Info color="$red9Light" size={15} />
                       <Text fontSize="$3" color="$red9Light">
-                        <Info />
                         {errors.password.message}
                       </Text>
                     </XStack>

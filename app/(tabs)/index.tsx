@@ -77,20 +77,22 @@ export default function Home() {
     <>
       {showAll ? (
         <Animated.View style={{ opacity: fadeAnim }}>
-          <ScrollView style={{ paddingTop: 14, paddingHorizontal: 16 }}>
-            <SafeAreaView>
-              <YStack gap="$5">
-                <XStack justifyContent="space-between" alignItems="center">
-                  <H3>Gastos Recientes</H3>
-
-                  <Button
-                    onPress={() => {
-                      setShowAll(false);
-                    }}
-                    chromeless
-                    icon={Minimize2}
-                  />
-                </XStack>
+          <SafeAreaView style={{ paddingTop: 14, paddingHorizontal: 16 }}>
+            <YStack gap="$5">
+              <XStack justifyContent="space-between" alignItems="center">
+                <H3>Gastos Recientes</H3>
+                <Text
+                  onPress={() => {
+                    setShowAll(false);
+                  }}
+                  pressStyle={{
+                    opacity: 0.5,
+                  }}
+                >
+                  Ver Menos
+                </Text>
+              </XStack>
+              <ScrollView>
                 <FlashList
                   data={expenses}
                   estimatedItemSize={16}
@@ -98,9 +100,9 @@ export default function Home() {
                     return <Expense expense={expense} />;
                   }}
                 />
-              </YStack>
-            </SafeAreaView>
-          </ScrollView>
+              </ScrollView>
+            </YStack>
+          </SafeAreaView>
         </Animated.View>
       ) : (
         <>
@@ -150,23 +152,26 @@ export default function Home() {
 
             <Card />
           </View>
-          <ScrollView style={{ paddingHorizontal: 16, zIndex: -10 }}>
+          <ScrollView style={{ paddingHorizontal: 5, zIndex: -10 }}>
             <YStack gap="$4">
               <XStack
                 paddingTop="$13"
+                paddingHorizontal="$4"
                 justifyContent="space-between"
                 alignItems="center"
               >
                 <H4>Historial de Gastos</H4>
 
-                <Button
+                <Text
                   onPress={() => {
                     setShowAll(true);
                   }}
-                  chromeless
+                  pressStyle={{
+                    opacity: 0.5,
+                  }}
                 >
                   Ver Todo
-                </Button>
+                </Text>
               </XStack>
               {expenses && expenses.length === 0 && (
                 <YStack justifyContent="center" alignItems="center" gap="$3">

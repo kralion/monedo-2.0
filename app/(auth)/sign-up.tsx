@@ -1,7 +1,7 @@
 import { TermsPolicyModal } from "@/components/popups/terms&policy";
 import { supabase } from "@/utils/supabase";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Check, Info, Mail } from "@tamagui/lucide-icons";
+import { Check, Info } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
@@ -9,8 +9,6 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styled } from "tamagui";
-import { useTheme } from "tamagui";
 import {
   Button,
   Checkbox,
@@ -23,6 +21,8 @@ import {
   Text,
   XStack,
   YStack,
+  styled,
+  useTheme,
 } from "tamagui";
 
 type FormData = {
@@ -41,7 +41,7 @@ export default function SignUpScreen() {
     formState: { errors },
   } = useForm<FormData>();
   const [loading, setLoading] = React.useState(false);
-  const [termsAndConditions, setTermsAndConditions] = React.useState(false);
+  const [termsAndConditions, setTermsAndConditions] = React.useState(true);
   const [showTCModal, setShowTCModal] = React.useState(false);
   const router = useRouter();
   const toast = useToastController();
@@ -53,6 +53,7 @@ export default function SignUpScreen() {
     borderRadius: "$4",
     alignItems: "center",
     px: "$2",
+    pl: "$4",
   });
 
   const inputIconColor = isDarkMode ? "$gray5" : "$gray9";
@@ -71,6 +72,10 @@ export default function SignUpScreen() {
   }
 
   async function signUpWithEmail(data: FormData) {
+    if (!termsAndConditions) {
+      toast.show("Debe aceptar los Términos y Condiciones");
+      return;
+    }
     setLoading(true);
     const { data: authData, error } = await supabase.auth.signUp({
       email: data.email,
@@ -156,21 +161,21 @@ export default function SignUpScreen() {
                     message: "Sólo letras",
                   },
                 }}
-                render={({ field: { onChange, value } }) => (
-                  <YStack>
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <YStack width="48%" gap="$2">
                     <Input
                       size="$5"
-                      width={"48%"}
                       borderRadius={7}
                       py={3}
-                      placeholder="Nombres"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
                       value={value}
-                      onChangeText={(value) => onChange(value)}
+                      placeholder="Nombres"
                     />
                     {errors.nombres && (
-                      <XStack gap="$1" alignItems="center">
+                      <XStack gap="$1.5" ml="$2">
+                        <Info color="$red9Light" size={15} />
                         <Text fontSize="$3" color="$red9Light">
-                          <Info />
                           {errors.nombres.message}
                         </Text>
                       </XStack>
@@ -192,21 +197,21 @@ export default function SignUpScreen() {
                     message: "Solo letras",
                   },
                 }}
-                render={({ field: { onChange, value } }) => (
-                  <YStack>
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <YStack gap="$2" width="47%">
                     <Input
                       size="$5"
                       borderRadius={7}
-                      width={"47%"}
                       py={3}
                       placeholder="Apellidos"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
                       value={value}
-                      onChangeText={(value) => onChange(value)}
                     />
                     {errors.apellidos && (
-                      <XStack gap="$1" alignItems="center">
+                      <XStack gap="$1.5" ml="$2">
+                        <Info color="$red9Light" size={15} />
                         <Text fontSize="$3" color="$red9Light">
-                          <Info />
                           {errors.apellidos.message}
                         </Text>
                       </XStack>
@@ -228,26 +233,21 @@ export default function SignUpScreen() {
                   message: "Email no es válido",
                 },
               }}
-              render={({ field }) => (
-                <YStack>
-                  <StyledXStack>
-                    <Mail color={inputIconColor} />
-                    <Input
-                      size="$5"
-                      autoCapitalize="none"
-                      borderRadius={0}
-                      py={3}
-                      placeholder="Email"
-                      placeholderTextColor={placeholderTextColor}
-                      flex={1}
-                      {...field}
-                      backgroundColor="transparent"
-                    />
-                  </StyledXStack>
+              render={({ field: { onChange, onBlur, value } }) => (
+                <YStack gap="$2">
+                  <Input
+                    size="$5"
+                    autoCapitalize="none"
+                    py={3}
+                    placeholder="Email"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
                   {errors.email && (
-                    <XStack gap="$1" alignItems="center">
+                    <XStack gap="$1.5" ml="$2" alignItems="center">
+                      <Info color="$red9Light" size={15} />
                       <Text fontSize="$3" color="$red9Light">
-                        <Info />
                         {errors.email.message}
                       </Text>
                     </XStack>
@@ -255,7 +255,7 @@ export default function SignUpScreen() {
                 </YStack>
               )}
             />
-            <YStack>
+            <YStack gap="$2">
               <Controller
                 name="password"
                 control={control}
@@ -269,22 +269,23 @@ export default function SignUpScreen() {
                     message: "Mínimo 8 caracteres",
                   },
                 }}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     size="$5"
                     borderRadius={7}
                     py={3}
                     placeholder="Contraseña"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
                     value={value}
-                    onChangeText={(value) => onChange(value)}
                     secureTextEntry
                   />
                 )}
               />
               {errors.password && (
-                <XStack gap="$1" alignItems="center">
+                <XStack gap="$1.5" ml="$2" alignItems="center">
+                  <Info color="$red9Light" size={15} />
                   <Text fontSize="$3" color="$red9Light">
-                    <Info />
                     {errors.password.message}
                   </Text>
                 </XStack>
@@ -294,8 +295,9 @@ export default function SignUpScreen() {
           <YStack gap="$4">
             <XStack gap="$2" mt="$2" alignItems="center">
               <Checkbox
-                borderColor={termsAndConditions ? "$" : "$red9Light"}
+                borderColor={termsAndConditions ? "" : "$red9Light"}
                 className="border"
+                defaultChecked={termsAndConditions}
                 onCheckedChange={() =>
                   setTermsAndConditions(!termsAndConditions)
                 }
@@ -305,9 +307,7 @@ export default function SignUpScreen() {
                   <Check />
                 </Checkbox.Indicator>
               </Checkbox>
-              <Label color={termsAndConditions ? "" : "$red9Light"}>
-                Acepto los Términos y Condiciones
-              </Label>
+              <Label>Acepto los Términos y Condiciones</Label>
             </XStack>
             <Button
               onPress={handleSubmit(signUpWithEmail)}
