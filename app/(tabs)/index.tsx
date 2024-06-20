@@ -67,7 +67,7 @@ export default function Home() {
     if (userData) {
       getExpensesByUser(userData.id);
     }
-  }, [userData, getExpensesByUser]);
+  }, [userData, getExpensesByUser, expenses]);
 
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();

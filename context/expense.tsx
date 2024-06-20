@@ -73,7 +73,9 @@ export const ExpenseContextProvider = ({
   };
 
   const deleteExpense = async (id: string) => {
-    await supabase.from("expenses").delete().eq("id", id);
+    const { error } = await supabase.from("expenses").delete().eq("id", id);
+    if (error) throw error;
+    console.log("Expense deleted", error);
   };
 
   async function getTopExpenses() {
@@ -114,7 +116,7 @@ export const ExpenseContextProvider = ({
       .eq("id", id)
       .single();
     if (error) throw error;
-    setExpense(JSON.parse(JSON.stringify(data)));
+    setExpense(data);
     return data;
   }
   return (

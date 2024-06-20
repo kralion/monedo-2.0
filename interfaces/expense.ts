@@ -1,6 +1,6 @@
 export interface IExpense {
   id?: string;
-  fecha: string;
+  fecha: Date;
   descripcion?: string;
   usuario_id?: string;
   periodicidad?: boolean;
@@ -8,7 +8,6 @@ export interface IExpense {
   categoria: string;
   monto: number;
   assetIdentificador?: string;
-  divisa?: string;
 }
 export interface IGoal {
   id?: string;

@@ -1,7 +1,6 @@
 import { useExpenseContext } from "@/context";
 import { IExpense } from "@/interfaces";
 import { supabase } from "@/utils/supabase";
-import { Ionicons } from "@expo/vector-icons";
 import { useToastController } from "@tamagui/toast";
 import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -10,6 +9,8 @@ import { Platform } from "react-native";
 import {
   AlertDialog,
   Button,
+  H1,
+  ScrollView,
   Separator,
   Slider,
   Spinner,
@@ -21,197 +22,196 @@ import {
 export default function ExpenseDetailsModal() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isFetching, setIsFetching] = React.useState(false);
-  const { getExpenseById, deleteExpense } = useExpenseContext();
+  const { deleteExpense } = useExpenseContext();
+  const [expense, setExpense] = React.useState({} as IExpense);
+  const [isOpen, setIsOpen] = React.useState(false);
   const params = useLocalSearchParams<{ id: string }>();
   const toast = useToastController();
-  const [expense, setExpense] = React.useState<IExpense>({} as IExpense);
   const handleDeleteExpense = async (id: string) => {
     deleteExpense(id);
     toast.show("Gasto eliminado");
     router.push("/(tabs)/");
+    setIsOpen(false);
   };
-  async function getExpense() {
-    setIsFetching(true);
+
+  async function getExpenseById(id: string) {
     const { data, error } = await supabase
       .from("expenses")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
+    if (error) throw error;
     setExpense(data);
-    setIsFetching(false);
-
-    if (error) {
-      console.log(error);
-    }
+    return data;
   }
 
-  if (isFetching) {
-    return <Spinner mt="$5" size="large" />;
-  }
   React.useEffect(() => {
-    if (!params.id) {
-      <Spinner size="large" />;
-    } else {
-      getExpense();
+    if (params.id) {
+      setIsFetching(true);
+      getExpenseById(params.id);
+      setIsFetching(false);
     }
   }, [params.id]);
 
-  const monto_gastado = expense?.monto;
+  if (!expense) {
+    return <Spinner mt="$5" size="large" />;
+  }
+
+  const monto_gastado = expense.monto;
   //TODO: Cambiar este valor por el monto presupuestado del mes actual
   const monto_presupuestado = 1000;
   const totalPercentageExpensed =
     (monto_gastado ?? 100 / monto_presupuestado) * 100;
-  const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <YStack borderBottomEndRadius={10} borderBottomStartRadius={10} p={3}>
-      {totalPercentageExpensed >= 80 && (
-        <Text>
-          Parece que ya gastaste un alto de tu presupuesto mensual te
-          recomendamos reconsiderar los gastos que realizas
-        </Text>
-      )}
+    <ScrollView>
+      {isFetching ? (
+        <Spinner mt="$5" size="large" />
+      ) : (
+        <YStack gap="$3">
+          <AlertDialog open={isOpen}>
+            <AlertDialog.Portal>
+              <AlertDialog.Overlay
+                key="overlay"
+                animation="quick"
+                opacity={0.5}
+                enterStyle={{ opacity: 0 }}
+                exitStyle={{ opacity: 0 }}
+              />
+              <AlertDialog.Content
+                bordered
+                elevate
+                key="content"
+                animation={[
+                  "quick",
+                  {
+                    opacity: {
+                      overshootClamping: true,
+                    },
+                  },
+                ]}
+                enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+                exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+                x={0}
+                scale={1}
+                opacity={1}
+                y={0}
+              >
+                <YStack gap="$2">
+                  <AlertDialog.Title>Eliminar Gasto</AlertDialog.Title>
+                  <AlertDialog.Description>
+                    Este gasto será eliminado de la base de datos y no podrá ser
+                    recuperado.
+                  </AlertDialog.Description>
 
-      <AlertDialog native open={isOpen}>
-        <AlertDialog.Portal>
-          <AlertDialog.Overlay
-            key="overlay"
-            animation="quick"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-          <AlertDialog.Content
-            bordered
-            elevate
-            key="content"
-            animation={[
-              "quick",
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-            x={0}
-            scale={1}
-            opacity={1}
-            y={0}
-          >
-            <YStack gap="$2">
-              <AlertDialog.Title>Elimar Gasto</AlertDialog.Title>
-              <AlertDialog.Description>
-                Este gasto será eliminado de la base de datos y no podrá ser
-                recuperado.
-              </AlertDialog.Description>
+                  <XStack gap="$3" mt="$7" justifyContent="flex-end">
+                    <AlertDialog.Cancel
+                      onPress={() => setIsOpen(false)}
+                      asChild
+                    >
+                      <Button chromeless>Cancelar</Button>
+                    </AlertDialog.Cancel>
+                    <AlertDialog.Action asChild>
+                      <Button
+                        onPress={() => handleDeleteExpense(params.id ?? "")}
+                        bg="$red10Light"
+                        color="$white1"
+                      >
+                        Eliminar
+                      </Button>
+                    </AlertDialog.Action>
+                  </XStack>
+                </YStack>
+              </AlertDialog.Content>
+            </AlertDialog.Portal>
+          </AlertDialog>
 
-              <XStack gap="$3" justifyContent="flex-end">
-                <AlertDialog.Cancel asChild>
-                  <Button>Cancelar</Button>
-                </AlertDialog.Cancel>
-                <AlertDialog.Action
-                  onPress={() => handleDeleteExpense(params.id ?? "")}
-                  asChild
-                >
-                  <Button theme="active">Eliminar</Button>
-                </AlertDialog.Action>
-              </XStack>
-            </YStack>
-          </AlertDialog.Content>
-        </AlertDialog.Portal>
-      </AlertDialog>
+          <YStack gap="$2" p="$3">
+            <Text fontSize="$5" color="$gray10">
+              Monto
+            </Text>
 
-      <XStack p="$2" justifyContent="space-between">
-        <XStack gap="$1">
-          <Text fontWeight="bold">#{expense?.numeroGasto}</Text>
-          <Text bg="$green10Light" br="$5" p="$2">
-            {expense?.categoria}
+            <H1>S/. {expense?.monto}</H1>
+          </YStack>
+
+          <Text mb="$4" mt="$1" p="$3" fontSize="$5" color="$gray10">
+            {expense.descripcion}
           </Text>
-        </XStack>
-        {/* //! FEATURE : Cambiar este icono dependiendo al tipo de gasto */}
-        <Ionicons name="information-circle-outline" size={24} />
-      </XStack>
-      <YStack p="$2" gap="$2">
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text>Monto</Text>
-          <Text fontWeight="bold">S/. {expense.monto}</Text>
-        </XStack>
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text>Divisa</Text>
-          <Text fontWeight="bold">{expense.divisa}</Text>
-        </XStack>
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text>Categoría</Text>
-          <Text fontWeight="bold">{expense.categoria}</Text>
-        </XStack>
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text>Descripción</Text>
-          <Text fontWeight="bold">{expense.descripcion}</Text>
-        </XStack>
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text>% Presupuesto</Text>
 
-          <Text fontWeight="bold">{expense.monto}</Text>
-        </XStack>
-
-        <XStack justifyContent="flex-end" space={3}>
-          <Text bg="$green10Light" br="$5" p="$2">
-            {expense.fecha?.toLocaleString()}
-          </Text>
-          <Text bg="$green10Light" br="$5" p="$2">
-            {expense.fecha
-              ? new Date(expense.fecha).toLocaleTimeString([], {
+          <Separator borderColor="$gray7" />
+          <YStack p="$3" gap="$3">
+            <XStack justifyContent="space-between" alignItems="center">
+              <Text fontSize="$5" color="$gray10">
+                Fecha
+              </Text>
+              <Text fontSize="$6">
+                {new Date(expense.fecha).toLocaleDateString("es-PE", {
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+            </XStack>
+            <XStack justifyContent="space-between" alignItems="center">
+              <Text fontSize="$5" color="$gray10">
+                Hora
+              </Text>
+              <Text fontSize="$6">
+                {new Date(expense.fecha).toLocaleTimeString("es-PE", {
                   hour: "2-digit",
                   minute: "2-digit",
-                })
-              : ""}
-          </Text>
-        </XStack>
-      </YStack>
-      <Separator borderColor="$gray5" />
-      <XStack gap="$2" p="$2">
-        <Text className="text-black font-bold mb-1  text-[18px]">
-          Presupuesto Gastado
-        </Text>
-        <Text
-          bg={totalPercentageExpensed > 80 ? "red10Light" : "$green10Light"}
-          br="$5"
-          p="$2"
-        >
-          {totalPercentageExpensed}%
-        </Text>
-      </XStack>
-      <XStack justifyContent="center" p="$2" gap="$2">
-        <Slider
-          size="$4"
-          width={200}
-          defaultValue={[totalPercentageExpensed]}
-          max={100}
-          step={1}
-          borderColor={
-            totalPercentageExpensed >= 80 ? "red10Light" : "$green10Light"
-          }
-        >
-          <Slider.Track>
-            <Slider.TrackActive />
-          </Slider.Track>
-          <Slider.Thumb circular index={0} />
-        </Slider>
-      </XStack>
-      <Separator borderColor="$gray5" />
+                  hour12: false,
+                })}
+              </Text>
+            </XStack>
+            <XStack justifyContent="space-between" alignItems="center">
+              <Text fontSize="$5" color="$gray10">
+                Categoría
+              </Text>
+              <Button
+                disabled
+                size="$2"
+                borderRadius="$7"
+                bg="$gray10"
+                minWidth="$9"
+                color="$white1"
+              >
+                {expense.categoria}
+              </Button>
+            </XStack>
+          </YStack>
+          <Slider
+            mt="$7"
+            mx="$3"
+            defaultValue={[totalPercentageExpensed]}
+            max={100}
+            step={1}
+          >
+            <Slider.Track>
+              <Slider.TrackActive />
+            </Slider.Track>
+            <Slider.Thumb index={0} size="$1" circular elevate />
+          </Slider>
+          <XStack mx="$3" justifyContent="space-between" alignItems="center">
+            <Text fontSize="$5" color="$gray10">
+              0
+            </Text>
+            <Text fontSize="$5" color="$gray10">
+              1000
+            </Text>
+          </XStack>
 
-      <XStack justifyContent="center" p="$2" gap="$2">
-        <Button
-          onPress={() => setIsOpen(true)}
-          size="$5"
-          bg="$red8Light"
-          color="$white1"
-        >
-          {isLoading ? <Spinner size="small" color="$white1" /> : "Eliminar"}
-        </Button>
-      </XStack>
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-    </YStack>
+          <Button
+            onPress={() => setIsOpen(true)}
+            size="$5"
+            m="$3"
+            mt="$10"
+            bg="$red10Light"
+            color="$white1"
+          >
+            {isLoading ? <Spinner size="small" color="$white1" /> : "Eliminar"}
+          </Button>
+          <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+        </YStack>
+      )}
+    </ScrollView>
   );
 }

@@ -79,7 +79,7 @@ export default function AddExpense() {
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <YStack>
-                    <Label color="$gray10">Categoría</Label>
+                    <Label>Categoría</Label>
                     <Select
                       value={value}
                       onValueChange={onChange}
@@ -156,7 +156,7 @@ export default function AddExpense() {
               />
 
               <YStack>
-                <Label color="$gray10">Monto</Label>
+                <Label>Monto</Label>
 
                 <Controller
                   control={control}
@@ -179,7 +179,7 @@ export default function AddExpense() {
                   }}
                 />
               </YStack>
-              <YStack>
+              {/* <YStack>
                 <Label color="$gray10">Divisa</Label>
 
                 <Controller
@@ -219,7 +219,7 @@ export default function AddExpense() {
                     </RadioGroup>
                   )}
                 />
-              </YStack>
+              </YStack> */}
               <Controller
                 control={control}
                 name="descripcion"

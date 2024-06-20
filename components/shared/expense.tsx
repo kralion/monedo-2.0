@@ -1,9 +1,10 @@
 import { expensesIdentifiers } from "@/constants/ExpensesIdentifiers";
 import { formatDate } from "@/helpers/dateFormatter";
 import { IExpense } from "@/interfaces";
+import { ChevronRight } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { Image } from "react-native";
-import { H4, ListItem, Text } from "tamagui";
+import { H4, ListItem, Text, XStack } from "tamagui";
 export function Expense({ expense }: { expense: IExpense }) {
   const { categoria, monto, fecha } = expense;
   const formattedDate = fecha
@@ -17,10 +18,13 @@ export function Expense({ expense }: { expense: IExpense }) {
   return (
     <ListItem
       onPress={() => {
-        console.log("Expense clicked", expense.id);
+        console.log("Expense clicked", expense.monto);
         router.push(`/(expenses)/details/${expense.id}`);
       }}
       borderRadius="$5"
+      pressStyle={{
+        opacity: 0.8,
+      }}
       mb={12}
       title={
         <Text fontSize="$6" fontWeight="700">
@@ -38,9 +42,12 @@ export function Expense({ expense }: { expense: IExpense }) {
       }
       subTitle={formattedDate}
       iconAfter={
-        <Text fontSize="$6" fontWeight="bold" color="$red10">
-          - S/. {monto}
-        </Text>
+        <XStack gap="$2" alignItems="center">
+          <Text fontSize="$6" fontWeight="bold" color="$red10">
+            - S/. {monto}
+          </Text>
+          <ChevronRight size={20} color="$gray8" />
+        </XStack>
       }
     />
   );

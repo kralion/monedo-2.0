@@ -66,7 +66,7 @@ export default function Budget() {
       nativeEvent: { timestamp },
     } = event;
     const selectedDate = new Date(timestamp ?? 0);
-    setValue("fecha_registro", selectedDate.toISOString());
+    setValue("fecha_registro", selectedDate);
   };
   const onChangeFechaFinal = (event: DateTimePickerEvent) => {
     const {
@@ -74,7 +74,7 @@ export default function Budget() {
       nativeEvent: { timestamp },
     } = event;
     const selectedDate = new Date(timestamp ?? 0);
-    setValue("fecha_final", selectedDate.toISOString());
+    setValue("fecha_final", selectedDate);
   };
 
   const toast = useToastController();
