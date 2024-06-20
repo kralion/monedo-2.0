@@ -18,30 +18,34 @@ export function Budget({ budget }: { budget: IBudget }) {
       pressStyle={{
         opacity: 0.8,
       }}
-      size="$5"
-      bordered
-      borderRadius="$6"
+      borderRadius="$5"
       mb="$3"
-      title={date.toLocaleDateString("es-ES", {
-        month: "long",
-      })}
+      title={
+        <Text fontSize="$6" fontWeight="700">
+          {date
+            .toLocaleDateString("es-ES", {
+              month: "long",
+            })
+            .toUpperCase()}
+        </Text>
+      }
       icon={
         <Image
           source={{
             uri: "https://img.icons8.com/?size=96&id=ci9FsQ29gcwi&format=png",
           }}
           style={{
-            width: 40,
-            height: 40,
+            width: 45,
+            height: 45,
           }}
         />
       }
       subTitle={
         <Text>
-          Hasta el{" "}
           {endDate.toLocaleDateString("es-ES", {
             day: "numeric",
-            month: "short",
+            month: "2-digit",
+            year: "numeric",
           })}
         </Text>
       }

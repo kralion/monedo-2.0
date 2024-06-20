@@ -20,11 +20,7 @@ export function Expense({ expense }: { expense: IExpense }) {
         console.log("Expense clicked", expense.id);
         router.push(`/(expenses)/details/${expense.id}`);
       }}
-      pressStyle={{
-        bg: "$white6",
-      }}
-      bg="$colorTransparent"
-      borderRadius={10}
+      borderRadius="$5"
       mb={12}
       title={
         <Text fontSize="$6" fontWeight="700">
@@ -33,8 +29,8 @@ export function Expense({ expense }: { expense: IExpense }) {
       }
       icon={
         <Image
-          width={40}
-          height={40}
+          width={45}
+          height={45}
           source={{
             uri: assetIndentificador,
           }}

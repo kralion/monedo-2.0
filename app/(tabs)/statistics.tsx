@@ -222,7 +222,7 @@ export default function Statistics() {
               </TouchableOpacity>
             </XStack>
           </YStack>
-          <ScrollView>
+          <ScrollView mt="$4">
             <FlashList
               data={expenses}
               renderItem={({ item: expense }) => {

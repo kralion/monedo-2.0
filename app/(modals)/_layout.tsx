@@ -1,7 +1,7 @@
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
-import { Text, XStack } from "tamagui";
+import { Button, Text, XStack } from "tamagui";
 
 export default function ModalsLayout() {
   return (
@@ -11,13 +11,19 @@ export default function ModalsLayout() {
         options={{
           headerLeft: () => {
             return (
-              <TouchableOpacity
+              <Button
+                pressStyle={{
+                  opacity: 0.7,
+                }}
                 onPress={() => {
                   router.back();
                 }}
-              >
-                <FontAwesome5 name="chevron-left" size={20} color="teal" />
-              </TouchableOpacity>
+                unstyled
+                p="$2"
+                icon={
+                  <FontAwesome5 name="chevron-left" size={20} color="teal" />
+                }
+              />
             );
           },
           presentation: "card",

@@ -69,17 +69,17 @@ export default function AddExpense() {
         />
         <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
           <YStack gap="$6">
-            <YStack gap="$1">
+            <YStack>
               <H2>Nuevo Gasto</H2>
               <Text>Ingresa los detalles del gasto que hiciste</Text>
             </YStack>
-            <YStack gap="$4">
+            <YStack gap="$2">
               <Controller
                 name="categoria"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <YStack>
-                    <Label>Categoría</Label>
+                    <Label color="$gray10">Categoría</Label>
                     <Select
                       value={value}
                       onValueChange={onChange}
@@ -156,7 +156,7 @@ export default function AddExpense() {
               />
 
               <YStack>
-                <Label>Monto</Label>
+                <Label color="$gray10">Monto</Label>
 
                 <Controller
                   control={control}
@@ -180,7 +180,7 @@ export default function AddExpense() {
                 />
               </YStack>
               <YStack>
-                <Label>Divisa</Label>
+                <Label color="$gray10">Divisa</Label>
 
                 <Controller
                   name="divisa"
@@ -193,21 +193,27 @@ export default function AddExpense() {
                             <RadioGroup.Indicator />
                           </RadioGroup.Item>
 
-                          <Label htmlFor="pen">Soles</Label>
+                          <Label htmlFor="pen" color="$gray10">
+                            Soles
+                          </Label>
                         </XStack>
                         <XStack alignItems="center" gap="$2">
                           <RadioGroup.Item value="usd" id="usd">
                             <RadioGroup.Indicator />
                           </RadioGroup.Item>
 
-                          <Label htmlFor="pen">Dólares</Label>
+                          <Label htmlFor="pen" color="$gray10">
+                            Dólares
+                          </Label>
                         </XStack>
                         <XStack alignItems="center" gap="$2">
                           <RadioGroup.Item value="eur" id="eur">
                             <RadioGroup.Indicator />
                           </RadioGroup.Item>
 
-                          <Label htmlFor="eur">Euros</Label>
+                          <Label htmlFor="eur" color="$gray10">
+                            Euros
+                          </Label>
                         </XStack>
                       </XStack>
                     </RadioGroup>
@@ -219,9 +225,12 @@ export default function AddExpense() {
                 name="descripcion"
                 render={({ field: { onChange, value } }) => (
                   <TextArea
-                    placeholder="Descripcion ..."
+                    size="$4"
+                    autoCapitalize="none"
+                    borderRadius="$5"
+                    onChangeText={onChange}
+                    placeholder="Descripcion..."
                     value={value}
-                    onChangeText={(value) => onChange(value)}
                   />
                 )}
                 defaultValue=""
@@ -274,7 +283,7 @@ export default function AddExpense() {
                 size="$5"
                 bg="$green8Light"
                 color="$white1"
-                mt="$6"
+                mt="$5"
               >
                 {isLoading ? (
                   <Spinner size="small" color="$white1" />

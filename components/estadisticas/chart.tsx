@@ -112,13 +112,18 @@ export default function Chart({ timelineQuery }: { timelineQuery: string }) {
           },
         ],
       }}
-      width={400}
-      height={300}
+      width={440}
+      style={{
+        marginLeft: -30,
+        marginBottom: -5,
+      }}
+      height={250}
       yAxisInterval={1}
       chartConfig={{
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#73B78F",
         backgroundGradientTo: "#73B78F",
+
         backgroundGradientFromOpacity: 0,
         backgroundGradientToOpacity: 0,
         decimalPlaces: 0,

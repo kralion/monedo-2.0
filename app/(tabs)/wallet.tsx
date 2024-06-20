@@ -43,7 +43,6 @@ export default function Wallet() {
     borderRadius: "$4",
     alignItems: "center",
     px: "$2",
-    mt: "$2",
     pl: "$3",
   });
   const inputIconColor = isDarkMode ? "$gray5" : "$gray9";
@@ -94,7 +93,7 @@ export default function Wallet() {
           </YStack>
           {budgetFormAvailable && (
             <>
-              <YStack gap="$4" mt={5}>
+              <YStack mt={5}>
                 <YStack>
                   <Label>Monto</Label>
 
@@ -110,7 +109,7 @@ export default function Wallet() {
                     name="monto"
                     render={({ field: { onChange, value } }) => (
                       <StyledXStack>
-                        <XStack opacity={0.5}>
+                        <XStack opacity={0.5} mt="$2">
                           <SizableText color={inputIconColor}>
                             <CircleDollarSign />
                           </SizableText>
@@ -118,8 +117,7 @@ export default function Wallet() {
                         <Input
                           size="$5"
                           autoCapitalize="none"
-                          borderRadius={0}
-                          py={3}
+                          borderRadius="$3"
                           onChangeText={onChange}
                           value={String(value)}
                           placeholder="650.00"
@@ -140,7 +138,7 @@ export default function Wallet() {
                     </XStack>
                   )}
                 </YStack>
-                <YStack gap="$2">
+                <YStack>
                   <Label>Descripcion</Label>
                   <Controller
                     control={control}
@@ -149,7 +147,7 @@ export default function Wallet() {
                       <TextArea
                         size="$4"
                         autoCapitalize="none"
-                        borderRadius={10}
+                        borderRadius="$5"
                         value={value}
                         onChangeText={onChange}
                         placeholder="Espero no sobrepasar esta vez..."
@@ -165,20 +163,20 @@ export default function Wallet() {
                     </XStack>
                   )}
                 </YStack>
+                <Button
+                  onPress={handleSubmit(onSubmit)}
+                  size="$5"
+                  mt="$5"
+                  bg="$green8Light"
+                  color="$white1"
+                >
+                  {isLoading ? (
+                    <Spinner size="small" color="$white1" />
+                  ) : (
+                    "Registrar"
+                  )}
+                </Button>
               </YStack>
-
-              <Button
-                onPress={handleSubmit(onSubmit)}
-                size="$5"
-                bg="$green8Light"
-                color="$white1"
-              >
-                {isLoading ? (
-                  <Spinner size="small" color="$white1" />
-                ) : (
-                  "Registrar"
-                )}
-              </Button>
 
               <SavingGoalModal
                 openModal={showSavingGoalModal}

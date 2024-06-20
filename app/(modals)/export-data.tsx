@@ -1,93 +1,64 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { Alert, Image } from "react-native";
-import { Button, Text, XStack, YStack } from "tamagui";
+import { Button, H2, Text, XStack, YStack } from "tamagui";
+import ExportAsset from "@/assets/svgs/export.svg";
 
 export default function Export() {
   return (
-    <YStack className="flex flex-col space-y-6 justify-between">
-      <YStack space={1} className="bg-background rounded-b-lg py-4 px-7">
-        <XStack>
-          {/* <View className="bg-accent w-2 h-8 rounded-full my-3 " /> */}
-          <Text fontWeight="bold">Formatos de Exportación</Text>
-        </XStack>
+    <YStack alignItems="center" gap="$6" p="$3">
+      <ExportAsset width={300} height={300} />
+      <Text fontSize="$5" textAlign="center" px="$5">
+        Formatos en los que puedes exportar tu historial de gastos
+      </Text>
 
-        <Text>
-          Selecciona el tipo de documento en el que desea exportar su historial
-          de gastos
-        </Text>
-
-        <YStack mt={10} space={4}>
-          <XStack space={4}>
-            <Button
-              onPress={() =>
-                Alert.alert("Exportación", "Se exportó correctamente")
-              }
-            >
-              <XStack alignItems="center">
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=48&id=13674&format=png",
-                  }}
-                  style={{ width: 30, height: 30, marginRight: 10 }}
-                />
-                <Text className="font-semibold text-black">Documento</Text>
-              </XStack>
-            </Button>
-
-            <Button
-              onPress={() =>
-                Alert.alert("Exportación", "Se exportó correctamente")
-              }
-            >
-              <XStack alignItems="center">
-                <Image
-                  style={{ width: 30, height: 30, marginRight: 10 }}
-                  source={{
-                    uri: "https://img.icons8.com/?size=48&id=13654&format=png",
-                  }}
-                />
-                <Text className="font-semibold text-black">
-                  Hoja de Cálculo
-                </Text>
-              </XStack>
-            </Button>
-          </XStack>
-
-          <Button
-            onPress={() =>
-              Alert.alert("Exportación", "Se exportó correctamente")
-            }
-          >
-            <XStack alignItems="center">
-              <Image
-                style={{ width: 30, height: 30, marginRight: 10 }}
-                source={{
-                  uri: "https://img.icons8.com/?size=48&id=13417&format=png",
-                }}
-              />
-              <Text className="font-semibold text-black">Archivo PDF</Text>
-            </XStack>
-          </Button>
-        </YStack>
+      <YStack mt={10} gap="$3" width="100%">
         <Button
-          className="rounded-lg  mt-14"
-          height={10}
+          size="$5"
+          bg="$blue10Light"
+          color="$white1"
+          onPress={() => Alert.alert("Exportación", "Se exportó correctamente")}
           icon={
-            <FontAwesome
-              name="download"
-              color="white"
-              marginRight={3}
-              marginTop={2}
+            <Image
+              source={{
+                uri: "https://img.icons8.com/?size=48&id=13674&format=png",
+              }}
+              style={{ width: 30, height: 30 }}
             />
           }
         >
-          <Text
-            onPress={() =>
-              Alert.alert("Exportación", "Se exportó correctamente")
-            }
-          >
-            Exportar en los 3 formatos
-          </Text>
+          Documento
+        </Button>
+        <Button
+          size="$5"
+          bg="$green10Light"
+          color="$white1"
+          onPress={() => Alert.alert("Exportación", "Se exportó correctamente")}
+          icon={
+            <Image
+              source={{
+                uri: "https://img.icons8.com/?size=48&id=13654&format=png",
+              }}
+              style={{ width: 30, height: 30 }}
+            />
+          }
+        >
+          Hoja de Cálculo
+        </Button>
+        <Button
+          size="$5"
+          bg="$red10Light"
+          color="$white1"
+          onPress={() => Alert.alert("Exportación", "Se exportó correctamente")}
+          icon={
+            <Image
+              source={{
+                uri: "https://img.icons8.com/?size=48&id=13417&format=png",
+              }}
+              style={{ width: 30, height: 30 }}
+            />
+          }
+        >
+          Archivo PDF
         </Button>
       </YStack>
     </YStack>
