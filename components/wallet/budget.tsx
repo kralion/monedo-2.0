@@ -21,7 +21,7 @@ export function Budget({ budget }: { budget: IBudget }) {
       borderRadius="$5"
       mb="$3"
       title={
-        <Text fontSize="$6" fontWeight="700">
+        <Text fontSize="$5" fontWeight="700">
           {date
             .toLocaleDateString("es-ES", {
               month: "long",

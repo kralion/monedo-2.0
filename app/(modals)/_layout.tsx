@@ -1,4 +1,5 @@
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
+import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { Button, Text, XStack } from "tamagui";
@@ -9,23 +10,21 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="export-data"
         options={{
-          headerLeft: () => {
-            return (
-              <Button
-                pressStyle={{
-                  opacity: 0.7,
-                }}
-                onPress={() => {
-                  router.back();
-                }}
-                unstyled
-                p="$2"
-                icon={
-                  <FontAwesome5 name="chevron-left" size={20} color="teal" />
-                }
-              />
-            );
-          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+              style={{ marginLeft: -10 }}
+            >
+              <XStack alignItems="center">
+                <ChevronLeft size="$3" color="$blue10Light" />
+                <Text fontSize="$6" color="$blue10Light">
+                  Reporte
+                </Text>
+              </XStack>
+            </TouchableOpacity>
+          ),
           presentation: "card",
           title: "Exportar",
         }}
@@ -41,10 +40,13 @@ export default function ModalsLayout() {
                 onPress={() => {
                   router.back();
                 }}
+                style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <Feather name="chevron-left" size={24} color="#3b82f6" />
-                  <Text>Perfil</Text>
+                  <ChevronLeft size="$3" color="$blue10Light" />
+                  <Text fontSize="$6" color="$blue10Light">
+                    Perfil
+                  </Text>
                 </XStack>
               </TouchableOpacity>
             );
@@ -64,10 +66,13 @@ export default function ModalsLayout() {
                 onPress={() => {
                   router.back();
                 }}
+                style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <Feather name="chevron-left" size={24} color="#3b82f6" />
-                  <Text>Perfil</Text>
+                  <ChevronLeft size="$3" color="$blue10Light" />
+                  <Text fontSize="$6" color="$blue10Light">
+                    Perfil
+                  </Text>
                 </XStack>
               </TouchableOpacity>
             );
@@ -91,14 +96,19 @@ export default function ModalsLayout() {
                 onPress={() => {
                   router.back();
                 }}
+                style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <Feather name="chevron-left" size={24} color="#3b82f6" />
-                  <Text>Perfil</Text>
+                  <ChevronLeft size="$3" color="$blue10Light" />
+                  <Text fontSize="$6" color="$blue10Light">
+                    Perfil
+                  </Text>
                 </XStack>
               </TouchableOpacity>
             );
           },
+          headerBlurEffect: "regular",
+          headerTransparent: true,
           presentation: "card",
           title: "Datos Personales",
         }}

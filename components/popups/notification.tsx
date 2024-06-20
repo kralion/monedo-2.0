@@ -43,10 +43,6 @@ export default function SingleNotification({
 
   return (
     <ListItem
-      pressStyle={{
-        opacity: 0.8,
-      }}
-      bordered
       borderRadius={14}
       alignSelf="center"
       mx={2}

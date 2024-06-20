@@ -24,6 +24,22 @@ const items = [
   { name: "Periódicos" },
   { name: "Recientes" },
 ];
+
+const FilterSlider = ({ value }: { value: string }) => {
+  return (
+    <Button
+      borderRadius="$10"
+      mr="$2"
+      width="$8"
+      // bg="$accentColor"
+      bg="$green8Light"
+      size="$3"
+      color="$white1"
+    >
+      {value}
+    </Button>
+  );
+};
 export default function Statistics() {
   const [queryType, setQueryType] = useState("recientes");
   const [timelineQuery, setTimelineQuery] = useState("semanal");
@@ -61,6 +77,13 @@ export default function Statistics() {
     }).start();
   }, [showAll]);
 
+  const queryFilters = [
+    { value: "diario", label: "Diario" },
+    { value: "semanal", label: "Semanal" },
+    { value: "mensual", label: "Mensual" },
+    { value: "hoy", label: "Hoy" },
+  ];
+
   return (
     <>
       {showAll ? (
@@ -92,146 +115,127 @@ export default function Statistics() {
           </SafeAreaView>
         </Animated.View>
       ) : (
-        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <YStack gap="$4">
-            <H2>Estadísticas</H2>
-            <XStack gap="$2">
-              <Button
-                variant="outlined"
-                onPress={() => setTimelineQuery("hoy")}
-              >
-                Hoy
-              </Button>
-              <Button
-                variant="outlined"
-                onPress={() => setTimelineQuery("diario")}
-              >
-                Diario
-              </Button>
-              <Button
-                variant="outlined"
-                onPress={() => setTimelineQuery("semanal")}
-              >
-                Semanal
-              </Button>
-              <Button
-                variant="outlined"
-                onPress={() => setTimelineQuery("mensual")}
-              >
-                Mensual
-              </Button>
-            </XStack>
-            <Chart timelineQuery={timelineQuery} />
-            <XStack alignItems="center" justifyContent="space-between">
-              <Link asChild href="/(modals)/export-data">
-                <Button
-                  bg="$green8Light"
-                  color="$white1"
-                  href="/(modals)/export-data"
-                  icon={FileLineChart}
+        <>
+          <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+            <YStack gap="$3">
+              <XStack alignItems="center" justifyContent="space-between">
+                <H2>Estadísticas</H2>
+                <Text
+                  onPress={() => {
+                    setShowAll(true);
+                  }}
+                  pressStyle={{
+                    opacity: 0.5,
+                  }}
                 >
-                  Exportar
-                </Button>
-              </Link>
-              <YStack>
-                <Select disablePreventBodyScroll>
-                  <Select.Trigger iconAfter={ChevronDown}>
-                    <Select.Value placeholder="Selecciona" />
-                  </Select.Trigger>
-
-                  <Adapt when="sm" platform="touch">
-                    <Sheet modal dismissOnSnapToBottom>
-                      <Sheet.Frame>
-                        <Sheet.ScrollView>
-                          <Adapt.Contents />
-                        </Sheet.ScrollView>
-                      </Sheet.Frame>
-                      <Sheet.Overlay />
-                    </Sheet>
-                  </Adapt>
-
-                  <Select.Content zIndex={200000}>
-                    <Select.ScrollUpButton
-                      alignItems="center"
-                      justifyContent="center"
-                      position="relative"
-                      width="100%"
-                      height="$3"
-                    >
-                      <YStack zIndex={10}>
-                        <ChevronUp size={20} />
-                      </YStack>
-                    </Select.ScrollUpButton>
-
-                    <Select.Viewport>
-                      <Select.Group>
-                        {React.useMemo(
-                          () =>
-                            items.map((item, i) => {
-                              return (
-                                <Select.Item
-                                  index={i}
-                                  key={item.name}
-                                  value={item.name.toLowerCase()}
-                                >
-                                  <Select.ItemText>{item.name}</Select.ItemText>
-                                  <Select.ItemIndicator marginLeft="auto">
-                                    <Check size={16} />
-                                  </Select.ItemIndicator>
-                                </Select.Item>
-                              );
-                            }),
-                          [items]
-                        )}
-                      </Select.Group>
-                    </Select.Viewport>
-
-                    <Select.ScrollDownButton
-                      alignItems="center"
-                      justifyContent="center"
-                      position="relative"
-                      width="100%"
-                      height="$3"
-                    >
-                      <YStack zIndex={10}>
-                        <ChevronDown size={20} />
-                      </YStack>
-                    </Select.ScrollDownButton>
-                  </Select.Content>
-                </Select>
-              </YStack>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <H4>
-                {queryType === "recientes"
-                  ? "Recientes"
-                  : queryType === "top-gastos"
-                  ? "Top Gastos"
-                  : "Periódicos"}
-              </H4>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowAll(true);
+                  Ver Todo
+                </Text>
+              </XStack>
+              <FlashList
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 100,
                 }}
-              >
-                <MaterialCommunityIcons
-                  name="arrow-expand"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </XStack>
-          </YStack>
-          <ScrollView mt="$4">
-            <FlashList
-              data={expenses}
-              renderItem={({ item: expense }) => {
-                return <Expense expense={expense} />;
-              }}
-              estimatedItemSize={16}
-            />
+                data={queryFilters}
+                renderItem={({ item }) => <FilterSlider value={item.value} />}
+                estimatedItemSize={16}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              />
+              <Chart timelineQuery={timelineQuery} />
+              <XStack alignItems="center" justifyContent="space-between">
+                <Link asChild href="/(modals)/export-data">
+                  <TouchableOpacity>
+                    <FileLineChart size="$2" />
+                  </TouchableOpacity>
+                </Link>
+                <YStack>
+                  <Select disablePreventBodyScroll>
+                    <Select.Trigger iconAfter={ChevronDown}>
+                      <Select.Value placeholder="Recientes" />
+                    </Select.Trigger>
+
+                    <Adapt when="sm" platform="touch">
+                      <Sheet modal dismissOnSnapToBottom>
+                        <Sheet.Frame>
+                          <Sheet.ScrollView>
+                            <Adapt.Contents />
+                          </Sheet.ScrollView>
+                        </Sheet.Frame>
+                        <Sheet.Overlay />
+                      </Sheet>
+                    </Adapt>
+
+                    <Select.Content zIndex={200000}>
+                      <Select.ScrollUpButton
+                        alignItems="center"
+                        justifyContent="center"
+                        position="relative"
+                        width="100%"
+                        height="$3"
+                      >
+                        <YStack zIndex={10}>
+                          <ChevronUp size={20} />
+                        </YStack>
+                      </Select.ScrollUpButton>
+
+                      <Select.Viewport>
+                        <Select.Group>
+                          {React.useMemo(
+                            () =>
+                              items.map((item, i) => {
+                                return (
+                                  <Select.Item
+                                    index={i}
+                                    key={item.name}
+                                    value={item.name.toLowerCase()}
+                                  >
+                                    <Select.ItemText>
+                                      {item.name}
+                                    </Select.ItemText>
+                                    <Select.ItemIndicator marginLeft="auto">
+                                      <Check size={16} />
+                                    </Select.ItemIndicator>
+                                  </Select.Item>
+                                );
+                              }),
+                            [items]
+                          )}
+                        </Select.Group>
+                      </Select.Viewport>
+
+                      <Select.ScrollDownButton
+                        alignItems="center"
+                        justifyContent="center"
+                        position="relative"
+                        width="100%"
+                        height="$3"
+                      >
+                        <YStack zIndex={10}>
+                          <ChevronDown size={20} />
+                        </YStack>
+                      </Select.ScrollDownButton>
+                    </Select.Content>
+                  </Select>
+                </YStack>
+              </XStack>
+            </YStack>
+          </SafeAreaView>
+          <ScrollView>
+            <YStack paddingBottom="$5">
+              <FlashList
+                data={expenses}
+                renderItem={({ item: expense }) => {
+                  return <Expense expense={expense} />;
+                }}
+                estimatedItemSize={16}
+              />
+            </YStack>
           </ScrollView>
-        </SafeAreaView>
+        </>
       )}
     </>
   );

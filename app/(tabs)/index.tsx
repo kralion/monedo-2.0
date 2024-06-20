@@ -77,7 +77,9 @@ export default function Home() {
     <>
       {showAll ? (
         <Animated.View style={{ opacity: fadeAnim }}>
-          <SafeAreaView style={{ paddingTop: 14, paddingHorizontal: 16 }}>
+          <SafeAreaView
+            style={{ paddingTop: 14, paddingHorizontal: 16, paddingBottom: 20 }}
+          >
             <YStack gap="$5">
               <XStack justifyContent="space-between" alignItems="center">
                 <H3>Gastos Recientes</H3>
@@ -95,7 +97,7 @@ export default function Home() {
               <ScrollView>
                 <FlashList
                   data={expenses}
-                  estimatedItemSize={16}
+                  estimatedItemSize={50}
                   renderItem={({ item: expense }) => {
                     return <Expense expense={expense} />;
                   }}
@@ -153,7 +155,7 @@ export default function Home() {
             <Card />
           </View>
           <ScrollView style={{ paddingHorizontal: 5, zIndex: -10 }}>
-            <YStack gap="$4">
+            <YStack gap="$4" paddingBottom="$5">
               <XStack
                 paddingTop="$13"
                 paddingHorizontal="$4"

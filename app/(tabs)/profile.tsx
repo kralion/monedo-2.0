@@ -1,11 +1,11 @@
 import { useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
-import { Bell, LogOut, User, Wallet } from "@tamagui/lucide-icons";
+import { Bell, LogOut, User, UserSquare2, Wallet } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Button, H3, YStack } from "tamagui";
+import { Avatar, Button, H3, Text, XStack, YStack } from "tamagui";
 
 export default function ProfileScreen() {
   const { userData } = useAuth();
@@ -48,47 +48,43 @@ export default function ProfileScreen() {
           </YStack>
         </YStack>
       </View>
-      <YStack mt="$10" alignItems="flex-start">
-        <Button
+      <YStack mt="$10" ml="$3" gap="$6" alignItems="flex-start">
+        <TouchableOpacity onPress={() => router.push("/(modals)/budget")}>
+          <XStack gap="$3" alignItems="center">
+            <Wallet />
+            <Text fontSize="$6">Metas de Ahorro</Text>
+          </XStack>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => router.push("/(modals)/personal-info")}
-          chromeless
-          justifyContent="flex-start"
-          width="100%"
-          size="$5"
-          icon={User}
         >
-          Mis Datos
-        </Button>
-        <Button
-          onPress={() => router.push("/(modals)/budget")}
-          chromeless
-          justifyContent="flex-start"
-          width="100%"
-          size="$5"
-          icon={Wallet}
-        >
-          Presupuestos
-        </Button>
-        <Button
+          <XStack gap="$3" alignItems="center">
+            <User />
+            <Text fontSize="$6">Mis Datos</Text>
+          </XStack>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/(modals)/membership")}>
+          <XStack gap="$3" alignItems="center">
+            <UserSquare2 />
+            <Text fontSize="$6">Membresía</Text>
+          </XStack>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => router.push("/(modals)/notifications")}
-          chromeless
-          justifyContent="flex-start"
-          width="100%"
-          size="$5"
-          icon={Bell}
         >
-          Notificaciones
-        </Button>
-        <Button
-          onPress={() => signOut()}
-          justifyContent="flex-start"
-          width="100%"
-          chromeless
-          size="$5"
-          icon={LogOut}
-        >
-          Salir
-        </Button>
+          <XStack gap="$3" alignItems="center">
+            <Bell />
+            <Text fontSize="$6">Notificaciones</Text>
+          </XStack>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => signOut()}>
+          <XStack gap="$3" alignItems="center">
+            <LogOut color="$red10Light" />
+            <Text color="$red10Light" fontSize="$6">
+              Salir
+            </Text>
+          </XStack>
+        </TouchableOpacity>
       </YStack>
       <Image
         source={require("../../assets/images/asset-profile.png")}

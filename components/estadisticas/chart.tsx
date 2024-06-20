@@ -81,7 +81,7 @@ export default function Chart({ timelineQuery }: { timelineQuery: string }) {
 
     default:
       labels = expenses.map((expense) => {
-        const date = parseISO(expense.fecha);
+        const date = new Date(expense.fecha);
         return format(date, "MMMM"); // e.g., May
       });
       break;
@@ -112,9 +112,9 @@ export default function Chart({ timelineQuery }: { timelineQuery: string }) {
           },
         ],
       }}
-      width={440}
+      width={450}
       style={{
-        marginLeft: -30,
+        marginLeft: -35,
         marginBottom: -5,
       }}
       height={250}
