@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { Text, XStack } from "tamagui";
@@ -11,28 +12,31 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="details/[id]"
         options={{
-          title: "",
-          headerLeft: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  router.back();
-                }}
-              >
-                <XStack alignItems="center">
-                  <Feather name="chevron-left" size={24} color="#3b82f6" />
-                  <Text>Gastos</Text>
-                </XStack>
-              </TouchableOpacity>
-            );
-          },
+          title: "Detalles",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+              style={{ marginLeft: -10 }}
+            >
+              <XStack alignItems="center">
+                <ChevronLeft size="$3" color="$blue10Light" />
+                <Text fontSize="$6" color="$blue10Light">
+                  Gastos
+                </Text>
+              </XStack>
+            </TouchableOpacity>
+          ),
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.push(`/(expenses)/${params.id}`);
+                router.push(`/(expenses)/edit/${params.id}`);
               }}
             >
-              <Text className="text-blue-500 text-[17px] pr-2">Editar</Text>
+              <Text fontSize="$6" color="$blue10Light">
+                Editar
+              </Text>
             </TouchableOpacity>
           ),
         }}
@@ -45,16 +49,21 @@ export default function ModalsLayout() {
               onPress={() => {
                 router.back();
               }}
+              style={{ marginLeft: -10 }}
             >
               <XStack alignItems="center">
-                <Feather name="chevron-left" size={24} color="#3b82f6" />
-                <Text>Detalles</Text>
+                <ChevronLeft size="$3" color="$blue10Light" />
+                <Text fontSize="$6" color="$blue10Light">
+                  Detalles
+                </Text>
               </XStack>
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text className="text-red-500 text-[17px] pr-2">Cancelar</Text>
+            <TouchableOpacity onPress={() => router.replace("/(tabs)")}>
+              <Text fontSize="$6" color="$red10Light">
+                Cancelar
+              </Text>
             </TouchableOpacity>
           ),
 

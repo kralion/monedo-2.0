@@ -44,7 +44,7 @@ export default function SignInScreen() {
         placement: "top",
       });
     } else {
-      router.push("/(tabs)/");
+      router.replace("/(tabs)/");
     }
     setLoading(false);
   }

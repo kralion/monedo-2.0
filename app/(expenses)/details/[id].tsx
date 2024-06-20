@@ -19,7 +19,7 @@ import {
   YStack,
 } from "tamagui";
 
-export default function ExpenseDetailsModal() {
+export default function ExpenseDetails() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isFetching, setIsFetching] = React.useState(false);
   const { deleteExpense } = useExpenseContext();

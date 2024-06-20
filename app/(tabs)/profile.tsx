@@ -12,7 +12,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   async function signOut() {
     await supabase.auth.signOut();
-    router.push("/(auth)/sign-in");
+    router.replace("/(auth)/sign-in");
   }
 
   return (
