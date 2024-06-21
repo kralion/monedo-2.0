@@ -42,7 +42,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="statistics"
           options={{
-            title: "Analíticas",
+            title: "Reportes",
             tabBarIcon: ({ color, focused }) => (
               <Image
                 style={{ width: 28, height: 28, tintColor: color }}
@@ -69,7 +69,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="wallet"
           options={{
-            title: "Saldo",
+            title: "Wallet",
             tabBarIcon: ({ color, focused }) => (
               <Image
                 style={{ width: 28, height: 28, tintColor: color }}

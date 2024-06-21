@@ -1,8 +1,7 @@
-import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
-import { Button, Text, XStack } from "tamagui";
+import { Text, XStack } from "tamagui";
 
 export default function ModalsLayout() {
   return (
@@ -79,14 +78,7 @@ export default function ModalsLayout() {
           },
         }}
       />
-      <Stack.Screen
-        name="budget"
-        options={{
-          presentation: "modal",
-          title: "",
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="personal-info"
         options={{

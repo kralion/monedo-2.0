@@ -84,8 +84,8 @@ export default function Wallet() {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <>
+    <>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
           <YStack
             gap="$3"
@@ -191,16 +191,16 @@ export default function Wallet() {
             )}
           </YStack>
         </SafeAreaView>
-        <ScrollView m="$3">
-          <YStack paddingBottom="$5">
-            <FlashList
-              data={budgets}
-              estimatedItemSize={100}
-              renderItem={({ item }) => <Budget budget={item} />}
-            />
-          </YStack>
-        </ScrollView>
-      </>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      <ScrollView m="$3">
+        <YStack paddingBottom="$5">
+          <FlashList
+            data={budgets}
+            estimatedItemSize={100}
+            renderItem={({ item }) => <Budget budget={item} />}
+          />
+        </YStack>
+      </ScrollView>
+    </>
   );
 }

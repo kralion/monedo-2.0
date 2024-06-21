@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   AlertDialog,
   Button,
@@ -21,14 +22,15 @@ import {
 
 export default function ExpenseDetails() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isFetching, setIsFetching] = React.useState(false);
   const { deleteExpense } = useExpenseContext();
   const [expense, setExpense] = React.useState({} as IExpense);
   const [isOpen, setIsOpen] = React.useState(false);
   const params = useLocalSearchParams<{ id: string }>();
   const toast = useToastController();
   const handleDeleteExpense = async (id: string) => {
+    setIsLoading(true);
     deleteExpense(id);
+    setIsLoading(false);
     toast.show("Gasto eliminado");
     router.push("/(tabs)/");
     setIsOpen(false);
@@ -47,15 +49,9 @@ export default function ExpenseDetails() {
 
   React.useEffect(() => {
     if (params.id) {
-      setIsFetching(true);
       getExpenseById(params.id);
-      setIsFetching(false);
     }
   }, [params.id]);
-
-  if (!expense) {
-    return <Spinner mt="$5" size="large" />;
-  }
 
   const monto_gastado = expense.monto;
   //TODO: Cambiar este valor por el monto presupuestado del mes actual
@@ -64,10 +60,8 @@ export default function ExpenseDetails() {
     (monto_gastado ?? 100 / monto_presupuestado) * 100;
   return (
     <ScrollView>
-      {isFetching ? (
-        <Spinner mt="$5" size="large" />
-      ) : (
-        <YStack gap="$3">
+      {expense.monto ? (
+        <YStack gap="$4">
           <AlertDialog open={isOpen}>
             <AlertDialog.Portal>
               <AlertDialog.Overlay
@@ -103,7 +97,7 @@ export default function ExpenseDetails() {
                     recuperado.
                   </AlertDialog.Description>
 
-                  <XStack gap="$3" mt="$7" justifyContent="flex-end">
+                  <XStack gap="$4" mt="$7" justifyContent="flex-end">
                     <AlertDialog.Cancel
                       onPress={() => setIsOpen(false)}
                       asChild
@@ -125,20 +119,16 @@ export default function ExpenseDetails() {
             </AlertDialog.Portal>
           </AlertDialog>
 
-          <YStack gap="$2" p="$3">
-            <Text fontSize="$5" color="$gray10">
-              Monto
+          <YStack p="$4">
+            <Text color="$gray10">Monto</Text>
+            <H1>S/. {expense.monto.toFixed(2)}</H1>
+            <Text mb="$4" mt="$3" color="$gray10">
+              {expense.descripcion}
             </Text>
-
-            <H1>S/. {expense?.monto}</H1>
           </YStack>
 
-          <Text mb="$4" mt="$1" p="$3" fontSize="$5" color="$gray10">
-            {expense.descripcion}
-          </Text>
-
           <Separator borderColor="$gray7" />
-          <YStack p="$3" gap="$3">
+          <YStack p="$4" gap="$3">
             <XStack justifyContent="space-between" alignItems="center">
               <Text fontSize="$5" color="$gray10">
                 Fecha
@@ -158,7 +148,7 @@ export default function ExpenseDetails() {
                 {new Date(expense.fecha).toLocaleTimeString("es-PE", {
                   hour: "2-digit",
                   minute: "2-digit",
-                  hour12: false,
+                  hour12: true,
                 })}
               </Text>
             </XStack>
@@ -169,10 +159,10 @@ export default function ExpenseDetails() {
               <Button
                 disabled
                 size="$2"
+                variant="outlined"
+                bg="$gray5Light"
                 borderRadius="$7"
-                bg="$gray10"
                 minWidth="$9"
-                color="$white1"
               >
                 {expense.categoria}
               </Button>
@@ -180,17 +170,25 @@ export default function ExpenseDetails() {
           </YStack>
           <Slider
             mt="$7"
-            mx="$3"
+            disabled
+            mx="$4"
             defaultValue={[totalPercentageExpensed]}
             max={100}
             step={1}
           >
-            <Slider.Track>
-              <Slider.TrackActive />
+            <Slider.Track borderColor="$green5Light">
+              <Slider.TrackActive backgroundColor="$green6Light" />
             </Slider.Track>
-            <Slider.Thumb index={0} size="$1" circular elevate />
+            <Slider.Thumb
+              borderColor="$green7Light"
+              backgroundColor="$green8Light"
+              index={0}
+              size="$1"
+              circular
+              elevate
+            />
           </Slider>
-          <XStack mx="$3" justifyContent="space-between" alignItems="center">
+          <XStack mx="$4" justifyContent="space-between" alignItems="center">
             <Text fontSize="$5" color="$gray10">
               0
             </Text>
@@ -210,6 +208,16 @@ export default function ExpenseDetails() {
             {isLoading ? <Spinner size="small" color="$white1" /> : "Eliminar"}
           </Button>
           <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+        </YStack>
+      ) : (
+        <YStack
+          flex={1}
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100%"
+        >
+          <Spinner size="small" />
+          <Text color="$gray10">Cargando...</Text>
         </YStack>
       )}
     </ScrollView>

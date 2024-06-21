@@ -97,129 +97,132 @@ export default function EditExpense() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView p="$4">
-        <YStack gap="$5">
-          <YStack gap="$1">
-            <XStack gap="$2" alignItems="center">
-              <Image
-                width={45}
-                height={45}
-                source={{
-                  uri: assetIndentificador,
-                }}
-              />
+        {expense.monto ? (
+          <YStack gap="$5">
+            <YStack gap="$1">
+              <XStack gap="$2" alignItems="center">
+                <Image
+                  width={45}
+                  height={45}
+                  source={{
+                    uri: assetIndentificador,
+                  }}
+                />
 
-              <H3 pt="$1">Gasto en {expense.categoria}</H3>
-            </XStack>
-            <Text ml="$1.5">Modifica los detalles del gasto seleccionado</Text>
-          </YStack>
-          <YStack>
-            <Controller
-              name="categoria"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <YStack>
-                  <Label color="$gray10">Categoría</Label>
-                  <Select
-                    value={expense.categoria}
-                    onValueChange={onChange}
-                    disablePreventBodyScroll
-                  >
-                    <Select.Trigger iconAfter={ChevronDown}>
-                      <Select.Value placeholder="Selecciona" />
-                    </Select.Trigger>
-
-                    <Adapt when="sm" platform="touch">
-                      <Sheet modal dismissOnSnapToBottom>
-                        <Sheet.Frame>
-                          <Sheet.ScrollView>
-                            <Adapt.Contents />
-                          </Sheet.ScrollView>
-                        </Sheet.Frame>
-                        <Sheet.Overlay />
-                      </Sheet>
-                    </Adapt>
-
-                    <Select.Content zIndex={200000}>
-                      <Select.ScrollUpButton
-                        alignItems="center"
-                        justifyContent="center"
-                        position="relative"
-                        width="100%"
-                        height="$3"
-                      >
-                        <YStack zIndex={10}>
-                          <ChevronUp size={20} />
-                        </YStack>
-                      </Select.ScrollUpButton>
-
-                      <Select.Viewport>
-                        <Select.Group>
-                          {useMemo(
-                            () =>
-                              items.map((item, i) => {
-                                return (
-                                  <Select.Item
-                                    index={i}
-                                    key={item.name}
-                                    value={item.name.toLowerCase()}
-                                  >
-                                    <Select.ItemText>
-                                      {item.name}
-                                    </Select.ItemText>
-                                    <Select.ItemIndicator marginLeft="auto">
-                                      <Check size={16} />
-                                    </Select.ItemIndicator>
-                                  </Select.Item>
-                                );
-                              }),
-                            [items]
-                          )}
-                        </Select.Group>
-                      </Select.Viewport>
-
-                      <Select.ScrollDownButton
-                        alignItems="center"
-                        justifyContent="center"
-                        position="relative"
-                        width="100%"
-                        height="$3"
-                      >
-                        <YStack zIndex={10}>
-                          <ChevronDown size={20} />
-                        </YStack>
-                      </Select.ScrollDownButton>
-                    </Select.Content>
-                  </Select>
-                </YStack>
-              )}
-            />
-
-            <YStack>
-              <Label color="$gray10">Monto</Label>
-
-              <Controller
-                control={control}
-                name="monto"
-                render={({ ...field }) => (
-                  <Input
-                    size="lg"
-                    inputMode="decimal"
-                    value={String(expense.monto)}
-                    placeholder="65.00"
-                    {...field}
-                    borderRadius={7}
-                  />
-                )}
-                rules={{
-                  required: { value: true, message: "Ingrese el monto" },
-                  pattern: {
-                    value: /^\d+(\.\d*)?$/,
-                    message: "Solo se permiten números válidos",
-                  },
-                }}
-              />
+                <H3 pt="$1">Gasto en {expense.categoria}</H3>
+              </XStack>
+              <Text ml="$1.5">
+                Modifica los detalles del gasto seleccionado
+              </Text>
             </YStack>
-            {/* <YStack>
+            <YStack>
+              <Controller
+                name="categoria"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <YStack>
+                    <Label color="$gray10">Categoría</Label>
+                    <Select
+                      value={expense.categoria}
+                      onValueChange={onChange}
+                      disablePreventBodyScroll
+                    >
+                      <Select.Trigger iconAfter={ChevronDown}>
+                        <Select.Value placeholder="Selecciona" />
+                      </Select.Trigger>
+
+                      <Adapt when="sm" platform="touch">
+                        <Sheet modal dismissOnSnapToBottom>
+                          <Sheet.Frame>
+                            <Sheet.ScrollView>
+                              <Adapt.Contents />
+                            </Sheet.ScrollView>
+                          </Sheet.Frame>
+                          <Sheet.Overlay />
+                        </Sheet>
+                      </Adapt>
+
+                      <Select.Content zIndex={200000}>
+                        <Select.ScrollUpButton
+                          alignItems="center"
+                          justifyContent="center"
+                          position="relative"
+                          width="100%"
+                          height="$3"
+                        >
+                          <YStack zIndex={10}>
+                            <ChevronUp size={20} />
+                          </YStack>
+                        </Select.ScrollUpButton>
+
+                        <Select.Viewport>
+                          <Select.Group>
+                            {useMemo(
+                              () =>
+                                items.map((item, i) => {
+                                  return (
+                                    <Select.Item
+                                      index={i}
+                                      key={item.name}
+                                      value={item.name.toLowerCase()}
+                                    >
+                                      <Select.ItemText>
+                                        {item.name}
+                                      </Select.ItemText>
+                                      <Select.ItemIndicator marginLeft="auto">
+                                        <Check size={16} />
+                                      </Select.ItemIndicator>
+                                    </Select.Item>
+                                  );
+                                }),
+                              [items]
+                            )}
+                          </Select.Group>
+                        </Select.Viewport>
+
+                        <Select.ScrollDownButton
+                          alignItems="center"
+                          justifyContent="center"
+                          position="relative"
+                          width="100%"
+                          height="$3"
+                        >
+                          <YStack zIndex={10}>
+                            <ChevronDown size={20} />
+                          </YStack>
+                        </Select.ScrollDownButton>
+                      </Select.Content>
+                    </Select>
+                  </YStack>
+                )}
+              />
+
+              <YStack>
+                <Label color="$gray10">Monto</Label>
+
+                <Controller
+                  control={control}
+                  name="monto"
+                  render={({ ...field }) => (
+                    <Input
+                      size="lg"
+                      inputMode="decimal"
+                      value={String(expense.monto)}
+                      placeholder="65.00"
+                      {...field}
+                      borderRadius={7}
+                    />
+                  )}
+                  rules={{
+                    required: { value: true, message: "Ingrese el monto" },
+                    pattern: {
+                      value: /^\d+(\.\d*)?$/,
+                      message: "Solo se permiten números válidos",
+                    },
+                  }}
+                />
+              </YStack>
+              {/* <YStack>
               <Label>Divisa</Label>
 
               <Controller
@@ -254,24 +257,24 @@ export default function EditExpense() {
                   )}
                 />
             </YStack> */}
-            <YStack>
-              <Label color="$gray10">Descripción</Label>
-              <Controller
-                control={control}
-                name="descripcion"
-                render={({ field: { onChange, value } }) => (
-                  <TextArea
-                    size="$4"
-                    autoCapitalize="none"
-                    borderRadius="$5"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-                defaultValue={expense.descripcion}
-              />
-            </YStack>
-            {/* <Controller
+              <YStack>
+                <Label color="$gray10">Descripción</Label>
+                <Controller
+                  control={control}
+                  name="descripcion"
+                  render={({ field: { onChange, value } }) => (
+                    <TextArea
+                      size="$4"
+                      autoCapitalize="none"
+                      borderRadius="$5"
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                  )}
+                  defaultValue={expense.descripcion}
+                />
+              </YStack>
+              {/* <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <YStack space={3}>
@@ -314,21 +317,33 @@ export default function EditExpense() {
                 name="periodicidad"
                 defaultValue={false}
               /> */}
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              size="$5"
-              bg="$green8Light"
-              color="$white1"
-              mt="$6"
-            >
-              {isLoading ? (
-                <Spinner size="small" color="$white1" />
-              ) : (
-                "Actualizar"
-              )}
-            </Button>
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                size="$5"
+                bg="$green8Light"
+                color="$white1"
+                mt="$6"
+              >
+                {isLoading ? (
+                  <Spinner size="small" color="$white1" />
+                ) : (
+                  "Actualizar"
+                )}
+              </Button>
+            </YStack>
           </YStack>
-        </YStack>
+        ) : (
+          <YStack
+            flex={1}
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100%"
+          >
+            <Spinner size="small" />
+            <Text color="$gray10">Cargando...</Text>
+          </YStack>
+        )}
+
         {/* TODO: Probar esto solo el los dispositivos, en los emuladores no funciona
       <PushNotification /> */}
       </ScrollView>

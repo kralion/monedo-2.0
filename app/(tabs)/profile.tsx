@@ -1,6 +1,6 @@
 import { useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
-import { Bell, LogOut, User, UserSquare2, Wallet } from "@tamagui/lucide-icons";
+import { Bell, LogOut, User, UserSquare2 } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
@@ -31,7 +31,7 @@ export default function ProfileScreen() {
                 height: 100,
               }}
             />
-            <Avatar.Fallback backgroundColor={"#F5F5F5"} />
+            <Avatar.Fallback borderRadius="$12" backgroundColor={"#F5F5F5"} />
           </Avatar>
 
           <YStack gap="$1">
@@ -49,12 +49,6 @@ export default function ProfileScreen() {
         </YStack>
       </View>
       <YStack mt="$10" ml="$3" gap="$6" alignItems="flex-start">
-        <TouchableOpacity onPress={() => router.push("/(modals)/budget")}>
-          <XStack gap="$3" alignItems="center">
-            <Wallet />
-            <Text fontSize="$6">Metas de Ahorro</Text>
-          </XStack>
-        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => router.push("/(modals)/personal-info")}
         >

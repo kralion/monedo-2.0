@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { BudgetLimitExceededModal } from "../popups";
+import { BudgetLimitExceededModal } from "../popups/budget-limit-exceeded";
 import BuyPremiumModal from "../popups/buy-premium";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, H3, H4, XStack, YStack, Text } from "tamagui";

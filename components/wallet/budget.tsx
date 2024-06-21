@@ -2,7 +2,7 @@ import { IBudget } from "@/interfaces";
 import { X } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import * as React from "react";
-import { Button, Dialog, ListItem, Text, YStack } from "tamagui";
+import { Button, H2, H3, ListItem, Sheet, Text, YStack } from "tamagui";
 export function Budget({ budget }: { budget: IBudget }) {
   const { monto, fecha_final, descripcion, fecha_registro } = budget;
   const [openBudgetDetails, setOpenBudgetDetails] = React.useState(false);
@@ -51,104 +51,66 @@ export function Budget({ budget }: { budget: IBudget }) {
       }
       iconAfter={<Text fontWeight="bold"> S/. {monto.toFixed(2)}</Text>}
     >
-      <Dialog modal open={openBudgetDetails}>
-        <Dialog.Portal>
-          <Dialog.Overlay
-            key="overlay"
-            animation="slow"
-            opacity={0.7}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-          <Dialog.Content
-            bordered
-            elevate
-            borderRadius={16}
-            key="content"
-            animateOnly={["transform", "opacity"]}
-            animation={[
-              "quicker",
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{
-              x: 0,
-              y: -20,
-              opacity: 0,
-              scale: 0.9,
-            }}
-            exitStyle={{
-              x: 0,
-              y: 10,
-              opacity: 0,
-              scale: 0.95,
-            }}
-            gap="$4"
-          >
-            <Dialog.Title>Detalles</Dialog.Title>
-            <Dialog.Description>
-              Mostrando información relevante sobre el presupuesto seleccionado.
-            </Dialog.Description>
+      <Sheet
+        zIndex={100_000}
+        snapPointsMode="fit"
+        animation="medium"
+        modal
+        open={openBudgetDetails}
+        onOpenChange={setOpenBudgetDetails}
+      >
+        <Sheet.Handle />
+        <Sheet.Overlay
+          animation="100ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Sheet.Frame p="$5">
+          <H3>Detalles</H3>
+          <Text color="$gray10">
+            Mostrando información relevante sobre el presupuesto seleccionado.
+          </Text>
 
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$2"
-                onPress={() => {
-                  setOpenBudgetDetails(false);
-                }}
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-            <YStack gap="$4">
-              <YStack gap="$1">
-                <Text>Monto</Text>
-                <Text fontWeight="bold">S/. {monto.toFixed(2)}</Text>
-              </YStack>
-              <YStack gap="$1">
-                <Text>Descripcion</Text>
-                <Text>{descripcion}</Text>
-              </YStack>
-              <YStack gap="$1">
-                <Text>Fecha Registro</Text>
-                <Text fontWeight="bold">
-                  {date.toLocaleDateString("es-ES", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Text>
-              </YStack>
-              <YStack gap="$1">
-                <Text className="font-bold">Fecha Expiración</Text>
-                <Text fontWeight="bold">
-                  {endDate.toLocaleDateString("es-ES", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Text>
-              </YStack>
+          <YStack gap="$4" mt="$5">
+            <H2>S/. {monto.toFixed(2)}</H2>
+            <YStack gap="$1">
+              <Text>Fecha Registro</Text>
+              <Text fontWeight="bold">
+                {date.toLocaleDateString("es-ES", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Text>
             </YStack>
-            <Button
-              mt="$5"
-              bg="$green8Light"
-              color="$white1"
-              onPress={() => {
-                alert("La funcionalidad aun no esta disponible");
-              }}
-            >
-              Editar
-            </Button>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog>
+            <YStack gap="$1">
+              <Text className="font-bold">Fecha Expiración</Text>
+              <Text fontWeight="bold">
+                {endDate.toLocaleDateString("es-ES", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Text>
+            </YStack>
+            <YStack gap="$1">
+              <Text>Descripcion</Text>
+              <Text>{descripcion}</Text>
+            </YStack>
+          </YStack>
+          <Button
+            my="$5"
+            size="$5"
+            bg="$green8Light"
+            color="$white1"
+            onPress={() => {
+              alert("La funcionalidad aun no esta disponible");
+            }}
+          >
+            Editar
+          </Button>
+        </Sheet.Frame>
+      </Sheet>
     </ListItem>
   );
 }

@@ -6,6 +6,8 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Image, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Theme, useTheme } from "tamagui";
+
 import {
   Button,
   H2,
@@ -30,6 +32,7 @@ export default function SignInScreen() {
   } = useForm<FormData>();
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
+  const theme = useTheme();
   const toast = useToastController();
   async function signInWithEmail(data: FormData) {
     setLoading(true);
@@ -153,6 +156,25 @@ export default function SignInScreen() {
               />
               Continuar con Google
             </Button>
+            <Theme name="dark">
+              <Button
+                icon={
+                  <Image
+                    source={{
+                      uri: "https://img.icons8.com/?size=50&id=30840&format=png",
+                    }}
+                    style={{
+                      tintColor: "#fff",
+                    }}
+                    width={25}
+                    height={25}
+                  />
+                }
+                size="$5"
+              >
+                Continuar con Apple
+              </Button>
+            </Theme>
             <Button variant="outlined" size="$5">
               <Image
                 source={{
@@ -162,16 +184,6 @@ export default function SignInScreen() {
                 height={25}
               />
               Continuar con Facebook
-            </Button>
-            <Button variant="outlined" size="$5">
-              <Image
-                source={{
-                  uri: "https://img.icons8.com/?size=50&id=30840&format=png",
-                }}
-                width={25}
-                height={25}
-              />
-              Continuar con Apple
             </Button>
           </YStack>
 

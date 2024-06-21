@@ -1,11 +1,10 @@
-import NoDataAsset from "@/assets/svgs/no-data.svg";
 import Card from "@/components/dashboard/card";
+import { Expense } from "@/components/dashboard/expense";
 import BuyPremiumModal from "@/components/popups/buy-premium";
-import { Expense } from "@/components/shared";
-import { useExpenseContext, useAuth } from "@/context";
+import { useAuth, useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
 import { FlashList } from "@shopify/flash-list";
-import { Lock, Minimize2 } from "@tamagui/lucide-icons";
+import { Lock } from "@tamagui/lucide-icons";
 import * as React from "react";
 import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,10 +13,11 @@ import {
   H3,
   H4,
   ScrollView,
+  Spinner,
   Text,
+  View,
   XStack,
   YStack,
-  View,
 } from "tamagui";
 
 export default function Home() {
@@ -176,12 +176,14 @@ export default function Home() {
                 </Text>
               </XStack>
               {expenses && expenses.length === 0 && (
-                <YStack justifyContent="center" alignItems="center" gap="$3">
-                  <NoDataAsset width={200} height={200} />
-                  <Text textAlign="center">
-                    Parece que no tienes gastos registrados, haz click en el
-                    icono + para agregar uno.
-                  </Text>
+                <YStack
+                  flex={1}
+                  justifyContent="center"
+                  alignItems="center"
+                  minHeight="100%"
+                >
+                  <Spinner size="small" />
+                  <Text color="$gray10">Cargando...</Text>
                 </YStack>
               )}
 

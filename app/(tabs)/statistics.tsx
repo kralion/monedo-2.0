@@ -1,24 +1,30 @@
-import { Expense } from "@/components/shared";
+import Chart from "@/components/statistics/chart";
+import { Expense } from "@/components/statistics/expense";
 import { useExpenseContext } from "@/context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Image } from "expo-image";
-import { Link } from "expo-router";
-import * as React from "react";
-import { useState } from "react";
-import { Animated, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Chart from "@/components/estadisticas/chart";
-import { Button, XStack, YStack, Text, H2, H4, Adapt } from "tamagui";
-import { Select } from "tamagui";
+import { FlashList } from "@shopify/flash-list";
 import {
   Check,
   ChevronDown,
   ChevronUp,
   FileLineChart,
 } from "@tamagui/lucide-icons";
-import { FlashList } from "@shopify/flash-list";
-import { Sheet } from "tamagui";
-import { ScrollView } from "tamagui";
+import { Link } from "expo-router";
+import * as React from "react";
+import { useState } from "react";
+import { Animated, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Adapt,
+  Button,
+  H2,
+  ScrollView,
+  Select,
+  Sheet,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
 const items = [
   { name: "Top Gastos" },
   { name: "Periódicos" },
