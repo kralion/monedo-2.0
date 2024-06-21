@@ -46,7 +46,8 @@ export default function SingleNotification({
       borderRadius={14}
       alignSelf="center"
       mx={2}
-      my={4}
+      mb={4}
+      mt="$3"
       width="97%"
       title={notification.titulo}
       icon={

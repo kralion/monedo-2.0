@@ -24,8 +24,8 @@ import { Edit3 } from "@tamagui/lucide-icons";
 interface FormData {
   nombres: string;
   apellidos: string;
-  email?: string;
-  perfil: string;
+  foto: string;
+  rol: string;
 }
 
 export default function PersonalInfo() {
@@ -42,8 +42,8 @@ export default function PersonalInfo() {
     defaultValues: {
       nombres: userData?.nombres,
       apellidos: userData?.apellidos,
-      email: session?.user?.email,
-      perfil: "https://img.icons8.com/?size=40&id=23454&format=png",
+      rol: userData?.rol,
+      foto: "https://img.icons8.com/?size=40&id=23454&format=png",
     },
   });
 
@@ -70,7 +70,7 @@ export default function PersonalInfo() {
       quality: 1,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
-      setValue("perfil", result.assets[0].uri);
+      setValue("foto", result.assets[0].uri);
     }
   };
 
@@ -124,7 +124,7 @@ export default function PersonalInfo() {
             <XStack mt="$10">
               <H4 fontWeight="bold">Informacion Básica</H4>
             </XStack>
-            <YStack>
+            <YStack gap="$4">
               <YStack>
                 <Label>Nombres</Label>
                 <Controller
@@ -170,31 +170,19 @@ export default function PersonalInfo() {
                 />
               </YStack>
 
-              <YStack>
-                <Label>Email</Label>
-
-                {/* //TODO: Add regex for the email */}
-                <Controller
-                  control={control}
-                  name="email"
-                  render={({ ...field }) => (
-                    <Input
-                      size="lg"
-                      keyboardType="email-address"
-                      value={userData.apellidos}
-                      {...field}
-                      borderRadius={7}
-                    />
-                  )}
-                  rules={{
-                    required: { value: true, message: "Ingrese el email" },
-                  }}
-                />
-              </YStack>
+              <Button
+                disabled
+                size="$5"
+                borderRadius="$10"
+                bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+                color="$white1"
+              >
+                {`Usuario ${userData.rol}`}
+              </Button>
 
               <Button
                 size="$5"
-                mt="$10"
+                mt="$5"
                 bg="$green8Light"
                 color="$white1"
                 onPress={handleSubmit(onSubmit)}
