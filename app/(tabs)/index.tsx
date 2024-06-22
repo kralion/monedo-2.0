@@ -4,9 +4,15 @@ import BuyPremiumModal from "@/components/popups/buy-premium";
 import { useAuth, useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
 import { FlashList } from "@shopify/flash-list";
-import { Lock } from "@tamagui/lucide-icons";
+import { ChevronUp, Lock } from "@tamagui/lucide-icons";
 import * as React from "react";
-import { Animated } from "react-native";
+import { Animated as AnimatedRN } from "react-native";
+import Animated, {
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+  withTiming,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -21,7 +27,7 @@ import {
 } from "tamagui";
 
 export default function Home() {
-  const fadeAnim = React.useRef(new Animated.Value(1)).current;
+  const fadeAnim = React.useRef(new AnimatedRN.Value(1)).current;
   const { getExpensesByUser, expenses } = useExpenseContext();
   const { userData } = useAuth();
   const [showAll, setShowAll] = React.useState(false);
@@ -31,7 +37,7 @@ export default function Home() {
     return null;
   }
   React.useEffect(() => {
-    Animated.timing(fadeAnim, {
+    AnimatedRN.timing(fadeAnim, {
       toValue: showAll ? 1 : 0,
       duration: 500,
       useNativeDriver: true,
@@ -57,6 +63,18 @@ export default function Home() {
       await supabase.from("notificaciones").insert(notification);
     }
   }
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollHandler = useScrollViewOffset(scrollRef);
+
+  const buttonStyle = useAnimatedStyle(() => {
+    return {
+      opacity: scrollHandler.value > 5 ? withTiming(1) : withTiming(0),
+    };
+  });
+  function scrollToTop() {
+    scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+  }
+
   React.useEffect(() => {
     if (userData) {
       welcomeNotification();
@@ -110,7 +128,8 @@ export default function Home() {
         <>
           <View
             paddingTop="$10"
-            bg="$green8Light"
+            // bg="$green9Light" TODO: change color to yellow bg="yellow10Light"
+            bg="$green9Light"
             borderBottomStartRadius={14}
             borderBottomEndRadius={14}
           >
@@ -154,7 +173,10 @@ export default function Home() {
 
             <Card />
           </View>
-          <ScrollView style={{ paddingHorizontal: 5, zIndex: -10 }}>
+          <ScrollView
+            ref={scrollRef}
+            style={{ paddingHorizontal: 5, zIndex: -10 }}
+          >
             <YStack gap="$4" paddingBottom="$5">
               <XStack
                 paddingTop="$13"
@@ -196,6 +218,24 @@ export default function Home() {
               />
             </YStack>
           </ScrollView>
+          <Animated.View
+            style={[
+              buttonStyle,
+              {
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+              },
+            ]}
+          >
+            <Button
+              style={{ borderRadius: 20, padding: 10 }}
+              onPress={scrollToTop}
+            >
+              <ChevronUp />
+            </Button>
+          </Animated.View>
         </>
       )}
     </>

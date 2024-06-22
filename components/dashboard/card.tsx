@@ -101,7 +101,7 @@ export default function Card() {
           colors={
             userData.rol === "premium"
               ? ["#D4AF37", "#FFD700", "#A79647"]
-              : ["#6366F1", "#6D28D9"]
+              : ["#10B981", "#047857"]
           }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}

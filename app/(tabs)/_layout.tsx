@@ -17,6 +17,7 @@ export default function TabLayout() {
             paddingTop: 10,
           },
           tabBarHideOnKeyboard: true,
+          freezeOnBlur: true,
           headerShown: false,
         }}
       >
@@ -69,7 +70,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="wallet"
           options={{
-            title: "Wallet",
+            title: "",
             tabBarIcon: ({ color, focused }) => (
               <Image
                 style={{ width: 28, height: 28, tintColor: color }}

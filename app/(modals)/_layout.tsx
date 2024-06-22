@@ -1,7 +1,7 @@
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
-import { Text, XStack } from "tamagui";
+import { Text, View, XStack } from "tamagui";
 
 export default function ModalsLayout() {
   return (
@@ -99,6 +99,7 @@ export default function ModalsLayout() {
               </TouchableOpacity>
             );
           },
+
           headerBlurEffect: "regular",
           headerTransparent: true,
           presentation: "card",
