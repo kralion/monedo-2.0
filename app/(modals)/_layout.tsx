@@ -9,6 +9,11 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="export-data"
         options={{
+          headerBlurEffect: "regular",
+          headerTransparent: true,
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
@@ -33,6 +38,11 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="notifications"
         options={{
+          headerBlurEffect: "regular",
+          headerTransparent: true,
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
           headerLeft: () => {
             return (
               <TouchableOpacity
@@ -58,7 +68,12 @@ export default function ModalsLayout() {
         name="membership"
         options={{
           presentation: "card",
+          headerBlurEffect: "regular",
+          headerTransparent: true,
           title: "Membresía",
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
           headerLeft: () => {
             return (
               <TouchableOpacity
@@ -82,6 +97,9 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="personal-info"
         options={{
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
           headerLeft: () => {
             return (
               <TouchableOpacity

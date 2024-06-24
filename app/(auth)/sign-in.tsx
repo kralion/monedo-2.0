@@ -135,7 +135,7 @@ export default function SignInScreen() {
                 signInWithEmail(data);
               })}
               size="$5"
-              bg="$green8Light"
+              bg="$green9Light"
               color="$white1"
             >
               {loading ? <Spinner size="small" color="$white1" /> : "Ingresar"}
@@ -193,7 +193,7 @@ export default function SignInScreen() {
             </Text>
             <Text
               onPress={() => router.push("/(auth)/sign-up")}
-              color="$green8Light"
+              color="$green9Light"
               pressStyle={{ textDecorationLine: "underline" }}
             >
               Regístrate

@@ -109,7 +109,7 @@ export default function Wallet() {
         ref={scrollRef}
         contentInsetAdjustmentBehavior="automatic"
         keyboardDismissMode="on-drag"
-        style={{ paddingHorizontal: 16, paddingTop: headerHeight }}
+        style={{ paddingHorizontal: 16, minHeight: "100%" }}
       >
         <YStack
           gap="$3"

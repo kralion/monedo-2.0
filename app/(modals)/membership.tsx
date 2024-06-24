@@ -1,22 +1,21 @@
 import { useAuth } from "@/context";
-import { AntDesign } from "@expo/vector-icons";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { BadgeInfo } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import {
+  Button,
+  H3,
+  H4,
   ScrollView,
   Separator,
-  Stack,
   Text,
   XStack,
   YStack,
-  View,
-  H4,
-  Button,
-  H3,
 } from "tamagui";
 
 export default function Membership() {
   const { userData, session } = useAuth();
+  const headerHeight = useHeaderHeight();
   const dateFormatted = session?.user.created_at
     ? new Date(session?.user.created_at).toLocaleDateString("es-ES", {
         year: "numeric",
@@ -32,7 +31,7 @@ export default function Membership() {
       })
     : "";
   return (
-    <ScrollView>
+    <ScrollView style={{ paddingTop: headerHeight }}>
       <YStack gap="$4" p="$4">
         <XStack gap="$4" alignItems="center">
           <Image

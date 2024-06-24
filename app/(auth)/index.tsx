@@ -24,9 +24,9 @@ export default function Welcome() {
           </Paragraph>
 
           <Button
+            bg="$green9Light"
             onPress={() => router.push("/(auth)/sign-in")}
             size="$5"
-            bg="$green8Light"
             color="$white1"
           >
             Empezar

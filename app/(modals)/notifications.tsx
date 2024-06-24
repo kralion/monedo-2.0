@@ -5,11 +5,14 @@ import { supabase } from "@/utils/supabase";
 import { FlashList } from "@shopify/flash-list";
 import { useToastController } from "@tamagui/toast";
 import * as React from "react";
+import { useHeaderHeight } from "@react-navigation/elements";
+import { ScrollView } from "tamagui";
 
 export default function Notifications() {
   const [notifications, setNotifications] = React.useState<INotification[]>([]);
   const { userData } = useAuth();
   const toast = useToastController();
+  const headerHeight = useHeaderHeight();
 
   const getNotifications = async () => {
     const { data, error } = await supabase
@@ -29,10 +32,12 @@ export default function Notifications() {
   }, [notifications]);
 
   return (
-    <FlashList
-      data={notifications}
-      renderItem={({ item }) => <SingleNotification notification={item} />}
-      estimatedItemSize={20}
-    />
+    <ScrollView style={{ paddingTop: headerHeight }}>
+      <FlashList
+        data={notifications}
+        renderItem={({ item }) => <SingleNotification notification={item} />}
+        estimatedItemSize={20}
+      />
+    </ScrollView>
   );
 }

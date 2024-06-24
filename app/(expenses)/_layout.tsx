@@ -1,7 +1,6 @@
-import { Feather } from "@expo/vector-icons";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity } from "react-native";
 import { Text, XStack } from "tamagui";
 
 export default function ModalsLayout() {
@@ -29,45 +28,43 @@ export default function ModalsLayout() {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity
-              onPress={() => {
-                router.push(`/(expenses)/edit/${params.id}`);
-              }}
-            >
-              <Text fontSize="$6" color="$blue10Light">
-                Editar
-              </Text>
-            </TouchableOpacity>
+            <Button
+              onPress={() => router.push(`/(expenses)/edit/${params.id}`)}
+              title="Editar"
+            />
           ),
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
         }}
       />
       <Stack.Screen
         name="edit/[id]"
         options={{
+          headerTitle: "Editar",
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
                 router.back();
               }}
-              style={{ marginLeft: -10 }}
+              style={{ marginLeft: -5 }}
             >
               <XStack alignItems="center">
                 <ChevronLeft size="$3" color="$blue10Light" />
-                <Text fontSize="$6" color="$blue10Light">
-                  Detalles
-                </Text>
+                <Button onPress={() => router.back()} title="Detalles" />
               </XStack>
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => router.replace("/(tabs)")}>
-              <Text fontSize="$6" color="$red10Light">
-                Cancelar
-              </Text>
-            </TouchableOpacity>
+            <Button
+              onPress={() => router.replace("/(tabs)")}
+              title="Cancelar"
+              color="#EE4B2B"
+            />
           ),
-
-          headerTitle: "",
         }}
       />
     </Stack>

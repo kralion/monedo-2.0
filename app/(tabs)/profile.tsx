@@ -5,6 +5,8 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Circle } from "tamagui";
+import { Square } from "tamagui";
 import { Avatar, Button, H3, Text, XStack, YStack } from "tamagui";
 
 export default function ProfileScreen() {
@@ -80,16 +82,39 @@ export default function ProfileScreen() {
           </XStack>
         </TouchableOpacity>
       </YStack>
-      <Image
-        source={require("../../assets/images/asset-profile.png")}
-        style={{
-          width: 350,
-          height: 350,
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          zIndex: -10,
-        }}
+
+      <Square
+        position="absolute"
+        bottom={70}
+        right={-50}
+        width={150}
+        height={300}
+        borderRadius="$10"
+        rotate="-20deg"
+        backgroundColor="$black1"
+        elevation="$4"
+      />
+      <Square
+        position="absolute"
+        bottom={30}
+        right={-50}
+        width={150}
+        height={300}
+        borderRadius="$10"
+        rotate="-30deg"
+        backgroundColor="$orange10"
+        elevation="$4"
+      />
+      <Square
+        position="absolute"
+        bottom={-10}
+        right={-50}
+        width={150}
+        height={300}
+        borderRadius="$10"
+        rotate="-40deg"
+        backgroundColor="$green8Light"
+        elevation="$4"
       />
     </SafeAreaView>
   );
