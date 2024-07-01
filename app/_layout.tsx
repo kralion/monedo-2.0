@@ -8,14 +8,16 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import { Provider } from "./Provider";
 import { AuthProvider } from "@/context";
-
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import * as SecureStore from "expo-secure-store";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -24,6 +26,36 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      const item = await SecureStore.getItemAsync(key);
+      if (item) {
+        console.log(`${key} was used 🔐 \n`);
+      } else {
+        console.log("No values stored under key: " + key);
+      }
+      return item;
+    } catch (error) {
+      console.error("SecureStore get item error: ", error);
+      await SecureStore.deleteItemAsync(key);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+  );
+}
 
 export default function RootLayout() {
   const [interLoaded, interError] = useFonts({
@@ -43,9 +75,11 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <RootLayoutNav />
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }
 
@@ -62,21 +96,24 @@ function RootLayoutNav() {
               headerShown: false,
             }}
           />
-
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(modals)"
-            options={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="(expenses)"
-            options={{ headerShown: false, title: "" }}
-          />
+          <SignedIn>
+            <AuthProvider>
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(modals)"
+                options={{ headerShown: false, title: "" }}
+              />
+              <Stack.Screen
+                name="(expenses)"
+                options={{ headerShown: false, title: "" }}
+              />
+            </AuthProvider>
+          </SignedIn>
         </Stack>
       </ThemeProvider>
     </Provider>

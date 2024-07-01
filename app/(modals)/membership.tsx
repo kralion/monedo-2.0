@@ -1,4 +1,5 @@
 import { useAuth } from "@/context";
+import { useUser } from "@clerk/clerk-expo";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { BadgeInfo } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
@@ -14,18 +15,19 @@ import {
 } from "tamagui";
 
 export default function Membership() {
-  const { userData, session } = useAuth();
+  const { user: userDataClerk } = useUser();
+  const { userData } = useAuth();
   const headerHeight = useHeaderHeight();
-  const dateFormatted = session?.user.created_at
-    ? new Date(session?.user.created_at).toLocaleDateString("es-ES", {
+  const dateFormatted = userDataClerk?.createdAt
+    ? new Date(userDataClerk.createdAt).toLocaleDateString("es-ES", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
       })
     : "";
 
-  const timeformatted = session?.user.created_at
-    ? new Date(session?.user.created_at).toLocaleTimeString("es-ES", {
+  const timeformatted = userDataClerk?.createdAt
+    ? new Date(userDataClerk.createdAt).toLocaleTimeString("es-ES", {
         hour: "2-digit",
         minute: "2-digit",
       })

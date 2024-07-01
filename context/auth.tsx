@@ -1,11 +1,11 @@
 import { supabase } from "@/utils/supabase";
-import { Session } from "@supabase/supabase-js";
+import { useAuth as useClerkAuth, useUser } from "@clerk/clerk-expo";
 import { useToastController } from "@tamagui/toast";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
+import { Spinner } from "tamagui";
 
 interface AuthContextType {
-  session: Session | null;
   userData: any | null;
   setUserData: React.Dispatch<React.SetStateAction<any>>;
 }
@@ -22,42 +22,54 @@ type TUserData = {
 };
 export const AuthContext = React.createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = React.useState<Session | null>(null);
-  const [userData, setUserData] = React.useState<TUserData>();
+  const { isLoaded, isSignedIn } = useClerkAuth();
+  const { user } = useUser();
+  const [userData, setUserData] = React.useState<TUserData | null>(null);
+  const router = useRouter();
   const toast = useToastController();
-  async function fetchUserData(id: string) {
-    const { data } = await supabase
-      .from("usuarios")
-      .select("*")
-      .eq("session_id", id)
-      .single();
-    setUserData(data);
-  }
-  React.useEffect(() => {
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        setSession(session);
-      })
-      .catch((error) => {
-        toast.show("Error al iniciar sesión", {
-          message: error.message,
-          duration: 3000,
-          type: "error",
-        });
-      });
 
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      if (session) {
-        await fetchUserData(session.user.id);
+  async function fetchUserData(clerkUserId: string) {
+    try {
+      const { data, error } = await supabase
+        .from("usuarios")
+        .select("*")
+        .eq(
+          "clerk_user_id",
+          // TODO: Change this to the real one
+          clerkUserId || "9e683f71-8a18-4a91-a596-c956813405e9"
+        )
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setUserData(data);
       } else {
-        router.push("/(auth)/sign-in");
+        console.log("Usuario no encontrado en Supabase");
       }
-    });
-  }, []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.show("Error al obtener datos del usuario", {
+        message: "Por favor, intenta de nuevo más tarde",
+        duration: 3000,
+        type: "error",
+      });
+    }
+  }
 
-  const value = { session, userData, setUserData };
+  React.useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push("/(auth)/sign-in");
+    } else if (isLoaded && isSignedIn && user) {
+      fetchUserData(user.id);
+    }
+  }, [isLoaded, isSignedIn, user]);
+
+  const value = { userData, setUserData };
+
+  if (!isLoaded) {
+    return <Spinner />;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
