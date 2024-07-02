@@ -181,7 +181,7 @@ export default function ExpenseDetails() {
             </Slider.Track>
             <Slider.Thumb
               borderColor="$green7Light"
-              backgroundColor="$green8Light"
+              backgroundColor="$green9Light"
               index={0}
               size="$1"
               circular

@@ -1,6 +1,4 @@
 import CameraIcon from "@/assets/svgs/camera.svg";
-import { useAuth } from "@/context";
-import { supabase } from "@/utils/supabase";
 import { useToastController } from "@tamagui/toast";
 import * as ImagePicker from "expo-image-picker";
 import * as React from "react";
@@ -21,15 +19,16 @@ import {
   YStack,
 } from "tamagui";
 import { Edit3 } from "@tamagui/lucide-icons";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 interface FormData {
-  nombres: string;
-  apellidos: string;
-  foto: string;
-  rol: string;
+  name: string;
+  lastName: string;
+  imageUrl: string;
 }
 
 export default function PersonalInfo() {
-  const { userData, session } = useAuth();
+  const { user: userData } = useUser();
+  const { has } = useAuth();
   const toast = useToastController();
   const headerHeight = useHeaderHeight();
 
@@ -40,29 +39,11 @@ export default function PersonalInfo() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      nombres: userData?.nombres,
-      apellidos: userData?.apellidos,
-      rol: userData?.rol,
-      foto: "https://img.icons8.com/?size=40&id=23454&format=png",
+      name: userData?.firstName,
+      lastName: userData?.lastName,
+      imageUrl: userData?.imageUrl,
     },
   });
-
-  async function onSubmit(data: FormData) {
-    const { error } = await supabase
-      .from("usuarios")
-      .update({
-        nombres: data.nombres,
-        apellidos: data.apellidos,
-      })
-      .eq("id", userData.id);
-
-    if (error) {
-      toast.show("Error al Actualizar Datos");
-      return;
-    }
-
-    toast.show("Datos actualizados");
-  }
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -70,7 +51,7 @@ export default function PersonalInfo() {
       quality: 1,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
-      setValue("foto", result.assets[0].uri);
+      setValue("imageUrl", result.assets[0].uri);
     }
   };
 
@@ -90,7 +71,10 @@ export default function PersonalInfo() {
           <YStack alignItems="center">
             <Stack position="relative" width={100} height={100}>
               <Avatar circular bg="teal.600" alignSelf="center" size="$12">
-                <Avatar.Image accessibilityLabel="avatar" src={userData.foto} />
+                <Avatar.Image
+                  accessibilityLabel="avatar"
+                  src={userData?.imageUrl}
+                />
                 <Avatar.Fallback backgroundColor={"#F5F5F5"} />
               </Avatar>
               <Button
@@ -111,10 +95,16 @@ export default function PersonalInfo() {
                 size="$2"
                 borderRadius="$10"
                 mt="$3"
-                bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+                bg={
+                  has?.({ permission: "premium:plan" })
+                    ? "$green9Light"
+                    : "$orange10"
+                }
                 color="$white1"
               >
-                {`Cuenta ${userData.rol}`}
+                {`Cuenta ${
+                  has?.({ permission: "premium:plan" }) ? "Premium" : "Básico"
+                }`}
               </Button>
             </Stack>
           </YStack>
@@ -126,11 +116,11 @@ export default function PersonalInfo() {
               <Label>Nombres</Label>
               <Controller
                 control={control}
-                name="nombres"
+                name="name"
                 render={({ ...field }) => (
                   <Input
                     size="lg"
-                    value={userData.nombres}
+                    value={userData?.firstName ?? ""}
                     {...field}
                     borderRadius={7}
                   />
@@ -148,11 +138,11 @@ export default function PersonalInfo() {
               <Label>Apellidos</Label>
               <Controller
                 control={control}
-                name="apellidos"
+                name="lastName"
                 render={({ ...field }) => (
                   <Input
                     size="lg"
-                    value={userData.apellidos}
+                    value={userData?.lastName ?? ""}
                     {...field}
                     borderRadius={7}
                   />
@@ -170,9 +160,9 @@ export default function PersonalInfo() {
           <Button
             size="$5"
             mt="$10"
-            bg="$green8Light"
+            bg="$green9Light"
             color="$white1"
-            onPress={handleSubmit(onSubmit)}
+            // onPress={handleSubmit(onSubmit)}
           >
             Actualizar Datos
           </Button>

@@ -3,7 +3,7 @@ import { endOfMonth, formatISO, startOfMonth } from "date-fns";
 import * as React from "react";
 import { createContext, useContext } from "react";
 import { IExpenseContextProvider, IExpense } from "@/interfaces";
-import { useAuth } from "./auth";
+import { useUser } from "@clerk/clerk-expo";
 
 export const ExpenseContext = createContext<IExpenseContextProvider>({
   addExpense: () => {},
@@ -26,7 +26,7 @@ export const ExpenseContextProvider = ({
 }) => {
   const [expenses, setExpenses] = React.useState<IExpense[]>([]);
   const [expense, setExpense] = React.useState<IExpense>({} as IExpense);
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
 
   const addExpense = async (expense: IExpense) => {
     await supabase.from("expenses").insert(expense);
@@ -54,7 +54,7 @@ export const ExpenseContextProvider = ({
     const { data } = await supabase
       .from("expenses")
       .select("monto")
-      .eq("usuario_id", userData.id)
+      .eq("usuario_id", userData?.id)
       .gte("fecha", startOfThisMonth)
       .lte("fecha", endOfThisMonth);
 
@@ -82,7 +82,7 @@ export const ExpenseContextProvider = ({
     const { data: expenses, error } = await supabase
       .from("expenses")
       .select("*")
-      .eq("usuario_id", userData.id)
+      .eq("usuario_id", userData?.id)
       .order("monto", { ascending: false })
       .limit(15);
     if (!expenses) return [];
@@ -92,7 +92,7 @@ export const ExpenseContextProvider = ({
     const { data: expenses, error } = await supabase
       .from("expenses")
       .select("*")
-      .eq("usuario_id", userData.id)
+      .eq("usuario_id", userData?.id)
       .order("fecha", { ascending: false })
       .limit(15);
     if (!expenses) return [];
@@ -102,7 +102,7 @@ export const ExpenseContextProvider = ({
     const { data: expenses, error } = await supabase
       .from("expenses")
       .select("*")
-      .eq("usuario_id", userData.id)
+      .eq("usuario_id", userData?.id)
       .eq("periodicidad", true)
       .limit(15);
     if (!expenses) return [];

@@ -1,6 +1,6 @@
 import Stripe from "@/components/payment/stripe";
 import Yape from "@/components/payment/yape";
-import { useAuth } from "@/context";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { X } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -29,13 +29,16 @@ export default function BuyPremiumModal() {
   const [yapePaymentMethod, setYapePaymentMethod] = React.useState(false);
   const [cardPaymentMethod, setCardPaymentMethod] = React.useState(true);
   const screenWidth = Dimensions.get("window").width;
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
+  const { has } = useAuth();
+
   const animation = useSharedValue(0);
   const handlePress = (index: number) => {
     animation.value = withTiming((index * screenWidth) / 2.3, {
       duration: 300,
     });
   };
+
   const fadeAnimCard = React.useRef(new AnimatedRN.Value(1)).current;
   const fadeAnimYape = React.useRef(new AnimatedRN.Value(1)).current;
   React.useEffect(() => {
@@ -86,7 +89,7 @@ export default function BuyPremiumModal() {
             <Avatar bg="teal.600" alignSelf="center" size="$10">
               <Avatar.Image
                 accessibilityLabel="avatar"
-                src={userData.foto}
+                src={userData?.imageUrl}
                 style={{
                   borderRadius: 100,
                   width: 100,
@@ -97,16 +100,22 @@ export default function BuyPremiumModal() {
             </Avatar>
             <YStack gap="$2">
               <Text fontWeight="bold">
-                {userData?.nombres} {userData?.apellidos}
+                {userData?.firstName} {userData?.lastName}
               </Text>
               <Button
                 borderRadius="$7"
-                disabled
+                disabled={!has?.({ permission: "free:plan" })}
                 size="$2"
-                bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+                bg={
+                  has?.({ permission: "free:plan" })
+                    ? "$orange10"
+                    : "$green9Light"
+                }
                 color="$white1"
               >
-                {`Usuario ${userData.rol}`}
+                {has?.({ permission: "free:plan" })
+                  ? "Free Plan User"
+                  : "Premium User"}{" "}
               </Button>
             </YStack>
           </XStack>

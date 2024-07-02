@@ -86,7 +86,7 @@ export default function NotAllowedModal({
               <YStack space={3}>
                 <Button
                   size="$5"
-                  bg="$green8Light"
+                  bg="$green9Light"
                   color="$white1"
                   onPress={() => {
                     setOpenModal(false), router.push("/(modals)/buy-premium");

@@ -101,7 +101,7 @@ export function Budget({ budget }: { budget: IBudget }) {
           <Button
             my="$5"
             size="$5"
-            bg="$green8Light"
+            bg="$green9Light"
             color="$white1"
             onPress={() => {
               alert("La funcionalidad aun no esta disponible");

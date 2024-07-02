@@ -38,7 +38,7 @@ const FilterSlider = ({ value }: { value: string }) => {
       mr="$2"
       width="$8"
       // bg="$accentColor"
-      bg="$green8Light"
+      bg="$green9Light"
       size="$3"
       color="$white1"
     >

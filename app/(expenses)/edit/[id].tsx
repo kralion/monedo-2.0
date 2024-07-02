@@ -1,8 +1,9 @@
 import AddExpenseSuccesModal from "@/components/popups/add-expense-sucess";
 import { expensesIdentifiers } from "@/constants/ExpensesIdentifiers";
-import { useExpenseContext, useAuth } from "@/context";
+import { useExpenseContext } from "@/context";
 import { IExpense } from "@/interfaces";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { useLocalSearchParams } from "expo-router";
@@ -37,7 +38,7 @@ const items = [
   { name: "Otros" },
 ];
 export default function EditExpense() {
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const params = useLocalSearchParams<{ id: string }>();
   const { updateExpense } = useExpenseContext();
   const [expense, setExpense] = React.useState({} as IExpense);
@@ -69,7 +70,7 @@ export default function EditExpense() {
     try {
       await updateExpense({
         ...data,
-        usuario_id: userData.id,
+        usuario_id: userData?.id,
         id: params.id,
       });
       setIsLoading(false);
@@ -320,7 +321,7 @@ export default function EditExpense() {
               <Button
                 onPress={handleSubmit(onSubmit)}
                 size="$5"
-                bg="$green8Light"
+                bg="$green9Light"
                 color="$white1"
                 mt="$6"
               >

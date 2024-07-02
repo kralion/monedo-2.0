@@ -1,16 +1,14 @@
-import { useAuth } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Bell, LogOut, User, UserSquare2 } from "@tamagui/lucide-icons";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Circle } from "tamagui";
-import { Square } from "tamagui";
-import { Avatar, Button, H3, Text, XStack, YStack } from "tamagui";
+import { Avatar, Button, H3, Square, Text, XStack, YStack } from "tamagui";
 
 export default function ProfileScreen() {
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
+  const { has } = useAuth();
   const router = useRouter();
   async function signOut() {
     await supabase.auth.signOut();
@@ -26,7 +24,7 @@ export default function ProfileScreen() {
           <Avatar bg="teal.600" alignSelf="center" size="$10">
             <Avatar.Image
               accessibilityLabel="avatar"
-              src={userData.foto}
+              src={userData?.imageUrl}
               style={{
                 borderRadius: 100,
                 width: 100,
@@ -37,15 +35,22 @@ export default function ProfileScreen() {
           </Avatar>
 
           <YStack gap="$1">
-            <H3>{`${userData.nombres} ${userData.apellidos}`}</H3>
+            <H3>{`${userData?.firstName} ${userData?.lastName}`}</H3>
             <Button
               disabled
               size="$3"
               borderRadius="$7"
-              bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+              bg={
+                has?.({ permission: "premium:plan" })
+                  ? "$green9Light"
+                  : "$orange10"
+              }
               color="$white1"
             >
-              {`Usuario ${userData.rol}`}
+              {`Usuario
+                ${
+                  has?.({ permission: "premium:plan" }) ? "Premium" : "Básico"
+                }`}
             </Button>
           </YStack>
         </YStack>
@@ -113,7 +118,7 @@ export default function ProfileScreen() {
         height={300}
         borderRadius="$10"
         rotate="-40deg"
-        backgroundColor="$green8Light"
+        backgroundColor="$green9Light"
         elevation="$4"
       />
     </SafeAreaView>

@@ -1,5 +1,6 @@
 import { ChevronDown, X } from "@tamagui/lucide-icons";
 import { FlatList } from "react-native";
+import { useTheme } from "tamagui";
 import { Button, Dialog, H3, ScrollView, Text, XStack, YStack } from "tamagui";
 
 import { Accordion, Paragraph, Square } from "tamagui";
@@ -10,6 +11,8 @@ type TNotification = {
 };
 
 export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
+  const { theme } = useTheme();
+  const isDarkMode = theme?.name === "dark";
   const sections = [
     {
       id: "a1",
@@ -49,6 +52,7 @@ export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
           <Dialog.Overlay
             key="overlay"
             animation="slow"
+            background={isDarkMode ? "$gray8" : "$gray4"}
             opacity={0.7}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -58,6 +62,7 @@ export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
             bordered
             elevate
             borderRadius={16}
+            bg={isDarkMode ? "$gray8" : "$gray4"}
             width="90%"
             height="90%"
             key="content"
@@ -104,7 +109,10 @@ export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
               <FlatList
                 renderItem={({ item }) => (
                   <Accordion.Item value={item.id}>
-                    <Accordion.Trigger borderWidth={0}>
+                    <Accordion.Trigger
+                      bg={isDarkMode ? "$gray8" : "$gray4"}
+                      borderWidth={0}
+                    >
                       {({ open }: { open: boolean }) => (
                         <XStack justifyContent="space-between">
                           <Paragraph>{item.title}</Paragraph>
@@ -119,6 +127,7 @@ export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
                     </Accordion.Trigger>
                     <Accordion.HeightAnimator animation="medium">
                       <Accordion.Content
+                        bg={isDarkMode ? "$gray8" : "$gray4"}
                         animation="medium"
                         exitStyle={{ opacity: 0 }}
                       >

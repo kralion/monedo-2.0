@@ -1,8 +1,9 @@
 import Card from "@/components/dashboard/card";
 import { Expense } from "@/components/dashboard/expense";
 import BuyPremiumModal from "@/components/popups/buy-premium";
-import { useAuth, useExpenseContext } from "@/context";
+import { useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import { FlashList } from "@shopify/flash-list";
 import { ChevronUp, Lock } from "@tamagui/lucide-icons";
 import * as React from "react";
@@ -29,10 +30,10 @@ import {
 export default function Home() {
   const fadeAnim = React.useRef(new AnimatedRN.Value(1)).current;
   const { getExpensesByUser, expenses } = useExpenseContext();
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const [showAll, setShowAll] = React.useState(false);
   const [showBuyPremiumModal, setShowBuyPremiumModal] = React.useState(false);
-
+  // REVIEW: CODE fot the user with expenses '9e683f71-8a18-4a91-a596-c956813405e9'
   if (!userData) {
     return null;
   }
@@ -50,14 +51,14 @@ export default function Home() {
       descripcion:
         "Registrado exitosamente en la app, ahora puedes comenzar a usarla con el plan gratuito.",
       fecha: new Date().toISOString(),
-      usuario_id: userData.id,
+      usuario_id: userData?.id,
       tipo: "INFO",
     };
 
     const { data } = await supabase
       .from("notificaciones")
       .select("*")
-      .eq("usuario_id", userData.id);
+      .eq("usuario_id", userData?.id);
 
     if (data?.length === 0) {
       await supabase.from("notificaciones").insert(notification);
@@ -149,7 +150,7 @@ export default function Home() {
                     })
                   )}
                 </Text>
-                <Text fontWeight="bold">Hola, {userData.nombres} 👋</Text>
+                <Text fontWeight="bold">Hola, {userData?.firstName} 👋</Text>
               </YStack>
               <BuyPremiumModal
                 setOpenModal={setShowBuyPremiumModal}

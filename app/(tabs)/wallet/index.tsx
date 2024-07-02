@@ -1,6 +1,6 @@
 import { SavingGoalModal } from "@/components/popups/save-goals";
 import { Budget } from "@/components/wallet/budget";
-import { useAuth, useBudgetContext } from "@/context";
+import { useBudgetContext } from "@/context";
 import { IBudget } from "@/interfaces";
 import { FlashList } from "@shopify/flash-list";
 import { ChevronUp, CircleDollarSign, Info } from "@tamagui/lucide-icons";
@@ -31,6 +31,7 @@ import {
   useTheme,
 } from "tamagui";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { useUser } from "@clerk/clerk-expo";
 interface Item extends IBudget {
   duration: string;
 }
@@ -57,7 +58,7 @@ export default function Wallet() {
   const placeholderTextColor = isDarkMode ? "$gray5" : "$gray9";
 
   const [isLoading, setIsLoading] = useState(false);
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const toast = useToastController();
 
   async function onSubmit(data: IBudget) {
@@ -67,7 +68,7 @@ export default function Wallet() {
     let fecha_final = date;
     addBudget({
       ...data,
-      usuario_id: userData.id,
+      usuario_id: userData?.id ?? "9e683f71-8a18-4a91-a596-c956813405e9",
       fecha_registro: new Date(),
       fecha_final,
     });
@@ -195,7 +196,7 @@ export default function Wallet() {
                   onPress={handleSubmit(onSubmit)}
                   size="$5"
                   mt="$5"
-                  bg="$green8Light"
+                  bg="$green9Light"
                   color="$white1"
                 >
                   {isLoading ? (

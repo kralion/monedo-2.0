@@ -1,5 +1,4 @@
 import SingleNotification from "@/components/popups/notification";
-import { useAuth } from "@/context";
 import { INotification } from "@/interfaces/notification";
 import { supabase } from "@/utils/supabase";
 import { FlashList } from "@shopify/flash-list";
@@ -7,10 +6,11 @@ import { useToastController } from "@tamagui/toast";
 import * as React from "react";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { ScrollView } from "tamagui";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function Notifications() {
   const [notifications, setNotifications] = React.useState<INotification[]>([]);
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const toast = useToastController();
   const headerHeight = useHeaderHeight();
 

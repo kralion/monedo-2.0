@@ -1,6 +1,7 @@
 import NoDataAsset from "@/assets/svgs/no-data.svg";
-import { useAuth, useExpenseContext } from "@/context";
+import { useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import { useToastController } from "@tamagui/toast";
 import {
   endOfDay,
@@ -57,7 +58,7 @@ async function getExpensesDataByTimelineQuery(timelineQuery: string) {
 export default function Chart({ timelineQuery }: { timelineQuery: string }) {
   const screenWidth = Dimensions.get("window").width;
   const toast = useToastController();
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const { expenses, getExpensesByUser } = useExpenseContext();
   React.useEffect(() => {
     if (userData) {

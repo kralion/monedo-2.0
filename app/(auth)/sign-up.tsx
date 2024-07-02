@@ -6,7 +6,7 @@ import { useToastController } from "@tamagui/toast";
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
 import * as React from "react";
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -85,133 +85,131 @@ export default function SignUpScreen() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView>
-        <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <YStack gap="$10" alignItems="center">
-            <YStack gap="$1" alignItems="center">
-              <Image
-                style={{
-                  width: 100,
-                  height: 100,
-                  resizeMode: "contain",
-                }}
-                source={require("../../assets/logo.png")}
-              />
-            </YStack>
-            <YStack gap="$1">
-              <H2>Crea una cuenta</H2>
-              <XStack gap="$1.5" alignItems="center">
-                <Text>Ya tienes una cuenta?</Text>
+    <ScrollView>
+      <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+        <YStack gap="$10" alignItems="center">
+          <YStack gap="$1" alignItems="center">
+            <Image
+              style={{
+                width: 100,
+                height: 100,
+                resizeMode: "contain",
+              }}
+              source={require("../../assets/logo.png")}
+            />
+          </YStack>
+          <YStack gap="$1">
+            <H2>Crea una cuenta</H2>
+            <XStack gap="$1.5" alignItems="center">
+              <Text>Ya tienes una cuenta?</Text>
 
-                <Text
-                  onPress={() => router.back()}
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  Inicia Sesión
-                </Text>
-              </XStack>
-            </YStack>
-
-            <YStack gap="$4" width="100%">
-              {Platform.OS === "ios" && (
-                <Button
-                  bg="$black5"
-                  size="$5"
-                  color="$white1"
-                  onPress={() => handleSocialSignUp("oauth_apple")}
-                >
-                  <FontAwesome5 size={24} color="white" name="apple" />
-                  Continuar con Apple
-                </Button>
-              )}
-              <Button
-                bg="$white1"
-                size="$5"
-                color={isDarkMode ? "$white1" : "$black5"}
-                onPress={() => handleSocialSignUp("oauth_tiktok")}
+              <Text
+                onPress={() => router.back()}
+                color="$green9Light"
+                pressStyle={{ textDecorationLine: "underline" }}
               >
-                <Image
-                  style={{ width: 24, height: 24 }}
-                  source={{
-                    uri: "https://cdn-icons-png.flaticon.com/128/3046/3046121.png",
-                  }}
-                  alt="google"
-                />
-                Continuar con TikTok
-              </Button>
+                Inicia Sesión
+              </Text>
+            </XStack>
+          </YStack>
+
+          <YStack gap="$4" width="100%">
+            {Platform.OS === "ios" && (
               <Button
-                bg="$blue10"
+                bg="$black5"
                 size="$5"
                 color="$white1"
-                onPress={() => handleSocialSignUp("oauth_facebook")}
+                onPress={() => handleSocialSignUp("oauth_apple")}
               >
-                <FontAwesome5 size={24} color="white" name="facebook" />
-                Continuar con Facebook
+                <FontAwesome5 size={24} color="white" name="apple" />
+                Continuar con Apple
               </Button>
-              <Button
-                bg="$white1"
-                color={isDarkMode ? "$white1" : "$black5"}
-                size="$5"
-                borderWidth={0.2}
-                onPress={() => handleSocialSignUp("oauth_google")}
-              >
-                <Image
-                  style={{ width: 24, height: 24 }}
-                  source={{
-                    uri: "https://img.icons8.com/?size=96&id=17949&format=png",
-                  }}
-                  alt="google"
-                />
-                Continuar con Google
-              </Button>
-            </YStack>
-            <YStack gap="$6" alignItems="center">
-              <Paragraph size="$2" textAlign="center">
-                Al continuar aceptas los{" "}
-                <Text
-                  color="$green8Light"
-                  style={{
-                    textDecorationLine: "underline",
-                  }}
-                  pressStyle={{
-                    opacity: 0.5,
-                  }}
-                  onPress={() => setShowTCModal(true)}
-                >
-                  Términos y Condiciones{" "}
-                </Text>
-                , en estos se describen como usamos tus datos y como protegemos
-                tu privacidad.
-              </Paragraph>
-              <XStack alignItems="center" justifyContent="center">
-                <Text fontSize="$2">Copyright © 2024 </Text>
-                <Text
-                  fontSize="$2"
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  <Link href="https://x.com/brayanpaucar_">Brayan</Link>
-                </Text>
-
-                <Text fontSize="$2"> & </Text>
-                <Text
-                  fontSize="$2"
-                  color="$green8Light"
-                  pressStyle={{ textDecorationLine: "underline" }}
-                >
-                  <Link href="https://x.com/MiguelParis11">Miguel</Link>
-                </Text>
-              </XStack>
-            </YStack>
+            )}
+            <Button
+              bg="$white1"
+              size="$5"
+              color={isDarkMode ? "$white1" : "$black5"}
+              onPress={() => handleSocialSignUp("oauth_tiktok")}
+            >
+              <Image
+                style={{ width: 24, height: 24 }}
+                source={{
+                  uri: "https://cdn-icons-png.flaticon.com/128/3046/3046121.png",
+                }}
+                alt="google"
+              />
+              Continuar con TikTok
+            </Button>
+            <Button
+              bg="$blue10"
+              size="$5"
+              color="$white1"
+              onPress={() => handleSocialSignUp("oauth_facebook")}
+            >
+              <FontAwesome5 size={24} color="white" name="facebook" />
+              Continuar con Facebook
+            </Button>
+            <Button
+              bg="$white1"
+              color={isDarkMode ? "$white1" : "$black5"}
+              size="$5"
+              borderWidth={0.2}
+              onPress={() => handleSocialSignUp("oauth_google")}
+            >
+              <Image
+                style={{ width: 24, height: 24 }}
+                source={{
+                  uri: "https://img.icons8.com/?size=96&id=17949&format=png",
+                }}
+                alt="google"
+              />
+              Continuar con Google
+            </Button>
           </YStack>
-          <TermsPolicyModal
-            openModal={showTCModal}
-            setOpenModal={setShowTCModal}
-          />
-        </SafeAreaView>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+          <YStack gap="$6" alignItems="center">
+            <Paragraph size="$2" textAlign="center">
+              Al continuar aceptas los{" "}
+              <Text
+                color="$green9Light"
+                style={{
+                  textDecorationLine: "underline",
+                }}
+                pressStyle={{
+                  opacity: 0.5,
+                }}
+                onPress={() => setShowTCModal(true)}
+              >
+                Términos y Condiciones{" "}
+              </Text>
+              , en estos se describen como usamos tus datos y como protegemos tu
+              privacidad.
+            </Paragraph>
+            <XStack alignItems="center" justifyContent="center">
+              <Text fontSize="$2">Copyright © 2024 </Text>
+              <Text
+                fontSize="$2"
+                color="$green9Light"
+                pressStyle={{ textDecorationLine: "underline" }}
+              >
+                <Link href="https://x.com/brayanpaucar_">Brayan</Link>
+              </Text>
+
+              <Text fontSize="$2"> & </Text>
+              <Text
+                fontSize="$2"
+                color="$green9Light"
+                pressStyle={{ textDecorationLine: "underline" }}
+              >
+                <Link href="https://x.com/MiguelParis11">Miguel</Link>
+              </Text>
+            </XStack>
+          </YStack>
+        </YStack>
+        <TermsPolicyModal
+          openModal={showTCModal}
+          setOpenModal={setShowTCModal}
+        />
+      </SafeAreaView>
+    </ScrollView>
   );
 }

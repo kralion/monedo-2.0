@@ -1,5 +1,6 @@
-import { useExpenseContext, useAuth } from "@/context";
+import { useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import { Entypo } from "@expo/vector-icons";
 import { useToastController } from "@tamagui/toast";
 import { useRouter } from "expo-router";
@@ -8,7 +9,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function AddExpenseIcon() {
   const router = useRouter();
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const [presupuesto, setPresupuesto] = React.useState(0);
   // TODO: get this from the actual month
   const { sumOfAllOfExpensesMonthly } = useExpenseContext();

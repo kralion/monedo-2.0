@@ -1,4 +1,4 @@
-import { useExpenseContext, useAuth } from "@/context";
+import { useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
 import * as React from "react";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
@@ -13,11 +13,13 @@ import { BudgetLimitExceededModal } from "../popups/budget-limit-exceeded";
 import BuyPremiumModal from "../popups/buy-premium";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, H3, H4, XStack, YStack, Text } from "tamagui";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 export default function Card() {
   const flip = useSharedValue(0);
   const [totalMonthExpenses, setTotalMonthExpenses] = React.useState(0);
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
+  const { has } = useAuth();
   // TODO: get this from the actual month
   const { sumOfAllOfExpensesMonthly } = useExpenseContext();
   const [showModal, setShowModal] = React.useState(false);
@@ -86,7 +88,7 @@ export default function Card() {
       <BuyPremiumModal setOpenModal={setOpenModal} openModal={openModal} />
       <Pressable
         onPress={() => {
-          if (userData.rol === "premium") {
+          if (has?.({ permission: "premium:plan" })) {
             Alert.alert(
               "Premium",
               "Ya eres usuario premium, tienes acceso a todas las funcionalidades."
@@ -99,7 +101,7 @@ export default function Card() {
       >
         <LinearGradient
           colors={
-            userData.rol === "premium"
+            has?.({ permission: "premium:plan" })
               ? ["#D4AF37", "#FFD700", "#A79647"]
               : ["#10B981", "#047857"]
           }
@@ -119,10 +121,16 @@ export default function Card() {
             <Button
               size="$2.5"
               borderRadius="$7"
-              bg={userData.rol === "premium" ? "$yellow10" : "$orange10"}
+              bg={
+                has?.({ permission: "premium:plan" })
+                  ? "$yellow10"
+                  : "$orange10"
+              }
             >
               <Text color="$white1">
-                {userData.rol === "premium" ? "Premium" : "Plan Free"}
+                {has?.({ permission: "premium:plan" })
+                  ? "Premium"
+                  : "Plan Free"}
               </Text>
             </Button>
           </XStack>

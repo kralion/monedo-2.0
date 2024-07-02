@@ -1,8 +1,8 @@
 import { IBudget, IBudgetContextProvider } from "@/interfaces";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import * as React from "react";
 import { createContext, useContext } from "react";
-import { useAuth } from "./auth";
 
 export const BudgetContext = createContext<IBudgetContextProvider>({
   addBudget: async () => {},
@@ -17,7 +17,7 @@ export const BudgetContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const [budgets, setBudgets] = React.useState<IBudget[]>([]);
 
   const addBudget = async (budget: IBudget) => {

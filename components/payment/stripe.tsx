@@ -1,5 +1,6 @@
-import { useAuth, usePremiumStatusContext } from "@/context";
+import { usePremiumStatusContext } from "@/context";
 import { supabase } from "@/utils/supabase";
+import { useUser } from "@clerk/clerk-expo";
 import { CreditCard } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -31,7 +32,7 @@ export default function Stripe() {
   const router = useRouter();
   const [showConfetti, setShowConfetti] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const { theme } = useTheme();
   const isDarkMode = theme?.name === "dark";
   const {
@@ -70,7 +71,7 @@ export default function Stripe() {
     const expiresAt = new Date(createdAt);
     expiresAt.setMonth(createdAt.getMonth() + 1);
     const { error } = await supabase.from("payments").insert({
-      usuario_id: userData.id,
+      usuario_id: userData?.id,
       created_At: createdAt.toISOString(),
       expires_At: expiresAt.toISOString(),
       card_data: JSON.stringify(data),
@@ -224,7 +225,7 @@ export default function Stripe() {
       <Button
         onPress={() => setShowConfetti(true)}
         size="$5"
-        bg="$green8Light"
+        bg="$green9Light"
         color="$white1"
         mt="$5"
         mb="$12"

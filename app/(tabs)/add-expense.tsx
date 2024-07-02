@@ -1,6 +1,7 @@
 import AddExpenseSuccesModal from "@/components/popups/add-expense-sucess";
-import { useExpenseContext, useAuth } from "@/context";
+import { useExpenseContext } from "@/context";
 import { IExpense } from "@/interfaces";
+import { useUser } from "@clerk/clerk-expo";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -32,7 +33,7 @@ const items = [
   { name: "Otros" },
 ];
 export default function AddExpense() {
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
   const { addExpense } = useExpenseContext();
   const [openModal, setOpenModal] = React.useState(false);
   const [expensePrice, setExpensePrice] = React.useState("");
@@ -49,7 +50,7 @@ export default function AddExpense() {
     setIsLoading(true);
     addExpense({
       ...data,
-      usuario_id: userData.id,
+      usuario_id: userData?.id,
     });
     setExpensePrice(data.monto.toString());
     reset();
@@ -281,7 +282,7 @@ export default function AddExpense() {
               <Button
                 onPress={handleSubmit(onSubmit)}
                 size="$5"
-                bg="$green8Light"
+                bg="$green9Light"
                 color="$white1"
                 mt="$5"
               >

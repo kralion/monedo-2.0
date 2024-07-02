@@ -3,14 +3,17 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useToastController } from "@tamagui/toast";
 import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
-import {
-  Image,
-  Keyboard,
-  Platform,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Image, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, H2, Text, XStack, YStack, useTheme } from "tamagui";
+import {
+  Button,
+  H2,
+  ScrollView,
+  Text,
+  XStack,
+  YStack,
+  useTheme,
+} from "tamagui";
 
 type FormData = {
   email: string;
@@ -61,7 +64,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <ScrollView>
       <SafeAreaView
         style={{
           paddingHorizontal: 16,
@@ -156,6 +159,6 @@ export default function SignInScreen() {
           </XStack>
         </YStack>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </ScrollView>
   );
 }

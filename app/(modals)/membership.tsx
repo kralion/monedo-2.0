@@ -1,5 +1,4 @@
-import { useAuth } from "@/context";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { BadgeInfo } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
@@ -15,19 +14,20 @@ import {
 } from "tamagui";
 
 export default function Membership() {
-  const { user: userDataClerk } = useUser();
-  const { userData } = useAuth();
+  const { user: userData } = useUser();
+  const { has } = useAuth();
+
   const headerHeight = useHeaderHeight();
-  const dateFormatted = userDataClerk?.createdAt
-    ? new Date(userDataClerk.createdAt).toLocaleDateString("es-ES", {
+  const dateFormatted = userData?.createdAt
+    ? new Date(userData.createdAt).toLocaleDateString("es-ES", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
       })
     : "";
 
-  const timeformatted = userDataClerk?.createdAt
-    ? new Date(userDataClerk.createdAt).toLocaleTimeString("es-ES", {
+  const timeformatted = userData?.createdAt
+    ? new Date(userData.createdAt).toLocaleTimeString("es-ES", {
         hour: "2-digit",
         minute: "2-digit",
       })
@@ -45,7 +45,9 @@ export default function Membership() {
             source={require("../../assets/icon.png")}
           />
           <YStack gap="$2">
-            <H4>{userData?.rol === "premium" ? "Plan Pro" : "Plan Básico"}</H4>
+            <H4>
+              {has?.({ permission: "free:plan" }) ? "Plan Básico" : "Plan Pro"}
+            </H4>
 
             <Text color="$gray10Light">
               Adquisición: <Text> {dateFormatted}</Text>
@@ -53,7 +55,7 @@ export default function Membership() {
             <Text color="$gray10Light">
               Ciclo Facturación:{" "}
               <Text className="text-sm font-semibold">
-                {userData?.rol === "premium" ? "20/12" : "15/12"}
+                {has?.({ permission: "free:plan" }) ? "20/12" : "15/12"}
               </Text>
             </Text>
           </YStack>
@@ -61,7 +63,7 @@ export default function Membership() {
         <Separator borderColor="$gray8" />
         <YStack gap="$4" bg="$gray6" p="$4" borderRadius="$4">
           <XStack gap="$2" alignItems="center">
-            <BadgeInfo size={24} color="$green8Light" />
+            <BadgeInfo size={24} color="$green9Light" />
             <Text fontSize="$4">Información del Plan</Text>
           </XStack>
           <YStack gap="$4">
@@ -73,7 +75,7 @@ export default function Membership() {
             <XStack>
               <Text color="$gray10Light">Titular de la cuenta: </Text>
               <Text>
-                {userData.nombres} {userData.apellidos}
+                {userData?.firstName} {userData?.lastName}
               </Text>
             </XStack>
           </YStack>
@@ -82,12 +84,12 @@ export default function Membership() {
         <Button
           disabled
           size="$5"
-          bg={userData.rol === "premium" ? "$green8Light" : "$orange10"}
+          bg={has?.({ permission: "free:plan" }) ? "$orange10" : "$green9Light"}
           color="$white1"
         >
-          {userData?.rol === "premium"
-            ? "S/. 20.00 PEN / mes"
-            : "S/. 00.00 PEN / mes"}
+          {has?.({ permission: "free:plan" })
+            ? "S/. 00.00 PEN / mes"
+            : "S/. 00.20 PEN / mes"}
         </Button>
       </YStack>
     </ScrollView>
