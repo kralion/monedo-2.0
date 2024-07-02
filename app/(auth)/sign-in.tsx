@@ -81,7 +81,6 @@ export default function SignInScreen() {
               style={{
                 width: 100,
                 height: 100,
-                resizeMode: "contain",
                 marginBottom: 36,
               }}
               source={require("../../assets/logo.png")}

@@ -48,8 +48,7 @@ export default function SignUpScreen() {
     try {
       const result = await signUp.create({
         strategy: strategy,
-        redirectUrl: "/auth-callback",
-        actionCompleteRedirectUrl: "/(auth)/sign-in",
+        redirectUrl: "monedo://oauth-native-callback",
       });
 
       if (result.status === "complete") {
@@ -71,7 +70,7 @@ export default function SignUpScreen() {
         router.replace("/(auth)/sign-in");
       } else {
         // El registro requiere pasos adicionales
-        console.log("Pasos adicionales requeridos:", result);
+        console.log("Error en proceso de registro:", result);
         // Aquí puedes manejar pasos adicionales si son necesarios
       }
     } catch (err: any) {
@@ -93,7 +92,6 @@ export default function SignUpScreen() {
               style={{
                 width: 100,
                 height: 100,
-                resizeMode: "contain",
               }}
               source={require("../../assets/logo.png")}
             />

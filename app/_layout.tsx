@@ -1,27 +1,25 @@
 import "../tamagui-web.css";
 
-import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { ClerkLoaded, ClerkProvider, SignedIn } from "@clerk/clerk-expo";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
 import { Provider } from "./Provider";
-import { AuthProvider } from "@/context";
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
-import * as SecureStore from "expo-secure-store";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "(auth)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -97,22 +95,20 @@ function RootLayoutNav() {
             }}
           />
           <SignedIn>
-            <AuthProvider>
-              <Stack.Screen
-                name="(tabs)"
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="(modals)"
-                options={{ headerShown: false, title: "" }}
-              />
-              <Stack.Screen
-                name="(expenses)"
-                options={{ headerShown: false, title: "" }}
-              />
-            </AuthProvider>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(modals)"
+              options={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="(expenses)"
+              options={{ headerShown: false, title: "" }}
+            />
           </SignedIn>
         </Stack>
       </ThemeProvider>

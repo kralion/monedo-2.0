@@ -45,25 +45,7 @@ export default function Home() {
     }).start();
   }, [showAll]);
 
-  async function welcomeNotification() {
-    const notification = {
-      titulo: "Bienvenido !!!",
-      descripcion:
-        "Registrado exitosamente en la app, ahora puedes comenzar a usarla con el plan gratuito.",
-      fecha: new Date().toISOString(),
-      usuario_id: userData?.id,
-      tipo: "INFO",
-    };
 
-    const { data } = await supabase
-      .from("notificaciones")
-      .select("*")
-      .eq("usuario_id", userData?.id);
-
-    if (data?.length === 0) {
-      await supabase.from("notificaciones").insert(notification);
-    }
-  }
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollHandler = useScrollViewOffset(scrollRef);
 
@@ -76,11 +58,7 @@ export default function Home() {
     scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   }
 
-  React.useEffect(() => {
-    if (userData) {
-      welcomeNotification();
-    }
-  }, [userData]);
+
 
   React.useEffect(() => {
     if (userData) {
