@@ -2,10 +2,10 @@ import Card from "@/components/dashboard/card";
 import { Expense } from "@/components/dashboard/expense";
 import BuyPremiumModal from "@/components/popups/buy-premium";
 import { useExpenseContext } from "@/context";
-import { supabase } from "@/utils/supabase";
-import { useUser } from "@clerk/clerk-expo";
+import { SignedIn, useUser } from "@clerk/clerk-expo";
 import { FlashList } from "@shopify/flash-list";
 import { ChevronUp, Lock } from "@tamagui/lucide-icons";
+import { useRouter } from "expo-router";
 import * as React from "react";
 import { Animated as AnimatedRN } from "react-native";
 import Animated, {
@@ -30,8 +30,9 @@ import {
 export default function Home() {
   const fadeAnim = React.useRef(new AnimatedRN.Value(1)).current;
   const { getExpensesByUser, expenses } = useExpenseContext();
-  const { user: userData } = useUser();
+  const { user: userData, isSignedIn } = useUser();
   const [showAll, setShowAll] = React.useState(false);
+  const router = useRouter();
   const [showBuyPremiumModal, setShowBuyPremiumModal] = React.useState(false);
   // REVIEW: CODE fot the user with expenses '9e683f71-8a18-4a91-a596-c956813405e9'
   if (!userData) {
@@ -45,7 +46,6 @@ export default function Home() {
     }).start();
   }, [showAll]);
 
-
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollHandler = useScrollViewOffset(scrollRef);
 
@@ -58,8 +58,6 @@ export default function Home() {
     scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   }
 
-
-
   React.useEffect(() => {
     if (userData) {
       getExpensesByUser(userData.id);
@@ -70,12 +68,22 @@ export default function Home() {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
 
+  React.useEffect(() => {
+    if (!isSignedIn) {
+      router.replace("/sign-in");
+    }
+  }, []);
+
   return (
-    <>
+    <SignedIn>
       {showAll ? (
         <Animated.View style={{ opacity: fadeAnim }}>
           <SafeAreaView
-            style={{ paddingTop: 14, paddingHorizontal: 16, paddingBottom: 20 }}
+            style={{
+              paddingTop: 14,
+              paddingHorizontal: 16,
+              paddingBottom: 20,
+            }}
           >
             <YStack gap="$5">
               <XStack justifyContent="space-between" alignItems="center">
@@ -217,6 +225,6 @@ export default function Home() {
           </Animated.View>
         </>
       )}
-    </>
+    </SignedIn>
   );
 }

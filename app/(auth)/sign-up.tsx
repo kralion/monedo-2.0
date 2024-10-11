@@ -67,7 +67,7 @@ export default function SignUpScreen() {
           duration: 3000,
           type: "success",
         });
-        router.replace("/(auth)/sign-in");
+        router.replace("/sign-in");
       } else {
         // El registro requiere pasos adicionales
         console.log("Error en proceso de registro:", result);
