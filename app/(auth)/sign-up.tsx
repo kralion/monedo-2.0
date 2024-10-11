@@ -48,7 +48,7 @@ export default function SignUpScreen() {
     try {
       const result = await signUp.create({
         strategy: strategy,
-        redirectUrl: "monedo://oauth-native-callback",
+        redirectUrl: "monex://oauth-native-callback",
       });
 
       if (result.status === "complete") {
