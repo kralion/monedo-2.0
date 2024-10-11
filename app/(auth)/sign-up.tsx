@@ -38,7 +38,7 @@ export default function SignUpScreen() {
     await supabase.from("notificaciones").insert(notification);
   }
   const handleSocialSignUp = async (
-    strategy: "oauth_google" | "oauth_facebook" | "oauth_apple" | "oauth_tiktok"
+    strategy: "oauth_google" | "oauth_apple" | "oauth_tiktok"
   ) => {
     if (!signUp) {
       console.log("Sign up no está disponible");
@@ -86,17 +86,15 @@ export default function SignUpScreen() {
   return (
     <ScrollView>
       <SafeAreaView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-        <YStack gap="$10" alignItems="center">
+        <YStack gap="$10" width="100%">
           <YStack gap="$1" alignItems="center">
             <Image
               style={{
-                width: 100,
-                height: 100,
+                width: 200,
+                height: 200,
               }}
               source={require("../../assets/logo.png")}
             />
-          </YStack>
-          <YStack gap="$1">
             <H2>Crea una cuenta</H2>
             <XStack gap="$1.5" alignItems="center">
               <Text>Ya tienes una cuenta?</Text>
@@ -138,15 +136,7 @@ export default function SignUpScreen() {
               />
               Continuar con TikTok
             </Button>
-            <Button
-              bg="$blue10"
-              size="$5"
-              color="$white1"
-              onPress={() => handleSocialSignUp("oauth_facebook")}
-            >
-              <FontAwesome5 size={24} color="white" name="facebook" />
-              Continuar con Facebook
-            </Button>
+
             <Button
               bg="$white1"
               color={isDarkMode ? "$white1" : "$black5"}

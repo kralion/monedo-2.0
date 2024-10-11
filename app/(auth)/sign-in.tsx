@@ -34,9 +34,7 @@ export default function SignInScreen() {
   const { startOAuthFlow: startAppleFlow } = useOAuth({
     strategy: "oauth_apple",
   });
-  const { startOAuthFlow: startFacebookFlow } = useOAuth({
-    strategy: "oauth_facebook",
-  });
+
   const { startOAuthFlow: startTiktokFlow } = useOAuth({
     strategy: "oauth_tiktok",
   });
@@ -79,15 +77,14 @@ export default function SignInScreen() {
           <YStack gap="$1" alignItems="center">
             <Image
               style={{
-                width: 100,
-                height: 100,
-                marginBottom: 36,
+                width: 200,
+                height: 200,
               }}
               source={require("../../assets/logo.png")}
             />
             <H2> Inicia Sesión</H2>
             <Text textAlign="center">
-              Para empezar a usar y disfrutar de Monedo
+              Para empezar a usar y disfrutar de Monex
             </Text>
           </YStack>
           <YStack gap="$4">
@@ -117,15 +114,7 @@ export default function SignInScreen() {
               />
               Continuar con TikTok
             </Button>
-            <Button
-              bg="$blue10"
-              size="$5"
-              color="$white1"
-              onPress={() => handleSocialSignIn(startFacebookFlow)}
-            >
-              <FontAwesome5 size={24} color="white" name="facebook" />
-              Continuar con Facebook
-            </Button>
+
             <Button
               bg="$white1"
               color={isDarkMode ? "$white1" : "$black5"}

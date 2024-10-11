@@ -94,7 +94,7 @@ export function TermsPolicyModal({ openModal, setOpenModal }: TNotification) {
               <YStack gap="$4">
                 <Text>
                   Bienvenido a la plataforma de la aplicación móvil de{" "}
-                  <Text fontWeight="bold">Monedo</Text>. El objetivo de esta
+                  <Text fontWeight="bold">Monex</Text>. El objetivo de esta
                   aplicación es facilitar el acceso a los servicios de Expense
                   Tracker y a la información relacionada con los mismos, así
                   como la realización de operaciones relacionadas con la

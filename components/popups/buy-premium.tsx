@@ -62,7 +62,7 @@ export default function BuyPremiumModal({
               </Text>
               <Text textAlign="center" fontStyle="italic">
                 ¡Mejora tu experiencia hoy! y sácale el máximo provecho a{" "}
-                <Text fontWeight="bold">Monedo</Text>
+                <Text fontWeight="bold">Monex</Text>
                 🚀
               </Text>
             </YStack>
