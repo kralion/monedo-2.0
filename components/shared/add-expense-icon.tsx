@@ -56,10 +56,10 @@ export default function AddExpenseIcon() {
           ]}
           onPress={() => {
             if (blockRoute) {
-              router.push("/(tabs)/");
+              router.push("/(monex)");
               toast.show("No puedes añadir gastos tu balance es cero.");
             } else {
-              router.push("/(tabs)/add-expense");
+              router.push("/(monex)/add-expense");
             }
           }}
           activeOpacity={0.8}
@@ -77,10 +77,10 @@ export default function AddExpenseIcon() {
           ]}
           onPress={() => {
             if (blockRoute) {
-              router.push("/(tabs)/");
+              router.push("/(monex)");
               toast.show("No puedes añadir gastos tu balance es cero.");
             } else {
-              router.push("/(tabs)/add-expense");
+              router.push("/(monex)/add-expense");
             }
           }}
           activeOpacity={0.8}

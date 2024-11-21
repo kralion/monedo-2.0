@@ -2,12 +2,13 @@ import { SavingGoalModal } from "@/components/popups/save-goals";
 import { Budget } from "@/components/wallet/budget";
 import { useBudgetContext } from "@/context";
 import { IBudget } from "@/interfaces";
+import { useUser } from "@clerk/clerk-expo";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { FlashList } from "@shopify/flash-list";
 import { ChevronUp, CircleDollarSign, Info } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity } from "react-native";
 import Animated, {
   useAnimatedRef,
   useAnimatedStyle,
@@ -26,12 +27,9 @@ import {
   View,
   XStack,
   YStack,
-  ZStack,
   styled,
   useTheme,
 } from "tamagui";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { useUser } from "@clerk/clerk-expo";
 interface Item extends IBudget {
   duration: string;
 }
@@ -110,7 +108,10 @@ export default function Wallet() {
         ref={scrollRef}
         contentInsetAdjustmentBehavior="automatic"
         keyboardDismissMode="on-drag"
-        style={{ paddingHorizontal: 16, minHeight: "100%" }}
+        style={{
+          paddingHorizontal: 16,
+          minHeight: "100%",
+        }}
       >
         <YStack
           gap="$3"

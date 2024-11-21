@@ -1,8 +1,6 @@
 import { Stack } from "expo-router";
-import { useTheme } from "tamagui";
 
 export default function Layout() {
-  const theme = useTheme();
   return (
     <Stack>
       <Stack.Screen
@@ -13,7 +11,9 @@ export default function Layout() {
           headerSearchBarOptions: {
             placeholder: "Buscar ...",
             hideWhenScrolling: false,
+            cancelButtonText: "Cancelar",
           },
+
           headerLargeTitleShadowVisible: false,
         }}
         name="index"
