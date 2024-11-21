@@ -9,18 +9,14 @@ import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import { Provider } from "./Provider";
+import Provider from "./Provider";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 export { ErrorBoundary } from "expo-router";
-
-SplashScreen.preventAutoHideAsync();
 export interface TokenCache {
   getToken: (key: string) => Promise<string | undefined | null>;
   saveToken: (key: string, token: string) => Promise<void>;
   clearToken?: (key: string) => void;
 }
-
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 const tokenCache = {
   async getToken(key: string) {
@@ -46,6 +42,10 @@ const tokenCache = {
     }
   },
 };
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [interLoaded, interError] = useFonts({
@@ -65,16 +65,14 @@ export default function RootLayout() {
   }
 
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <Provider>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Slot />
-          </ThemeProvider>
-        </Provider>
-      </ClerkLoaded>
-    </ClerkProvider>
+    // <Provider>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+      </ClerkProvider>
+    </ThemeProvider>
+    // </Provider>
   );
 }

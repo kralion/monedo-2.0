@@ -3,7 +3,7 @@ import { useColorScheme } from "react-native";
 import { TamaguiProvider, type TamaguiProviderProps } from "tamagui";
 import { config } from "../tamagui.config";
 
-export function Provider({
+export default function Provider({
   children,
   ...rest
 }: Omit<TamaguiProviderProps, "config">) {
