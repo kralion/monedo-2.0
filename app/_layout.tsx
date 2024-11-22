@@ -65,14 +65,14 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-          <ClerkLoaded>
-            <Slot />
-          </ClerkLoaded>
-        </ClerkProvider>
-      </ThemeProvider>
-    </Provider>
+    // <Provider>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+      </ClerkProvider>
+    </ThemeProvider>
+    // </Provider>
   );
 }

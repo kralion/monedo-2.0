@@ -115,8 +115,8 @@ export default function Home() {
             paddingTop="$10"
             // bg="$green9Light" TODO: change color to yellow bg="yellow10Light"
             bg="$green9Light"
-            borderBottomStartRadius={14}
-            borderBottomEndRadius={14}
+            borderBottomStartRadius={20}
+            borderBottomEndRadius={20}
           >
             <XStack
               style={{ paddingHorizontal: 16 }}
@@ -153,8 +153,7 @@ export default function Home() {
                 icon={<Lock size="$1" />}
               />
             </XStack>
-
-            <View style={{ height: 150 }} />
+            <View style={{ height: 160 }} />
 
             <Card />
           </View>

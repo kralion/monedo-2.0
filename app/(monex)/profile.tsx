@@ -1,19 +1,14 @@
-import { supabase } from "@/utils/supabase";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Bell, LogOut, User, UserSquare2 } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Button, H3, Square, Text, XStack, YStack } from "tamagui";
+import { Avatar, Button, H3, Square, YStack } from "tamagui";
 
 export default function ProfileScreen() {
   const { user: userData } = useUser();
-  const { has } = useAuth();
+  const { has, signOut } = useAuth();
   const router = useRouter();
-  async function signOut() {
-    await supabase.auth.signOut();
-    router.replace("/(auth)/sign-in");
-  }
 
   return (
     <SafeAreaView
@@ -55,37 +50,39 @@ export default function ProfileScreen() {
           </YStack>
         </YStack>
       </View>
-      <YStack mt="$10" ml="$3" gap="$6" alignItems="flex-start">
-        <TouchableOpacity
+      <YStack mt="$10" alignItems="flex-start">
+        <Button
           onPress={() => router.push("/(modals)/personal-info")}
+          icon={User}
+          size="$6"
         >
-          <XStack gap="$3" alignItems="center">
-            <User />
-            <Text fontSize="$6">Mis Datos</Text>
-          </XStack>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/(modals)/membership")}>
-          <XStack gap="$3" alignItems="center">
-            <UserSquare2 />
-            <Text fontSize="$6">Membresía</Text>
-          </XStack>
-        </TouchableOpacity>
-        <TouchableOpacity
+          Mis Datos
+        </Button>
+        <Button
+          onPress={() => router.push("/(modals)/membership")}
+          icon={UserSquare2}
+          size="$6"
+        >
+          Membresía
+        </Button>
+        <Button
           onPress={() => router.push("/(modals)/notifications")}
+          icon={Bell}
+          size="$6"
         >
-          <XStack gap="$3" alignItems="center">
-            <Bell />
-            <Text fontSize="$6">Notificaciones</Text>
-          </XStack>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => signOut()}>
-          <XStack gap="$3" alignItems="center">
-            <LogOut color="$red10Light" />
-            <Text color="$red10Light" fontSize="$6">
-              Salir
-            </Text>
-          </XStack>
-        </TouchableOpacity>
+          Notificaciones
+        </Button>
+        <Button
+          onPress={() => {
+            signOut();
+            router.replace("/(auth)/sign-in");
+          }}
+          color="$red10Light"
+          icon={LogOut}
+          size="$6"
+        >
+          Salir
+        </Button>
       </YStack>
 
       <Square

@@ -1,7 +1,7 @@
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { Stack, router } from "expo-router";
 import { TouchableOpacity } from "react-native";
-import { Text, View, XStack } from "tamagui";
+import { Text, XStack } from "tamagui";
 
 export default function ModalsLayout() {
   return (
@@ -83,9 +83,9 @@ export default function ModalsLayout() {
                 style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <ChevronLeft size="$3" color="$blue10Light" />
-                  <Text fontSize="$6" color="$blue10Light">
-                    Perfil
+                  <ChevronLeft size="$2" color="$blue10Light" />
+                  <Text fontSize="$5" color="$blue10Light">
+                    Atrás
                   </Text>
                 </XStack>
               </TouchableOpacity>

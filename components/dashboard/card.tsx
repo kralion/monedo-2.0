@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     position: "absolute",
-    top: 55,
+    top: 60,
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 20,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    elevation: 10,
+    elevation: 5,
   },
   shadowContainer: {
     flex: 1,
@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 20,
+    shadowRadius: 5,
+    elevation: 10,
     backgroundColor: "rgba(255, 255, 255, 0.001)",
   },
 });
