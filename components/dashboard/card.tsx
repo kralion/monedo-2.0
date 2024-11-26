@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    elevation: 5,
   },
   shadowContainer: {
     flex: 1,
@@ -180,9 +179,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 10,
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 0.001)",
   },
 });

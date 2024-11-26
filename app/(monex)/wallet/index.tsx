@@ -118,58 +118,41 @@ export default function Wallet() {
           borderBottomStartRadius="$4"
           borderBottomEndRadius="$4"
         >
+          //TODO: Put this form in a modal.
           {budgetFormAvailable && (
             <>
-              <YStack mt={5}>
-                <YStack>
-                  <Label>Monto</Label>
-
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: "Ingrese el monto",
-                      },
-                      pattern: {
-                        value: /^\d+(\.\d*)?$/,
-                        message: "Solo números",
-                      },
-                    }}
-                    name="monto"
-                    render={({ field: { onChange, value } }) => (
-                      <StyledXStack>
-                        <XStack opacity={0.5} mt="$2">
-                          <SizableText color={inputIconColor}>
-                            <CircleDollarSign />
-                          </SizableText>
-                        </XStack>
+              <YStack mt={5} gap="$3">
+                <XStack justifyContent="space-between">
+                  <Label size="$5">Monto : </Label>
+                  <YStack width="80%">
+                    <Controller
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "Ingrese el monto",
+                        },
+                        pattern: {
+                          value: /^\d+(\.\d*)?$/,
+                          message: "Solo números",
+                        },
+                      }}
+                      name="monto"
+                      render={({ field: { onChange, value } }) => (
                         <Input
                           size="$5"
                           autoCapitalize="none"
-                          borderRadius="$3"
                           onChangeText={onChange}
-                          value={String(value)}
+                          // value={String(value)}
                           placeholder="650.00"
                           placeholderTextColor={placeholderTextColor}
-                          flex={1}
-                          backgroundColor="transparent"
                           keyboardType="decimal-pad"
                         />
-                      </StyledXStack>
-                    )}
-                  />
-                  {errors.monto && (
-                    <XStack gap="$1.5" ml="$2" alignItems="center">
-                      <Info color="$red9Light" size={15} />
-                      <Text fontSize="$3" color="$red9Light">
-                        {errors.monto.message}
-                      </Text>
-                    </XStack>
-                  )}
-                </YStack>
+                      )}
+                    />
+                  </YStack>
+                </XStack>
                 <YStack>
-                  <Label>Descripcion</Label>
                   <Controller
                     control={control}
                     name="descripcion"
@@ -180,15 +163,15 @@ export default function Wallet() {
                         borderRadius="$5"
                         value={value}
                         onChangeText={onChange}
-                        placeholder="Espero no sobrepasar esta vez..."
+                        placeholder="Descripcion sobre el presupuesto del mes"
                       />
                     )}
                   />
-                  {errors.monto && (
-                    <XStack gap="$1.5" ml="$2" alignItems="center">
+                  {errors.descripcion && (
+                    <XStack gap="$1.5" ml="$2" mt="$2" alignItems="center">
                       <Info color="$red9Light" size={15} />
                       <Text fontSize="$3" color="$red9Light">
-                        {errors.monto.message}
+                        {errors.descripcion.message}
                       </Text>
                     </XStack>
                   )}
@@ -214,7 +197,6 @@ export default function Wallet() {
               />
             </>
           )}
-
           <FlashList
             data={budgets}
             estimatedItemSize={100}

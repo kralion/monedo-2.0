@@ -124,7 +124,7 @@ export default function Home() {
               mx={4}
             >
               <YStack>
-                <Text>
+                <Text fontSize="$2">
                   {capitalizeFirstLetter(
                     new Date().toLocaleDateString("es-ES", {
                       weekday: "long",
@@ -134,7 +134,9 @@ export default function Home() {
                     })
                   )}
                 </Text>
-                <Text fontWeight="bold">Hola, {userData?.firstName} 👋</Text>
+                <Text fontWeight="bold" fontSize="$7">
+                  Hola, {userData?.firstName} 👋
+                </Text>
               </YStack>
               <BuyPremiumModal
                 setOpenModal={setShowBuyPremiumModal}
@@ -153,10 +155,10 @@ export default function Home() {
                 icon={<Lock size="$1" />}
               />
             </XStack>
-            <View style={{ height: 160 }} />
-
             <Card />
+            <View style={{ height: 160 }} />
           </View>
+
           <ScrollView
             ref={scrollRef}
             style={{ paddingHorizontal: 5, zIndex: -10 }}

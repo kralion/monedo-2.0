@@ -6,15 +6,26 @@ export default function Yape() {
     <YStack py="$3" gap="$6">
       <YStack gap="$2">
         <Text>Número de Teléfono</Text>
-
-        <Button disabled size="$5" fontSize="$6" bg="$gray8">
+        <Button
+          disabled
+          chromeless
+          variant="outlined"
+          size="$5"
+          fontWeight="bold"
+        >
           914 019 629
         </Button>
       </YStack>
       <YStack gap="$2">
         <Text>Monto de yapeo</Text>
 
-        <Button disabled size="$5" fontSize="$6" bg="$gray8">
+        <Button
+          disabled
+          chromeless
+          variant="outlined"
+          size="$5"
+          fontWeight="bold"
+        >
           S/. 15.00
         </Button>
       </YStack>
@@ -23,14 +34,8 @@ export default function Yape() {
         número
         <Text fontWeight="bold"> 914 019 929</Text>
       </Text>
-      <Button mt="$5" bg="$purple8Dark" size="$5">
-        <Image
-          source={require("../../assets/yape.png")}
-          style={{
-            width: 65,
-            height: 35,
-          }}
-        />
+      <Button mt="$5" bg="$purple8Dark" size="$5" color="$white1">
+        Abrir Yape
       </Button>
     </YStack>
   );

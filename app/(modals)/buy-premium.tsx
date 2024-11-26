@@ -73,7 +73,7 @@ export default function BuyPremiumModal() {
       <SafeAreaView style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
         <YStack gap="$4">
           <XStack justifyContent="space-between" alignItems="center">
-            <H3>Información de Compra</H3>
+            <H3 letterSpacing={-0.5}>Información de Compra</H3>
             <Button
               pt="$1"
               unstyled
@@ -99,7 +99,7 @@ export default function BuyPremiumModal() {
               <Avatar.Fallback backgroundColor={"#F5F5F5"} />
             </Avatar>
             <YStack gap="$2">
-              <Text fontWeight="bold">
+              <Text fontWeight="bold" fontSize="$6">
                 {userData?.firstName} {userData?.lastName}
               </Text>
               <Button
@@ -114,14 +114,14 @@ export default function BuyPremiumModal() {
                 color="$white1"
               >
                 {has?.({ permission: "free:plan" })
-                  ? "Free Plan User"
-                  : "Premium User"}{" "}
+                  ? "Cuenta Premium"
+                  : "Cuenta Free"}
               </Button>
             </YStack>
           </XStack>
           <Separator borderColor="$gray5" />
 
-          <H4>Método de Pago</H4>
+          <H4 letterSpacing={-0.5}>Método de Pago</H4>
           <YStack gap="$2">
             <XStack
               borderWidth="$1"

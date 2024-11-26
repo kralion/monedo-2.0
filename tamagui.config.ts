@@ -13,6 +13,10 @@ const lightTheme = {
   ...configBase.themes.light,
   background: tokens.color.green9Light,
 };
+const darkTheme = {
+  ...configBase.themes.dark,
+  background: tokens.color.green9Light,
+};
 
 export const config = createTamagui({
   ...configBase,
@@ -20,6 +24,7 @@ export const config = createTamagui({
   themes: {
     ...configBase.themes,
     light: lightTheme,
+    dark: darkTheme,
   },
 });
 

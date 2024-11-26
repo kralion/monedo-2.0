@@ -1,7 +1,8 @@
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import { Bell, LogOut, User, UserSquare2 } from "@tamagui/lucide-icons";
+import { Bell, LogOut, Unlock, User, UserSquare2 } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Button, H3, Square, YStack } from "tamagui";
 
@@ -11,9 +12,7 @@ export default function ProfileScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView
-      style={{ paddingHorizontal: 16, paddingTop: 16, height: "100%" }}
-    >
+    <SafeAreaView style={{ paddingTop: 16, height: "100%" }}>
       <View>
         <YStack alignItems="center">
           <Avatar bg="teal.600" alignSelf="center" size="$10">
@@ -30,7 +29,9 @@ export default function ProfileScreen() {
           </Avatar>
 
           <YStack gap="$1">
-            <H3>{`${userData?.firstName} ${userData?.lastName}`}</H3>
+            <H3
+              letterSpacing={-0.5}
+            >{`${userData?.firstName} ${userData?.lastName}`}</H3>
             <Button
               disabled
               size="$3"
@@ -42,33 +43,44 @@ export default function ProfileScreen() {
               }
               color="$white1"
             >
-              {`Usuario
-                ${
-                  has?.({ permission: "premium:plan" }) ? "Premium" : "Básico"
-                }`}
+              {`Cuenta ${
+                has?.({ permission: "premium:plan" }) ? "Premium" : "Free"
+              }`}
             </Button>
           </YStack>
         </YStack>
       </View>
-      <YStack mt="$10" alignItems="flex-start">
+      <YStack mt="$10" ml="$3" alignItems="flex-start">
         <Button
           onPress={() => router.push("/(modals)/personal-info")}
           icon={User}
-          size="$6"
+          size="$5"
+          bg="$colorTransparent"
         >
           Mis Datos
         </Button>
         <Button
           onPress={() => router.push("/(modals)/membership")}
           icon={UserSquare2}
-          size="$6"
+          size="$5"
+          bg="$colorTransparent"
         >
           Membresía
         </Button>
         <Button
+          onPress={() => router.push("/(modals)/buy-premium")}
+          icon={Unlock}
+          bg="$colorTransparent"
+          size="$5"
+          color="$green10Light"
+        >
+          Adquirir Premium
+        </Button>
+        <Button
           onPress={() => router.push("/(modals)/notifications")}
           icon={Bell}
-          size="$6"
+          size="$5"
+          bg="$colorTransparent"
         >
           Notificaciones
         </Button>
@@ -79,7 +91,8 @@ export default function ProfileScreen() {
           }}
           color="$red10Light"
           icon={LogOut}
-          size="$6"
+          bg="$colorTransparent"
+          size="$5"
         >
           Salir
         </Button>

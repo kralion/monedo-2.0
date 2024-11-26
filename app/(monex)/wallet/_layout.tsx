@@ -5,7 +5,10 @@ export default function Layout() {
     <Stack>
       <Stack.Screen
         options={{
-          title: "Presupuesto",
+          title: "Presupuestos",
+          headerStyle: {
+            backgroundColor: "#F3F3F3",
+          },
           headerLargeTitle: true,
           headerShadowVisible: false,
           headerSearchBarOptions: {

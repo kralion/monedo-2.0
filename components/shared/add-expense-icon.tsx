@@ -1,15 +1,17 @@
 import { useExpenseContext } from "@/context";
 import { supabase } from "@/utils/supabase";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Entypo } from "@expo/vector-icons";
+import { Plus } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
+import { Button } from "tamagui";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function AddExpenseIcon() {
   const router = useRouter();
-  const { user: userData } = useUser();
+  const { has } = useAuth();
   const [presupuesto, setPresupuesto] = React.useState(0);
   // TODO: get this from the actual month
   const { sumOfAllOfExpensesMonthly } = useExpenseContext();
@@ -19,7 +21,6 @@ export default function AddExpenseIcon() {
     const totalExpenses = await sumOfAllOfExpensesMonthly();
     setTotalMonthExpenses(totalExpenses);
   }
-  const userRol = "premium";
   const [totalMonthExpenses, setTotalMonthExpenses] = React.useState(0);
   const balance = presupuesto - totalMonthExpenses;
   const getLastBudget = async () => {
@@ -45,8 +46,10 @@ export default function AddExpenseIcon() {
   // }, [balance]);
   return (
     <View>
-      {userRol === "premium" ? (
-        <TouchableOpacity
+      {has?.({ permission: "premium:plan" }) ? (
+        <Button
+          unstyled
+          icon={<Plus color="white" size={40} />}
           style={[
             styles.customTabStyle,
             {
@@ -62,12 +65,11 @@ export default function AddExpenseIcon() {
               router.push("/(monex)/add-expense");
             }
           }}
-          activeOpacity={0.8}
-        >
-          <Entypo name="plus" size={40} color="white" />
-        </TouchableOpacity>
+        />
       ) : (
-        <TouchableOpacity
+        <Button
+          unstyled
+          icon={<Plus color="white" size={40} />}
           style={[
             styles.customTabStyle,
             {
@@ -83,10 +85,7 @@ export default function AddExpenseIcon() {
               router.push("/(monex)/add-expense");
             }
           }}
-          activeOpacity={0.8}
-        >
-          <Entypo name="plus" size={40} color="white" />
-        </TouchableOpacity>
+        />
       )}
     </View>
   );
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     position: "absolute",
-    marginBottom: -25,
+    marginBottom: -15,
     left: -35,
     bottom: 10,
     borderRadius: 50,

@@ -22,8 +22,8 @@ export default function ModalsLayout() {
               style={{ marginLeft: -10 }}
             >
               <XStack alignItems="center">
-                <ChevronLeft size="$3" color="$blue10Light" />
-                <Text fontSize="$6" color="$blue10Light">
+                <ChevronLeft size="$2" color="$blue10Light" />
+                <Text fontSize="$5" color="$blue10Light">
                   Reporte
                 </Text>
               </XStack>
@@ -52,8 +52,8 @@ export default function ModalsLayout() {
                 style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <ChevronLeft size="$3" color="$blue10Light" />
-                  <Text fontSize="$6" color="$blue10Light">
+                  <ChevronLeft size="$2" color="$blue10Light" />
+                  <Text fontSize="$5" color="$blue10Light">
                     Perfil
                   </Text>
                 </XStack>
@@ -109,8 +109,8 @@ export default function ModalsLayout() {
                 style={{ marginLeft: -10 }}
               >
                 <XStack alignItems="center">
-                  <ChevronLeft size="$3" color="$blue10Light" />
-                  <Text fontSize="$6" color="$blue10Light">
+                  <ChevronLeft size="$2" color="$blue10Light" />
+                  <Text fontSize="$5" color="$blue10Light">
                     Perfil
                   </Text>
                 </XStack>

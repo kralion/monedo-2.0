@@ -1,25 +1,21 @@
-import CameraIcon from "@/assets/svgs/camera.svg";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useHeaderHeight } from "@react-navigation/elements";
+import { Camera } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import * as ImagePicker from "expo-image-picker";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useHeaderHeight } from "@react-navigation/elements";
 import {
   Avatar,
   Button,
-  H4,
+  H3,
   Input,
   Label,
   ScrollView,
   Stack,
-  Text,
-  View,
-  XStack,
   YStack,
 } from "tamagui";
-import { Edit3 } from "@tamagui/lucide-icons";
-import { useAuth, useUser } from "@clerk/clerk-expo";
 interface FormData {
   name: string;
   lastName: string;
@@ -86,9 +82,9 @@ export default function PersonalInfo() {
                 color="$white1"
                 borderWidth="$1"
                 borderColor="white"
-                bg="$gray10"
+                bg="$green10"
                 padding={4}
-                icon={<Edit3 size="$1.5" />}
+                icon={<Camera size="$1.5" />}
               />
               <Button
                 disabled
@@ -102,24 +98,23 @@ export default function PersonalInfo() {
                 }
                 color="$white1"
               >
-                {`Cuenta ${
-                  has?.({ permission: "premium:plan" }) ? "Premium" : "Básico"
-                }`}
+                {`Cuenta
+                ${has?.({ permission: "premium:plan" }) ? "Premium" : "Free"}`}
               </Button>
             </Stack>
           </YStack>
-          <H4 fontWeight="bold" mt="$15">
-            Informacion Básica
-          </H4>
-          <YStack gap="$2">
+          <H3 fontWeight="bold" mt="$15">
+            Información Básica
+          </H3>
+          <YStack mt="$3" gap="$2">
             <YStack>
-              <Label>Nombres</Label>
+              <Label size="$3">Nombres</Label>
               <Controller
                 control={control}
                 name="name"
                 render={({ ...field }) => (
                   <Input
-                    size="lg"
+                    size="$5"
                     value={userData?.firstName ?? ""}
                     {...field}
                     borderRadius={7}
@@ -135,13 +130,13 @@ export default function PersonalInfo() {
               />
             </YStack>
             <YStack>
-              <Label>Apellidos</Label>
+              <Label size="$3">Apellidos</Label>
               <Controller
                 control={control}
                 name="lastName"
                 render={({ ...field }) => (
                   <Input
-                    size="lg"
+                    size="$5"
                     value={userData?.lastName ?? ""}
                     {...field}
                     borderRadius={7}

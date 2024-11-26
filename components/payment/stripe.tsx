@@ -86,7 +86,7 @@ export default function Stripe() {
     setIsLoading(false);
     setShowConfetti(true);
     setTimeout(() => {
-      router.push("/(tabs)/");
+      router.push("/(monex)");
     }, 3000);
   }
 
@@ -217,8 +217,14 @@ export default function Stripe() {
             )}
           />
         </YStack>
-        <Button disabled size="$5" fontSize="$5" bg="$gray8">
-          S/. 15.00 PEN
+        <Button
+          disabled
+          chromeless
+          variant="outlined"
+          size="$5"
+          fontWeight="bold"
+        >
+          S/. 15.00
         </Button>
       </YStack>
 

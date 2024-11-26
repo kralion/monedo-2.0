@@ -90,13 +90,13 @@ export default function SignUpScreen() {
           <YStack gap="$1" alignItems="center">
             <Image
               style={{
-                width: 200,
-                height: 200,
+                width: 125,
+                height: 125,
               }}
               source={require("../../assets/logo.png")}
             />
             <H2>Crea una cuenta</H2>
-            <XStack gap="$1.5" alignItems="center">
+            <XStack gap="$1.5">
               <Text>Ya tienes una cuenta?</Text>
 
               <Text

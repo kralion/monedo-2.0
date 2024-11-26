@@ -6,15 +6,7 @@ import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { Image, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Button,
-  H2,
-  ScrollView,
-  Text,
-  XStack,
-  YStack,
-  useTheme,
-} from "tamagui";
+import { Button, H2, Text, XStack, YStack, useTheme } from "tamagui";
 
 export const useWarmUpBrowser = () => {
   React.useEffect(() => {
@@ -35,52 +27,50 @@ export default function SignInScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView>
-      <SafeAreaView
-        style={{
-          paddingHorizontal: 16,
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <YStack gap="$10" width="100%">
-          <YStack gap="$1" alignItems="center">
-            <Image
-              style={{
-                width: 200,
-                height: 200,
-              }}
-              source={require("../../assets/logo.png")}
-            />
-            <H2> Inicia Sesión</H2>
-            <Text textAlign="center">
-              Para empezar a usar y disfrutar de Monex
-            </Text>
-          </YStack>
-          <YStack gap="$4">
-            <SignInWithOAuthGoogle isDarkMode={isDarkMode} />
-            <SignInWithOAuthApple />
-            <SignInWithOAuthTiktok isDarkMode={isDarkMode} />
-          </YStack>
-
-          <XStack gap="$2" alignItems="center" justifyContent="center">
-            <Text className="text-textmuted text-center">
-              ¿No tienes una cuenta?
-            </Text>
-            <Text
-              onPress={() => router.push("/(auth)/sign-up")}
-              color="$green9Light"
-              pressStyle={{ textDecorationLine: "underline" }}
-            >
-              Regístrate
-            </Text>
-          </XStack>
+    <SafeAreaView
+      style={{
+        paddingHorizontal: 16,
+        display: "flex",
+        height: "100%",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <YStack gap="$10" width="100%">
+        <YStack gap="$1" alignItems="center">
+          <Image
+            style={{
+              width: 125,
+              height: 125,
+            }}
+            source={require("../../assets/logo.png")}
+          />
+          <H2> Inicia Sesión</H2>
+          <Text textAlign="center">
+            Para empezar a usar y disfrutar de Monex
+          </Text>
         </YStack>
-      </SafeAreaView>
-    </ScrollView>
+        <YStack gap="$4">
+          <SignInWithOAuthGoogle isDarkMode={isDarkMode} />
+          <SignInWithOAuthApple />
+          <SignInWithOAuthTiktok isDarkMode={isDarkMode} />
+        </YStack>
+
+        <XStack gap="$2" alignItems="center" justifyContent="center">
+          <Text className="text-textmuted text-center">
+            ¿No tienes una cuenta?
+          </Text>
+          <Text
+            onPress={() => router.push("/(auth)/sign-up")}
+            color="$green9Light"
+            pressStyle={{ textDecorationLine: "underline" }}
+          >
+            Regístrate
+          </Text>
+        </XStack>
+      </YStack>
+    </SafeAreaView>
   );
 }
 
